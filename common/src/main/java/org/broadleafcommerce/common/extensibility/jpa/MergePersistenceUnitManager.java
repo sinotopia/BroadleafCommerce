@@ -25,8 +25,11 @@ import org.apache.commons.logging.LogFactory;
 import org.broadleafcommerce.common.config.RuntimeEnvironmentPropertiesConfigurer;
 import org.broadleafcommerce.common.exception.ExceptionHelper;
 import org.broadleafcommerce.common.extensibility.jpa.convert.BroadleafClassTransformer;
+import org.broadleafcommerce.common.extensibility.jpa.convert.BroadleafPersistenceUnitDeclaringClassTransformer;
 import org.broadleafcommerce.common.extensibility.jpa.convert.EntityMarkerClassTransformer;
 import org.broadleafcommerce.common.extensibility.jpa.copy.NullClassTransformer;
+import org.hibernate.ejb.AvailableSettings;
+import org.hibernate.ejb.instrument.InterceptFieldClassFileTransformer;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.instrument.classloading.LoadTimeWeaver;
 import org.springframework.jmx.export.MBeanExporter;
@@ -220,9 +223,21 @@ public class MergePersistenceUnitManager extends DefaultPersistenceUnitManager {
             
             boolean weaverRegistered = true;
             for (PersistenceUnitInfo pui : mergedPus.values()) {
+                if (pui.getProperties().containsKey(AvailableSettings.USE_CLASS_ENHANCER) && "true".equalsIgnoreCase(pui.getProperties().getProperty(AvailableSettings.USE_CLASS_ENHANCER))) {
+                    pui.addTransformer(new InterceptFieldClassFileTransformer(pui.getManagedClassNames()));
+                }
                 for (BroadleafClassTransformer transformer : classTransformers) {
                     try {
-                        if (!(transformer instanceof NullClassTransformer) && pui.getPersistenceUnitName().equals("blPU")) {
+                        boolean isTransformerQualified = !(transformer instanceof NullClassTransformer) &&
+                            (
+                                pui.getPersistenceUnitName().equals("blPU") &&
+                                !(transformer instanceof BroadleafPersistenceUnitDeclaringClassTransformer)
+                            ) ||
+                            (
+                                (transformer instanceof BroadleafPersistenceUnitDeclaringClassTransformer) &&
+                                pui.getPersistenceUnitName().equals(((BroadleafPersistenceUnitDeclaringClassTransformer) transformer).getPersistenceUnitName())
+                            );
+                        if (isTransformerQualified) {
                             pui.addTransformer(transformer);
                         }
                     } catch (Exception e) {

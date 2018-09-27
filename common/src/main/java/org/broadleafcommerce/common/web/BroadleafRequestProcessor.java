@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -50,7 +50,6 @@ import javax.servlet.http.HttpServletRequest;
 
 
 /**
- * 
  * @author Phillip Verheyden
  * @see {@link BroadleafRequestFilter}
  */
@@ -61,7 +60,7 @@ public class BroadleafRequestProcessor extends AbstractBroadleafWebRequestProces
 
     private static String REQUEST_DTO_PARAM_NAME = BroadleafRequestFilter.REQUEST_DTO_PARAM_NAME;
     public static String REPROCESS_PARAM_NAME = "REPROCESS_BLC_REQUEST";
-    
+
     private static final String SITE_STRICT_VALIDATE_PRODUCTION_CHANGES_KEY = "site.strict.validate.production.changes";
 
     @Resource(name = "blSiteResolver")
@@ -84,7 +83,7 @@ public class BroadleafRequestProcessor extends AbstractBroadleafWebRequestProces
 
     @Resource(name = "blTimeZoneResolver")
     protected BroadleafTimeZoneResolver broadleafTimeZoneResolver;
-    
+
     @Value("${thymeleaf.threadLocalCleanup.enabled}")
     protected boolean thymeleafThreadLocalCleanupEnabled = true;
 
@@ -93,17 +92,17 @@ public class BroadleafRequestProcessor extends AbstractBroadleafWebRequestProces
 
     @Resource(name = "blDeployBehaviorUtil")
     protected DeployBehaviorUtil deployBehaviorUtil;
-    
-    @Resource(name="blEntityExtensionManagers")
+
+    @Resource(name = "blEntityExtensionManagers")
     protected Map<String, ExtensionManager> entityExtensionManagers;
-    
+
     @Override
     public void process(WebRequest request) {
         BroadleafRequestContext brc = new BroadleafRequestContext();
         brc.getAdditionalProperties().putAll(entityExtensionManagers);
-        
+
         Site site = siteResolver.resolveSite(request);
-        
+
         brc.setSite(site);
         brc.setWebRequest(request);
         if (site == null) {
@@ -130,7 +129,7 @@ public class BroadleafRequestProcessor extends AbstractBroadleafWebRequestProces
         }
 
         SandBox currentSandbox = sandboxResolver.resolveSandBox(request, site);
-        
+
         // When a user elects to switch his sandbox, we want to invalidate the current session. We'll then redirect the 
         // user to the current URL so that the configured filters trigger again appropriately.
         Boolean reprocessRequest = (Boolean) request.getAttribute(BroadleafRequestProcessor.REPROCESS_PARAM_NAME, WebRequest.SCOPE_REQUEST);
@@ -138,9 +137,9 @@ public class BroadleafRequestProcessor extends AbstractBroadleafWebRequestProces
             LOG.debug("Reprocessing request");
             if (request instanceof ServletWebRequest) {
                 HttpServletRequest hsr = ((ServletWebRequest) request).getRequest();
-                
+
                 clearBroadleafSessionAttrs(request);
-                
+
                 StringBuffer url = hsr.getRequestURL();
                 if (hsr.getQueryString() != null) {
                     url.append('?').append(hsr.getQueryString());
@@ -153,8 +152,8 @@ public class BroadleafRequestProcessor extends AbstractBroadleafWebRequestProces
                 throw new HaltFilterChainException("Reprocess required, redirecting user");
             }
         }
-        
-        
+
+
         if (currentSandbox != null) {
             SandBoxContext previewSandBoxContext = new SandBoxContext();
             previewSandBoxContext.setSandBoxId(currentSandbox.getId());
@@ -198,7 +197,7 @@ public class BroadleafRequestProcessor extends AbstractBroadleafWebRequestProces
     public void postProcess(WebRequest request) {
         ThreadLocalManager.remove();
     }
-    
+
     protected void clearBroadleafSessionAttrs(WebRequest request) {
         if (BLCRequestUtils.isOKtoUseSession(request)) {
             request.removeAttribute(BroadleafLocaleResolverImpl.LOCALE_VAR, WebRequest.SCOPE_GLOBAL_SESSION);

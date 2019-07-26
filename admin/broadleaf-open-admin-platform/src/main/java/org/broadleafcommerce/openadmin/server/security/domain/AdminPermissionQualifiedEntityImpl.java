@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -50,7 +50,7 @@ import javax.persistence.Table;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_ADMIN_PERMISSION_ENTITY")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="blAdminSecurity")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "blAdminSecurity")
 public class AdminPermissionQualifiedEntityImpl implements AdminPermissionQualifiedEntity, Serializable {
 
     private static final Log LOG = LogFactory.getLog(AdminPermissionQualifiedEntityImpl.class);
@@ -59,18 +59,18 @@ public class AdminPermissionQualifiedEntityImpl implements AdminPermissionQualif
     @Id
     @GeneratedValue(generator = "AdminPermissionEntityId")
     @GenericGenerator(
-        name="AdminPermissionEntityId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="AdminPermissionEntityImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.openadmin.server.security.domain.AdminPermissionQualifiedEntityImpl")
-        }
+            name = "AdminPermissionEntityId",
+            strategy = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+            parameters = {
+                    @Parameter(name = "segment_value", value = "AdminPermissionEntityImpl"),
+                    @Parameter(name = "entity_name", value = "org.broadleafcommerce.openadmin.server.security.domain.AdminPermissionQualifiedEntityImpl")
+            }
     )
     @Column(name = "ADMIN_PERMISSION_ENTITY_ID")
     protected Long id;
 
-    @Column(name = "CEILING_ENTITY", nullable=false)
-    @AdminPresentation(friendlyName = "AdminPermissionQualifiedEntityImpl_Ceiling_Entity_Name", order=1, group = "AdminPermissionQualifiedEntityImpl_Permission", prominent=true)
+    @Column(name = "CEILING_ENTITY", nullable = false)
+    @AdminPresentation(friendlyName = "AdminPermissionQualifiedEntityImpl_Ceiling_Entity_Name", order = 1, group = "AdminPermissionQualifiedEntityImpl_Permission", prominent = true)
     protected String ceilingEntityFullyQualifiedName;
 
     @ManyToOne(targetEntity = AdminPermissionImpl.class)

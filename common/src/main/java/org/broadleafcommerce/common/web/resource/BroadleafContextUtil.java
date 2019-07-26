@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -40,22 +40,21 @@ import javax.servlet.http.HttpSession;
 /**
  * <p>
  * Some resource handlers need a valid site, theme, or sandbox to be available when serving request.
- * 
+ *
  * <p>
- * This component provides the {@link #establishThinRequestContext()} method for that purpose.  
+ * This component provides the {@link #establishThinRequestContext()} method for that purpose.
  *
  * @author bpolster
- *
  */
 @Service("blBroadleafContextUtil")
 public class BroadleafContextUtil {
-    
+
     @javax.annotation.Resource(name = "blSiteResolver")
     protected BroadleafSiteResolver siteResolver;
-    
+
     @javax.annotation.Resource(name = "blSandBoxResolver")
     protected BroadleafSandBoxResolver sbResolver;
-    
+
     @javax.annotation.Resource(name = "blThemeResolver")
     protected BroadleafThemeResolver themeResolver;
 
@@ -66,6 +65,7 @@ public class BroadleafContextUtil {
 
     /**
      * Creates a BroadleafRequestContext with supported values populated
+     *
      * @see #establishThinRequestContextInternal(boolean, boolean)
      */
     public void establishThinRequestContext() {
@@ -74,6 +74,7 @@ public class BroadleafContextUtil {
 
     /**
      * Creates a BroadleafRequestContext without a Sandbox
+     *
      * @see #establishThinRequestContextInternal(boolean, boolean)
      */
     public void establishThinRequestContextWithoutSandBox() {
@@ -82,6 +83,7 @@ public class BroadleafContextUtil {
 
     /**
      * Creates a BroadleafRequestContext without a Theme or Sandbox
+     *
      * @see #establishThinRequestContextInternal(boolean, boolean)
      */
     public void establishThinRequestContextWithoutThemeOrSandbox() {
@@ -90,10 +92,10 @@ public class BroadleafContextUtil {
 
     /**
      * Adds request and site to the BroadleafRequestContext
-     * 
+     * <p>
      * If includeTheme is true then also adds the Theme.
      * If includeSandBox is true then also adds the SandBox.
-     * 
+     *
      * @param includeTheme
      * @param includeSandBox
      */
@@ -155,7 +157,5 @@ public class BroadleafContextUtil {
 
         return (SecurityContext) ctxFromSession;
     }
-    
-    
 
 }

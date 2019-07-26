@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,30 +25,30 @@ import java.io.Serializable;
 
 public interface BundleOrderItemFeePrice extends Serializable {
 
-    public abstract Long getId();
+    Long getId();
 
-    public abstract void setId(Long id);
+    void setId(Long id);
 
-    public abstract BundleOrderItem getBundleOrderItem();
+    BundleOrderItem getBundleOrderItem();
 
-    public abstract void setBundleOrderItem(BundleOrderItem bundleOrderItem);
+    void setBundleOrderItem(BundleOrderItem bundleOrderItem);
 
-    public abstract Money getAmount();
+    Money getAmount();
 
-    public abstract void setAmount(Money amount);
+    void setAmount(Money amount);
 
-    public abstract String getName();
+    String getName();
 
-    public abstract void setName(String name);
+    void setName(String name);
 
-    public abstract Boolean isTaxable();
+    Boolean isTaxable();
 
-    public abstract void setTaxable(Boolean isTaxable);
+    void setTaxable(Boolean isTaxable);
 
-    public abstract String getReportingCode();
+    String getReportingCode();
 
-    public abstract void setReportingCode(String reportingCode);
+    void setReportingCode(String reportingCode);
 
-    public BundleOrderItemFeePrice clone();
+    BundleOrderItemFeePrice clone();
 
 }

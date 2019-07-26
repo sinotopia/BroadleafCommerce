@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -58,32 +58,32 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Convenient holder class for various objects to be automatically available on thread local without invoking the various
  * services yourself
- * 
+ *
  * @see {@link BroadleafRequestProcessor}
  */
 public class BroadleafRequestContext {
-    
+
     protected static final Log LOG = LogFactory.getLog(BroadleafRequestContext.class);
-    
+
     private static final ThreadLocal<BroadleafRequestContext> BROADLEAF_REQUEST_CONTEXT = ThreadLocalManager.createThreadLocal(BroadleafRequestContext.class);
-    
+
     public static BroadleafRequestContext getBroadleafRequestContext() {
         return BROADLEAF_REQUEST_CONTEXT.get();
     }
-    
+
     public static void setBroadleafRequestContext(BroadleafRequestContext broadleafRequestContext) {
         BROADLEAF_REQUEST_CONTEXT.set(broadleafRequestContext);
     }
 
-    public static boolean hasLocale(){
+    public static boolean hasLocale() {
         if (getBroadleafRequestContext() != null) {
-            if(getBroadleafRequestContext().getLocale() != null){
+            if (getBroadleafRequestContext().getLocale() != null) {
                 return true;
             }
         }
         return false;
     }
-    
+
     public static boolean hasCurrency() {
         if (getBroadleafRequestContext() != null) {
             if (getBroadleafRequestContext().getBroadleafCurrency() != null) {
@@ -136,6 +136,7 @@ public class BroadleafRequestContext {
 
     /**
      * Gets the current request on the context
+     *
      * @return
      */
     public HttpServletRequest getRequest() {
@@ -144,6 +145,7 @@ public class BroadleafRequestContext {
 
     /**
      * Provide easy access to Request Attributes without introducing a tight dependency on the HttpRequest.
+     *
      * @return
      */
     public Object getRequestAttribute(String name) {
@@ -157,7 +159,7 @@ public class BroadleafRequestContext {
     /**
      * Sets the current request on the context. Note that this also invokes {@link #setWebRequest(WebRequest)} by wrapping
      * <b>request</b> in a {@link ServletWebRequest}.
-     * 
+     *
      * @param request
      */
     public void setRequest(HttpServletRequest request) {
@@ -167,7 +169,7 @@ public class BroadleafRequestContext {
 
     /**
      * Returns the response for the context
-     * 
+     *
      * @return
      */
     public HttpServletResponse getResponse() {
@@ -176,7 +178,7 @@ public class BroadleafRequestContext {
 
     /**
      * Sets the response on the context
-     * 
+     *
      * @param response
      */
     public void setResponse(HttpServletResponse response) {
@@ -193,6 +195,7 @@ public class BroadleafRequestContext {
      * Also, if <b>webRequest</b> is an instance of {@link ServletWebRequest} then an attempt is made to set the response
      * (note that this could be null if the ServletWebRequest was not instantiated with both the {@link HttpServletRequest}
      * and {@link HttpServletResponse}
+     *
      * @param webRequest
      */
     public void setWebRequest(WebRequest webRequest) {
@@ -206,7 +209,7 @@ public class BroadleafRequestContext {
     /**
      * Returns the generic request for use outside of servlets (like in Portlets). This will be automatically set
      * by invoking {@link #setRequest(HttpServletRequest)}
-     * 
+     *
      * @return the generic request
      * @see {@link #setWebRequest(WebRequest)}
      */
@@ -216,6 +219,7 @@ public class BroadleafRequestContext {
 
     /**
      * Returns a Site instance that is not attached to any Hibernate session
+     *
      * @return
      * @deprecated this has been changed to {@link #getNonPersistentSite()} to explicitly indicate that the site
      * being returned is not attached to a Hibernate session
@@ -233,7 +237,7 @@ public class BroadleafRequestContext {
     public void setSite(Site site) {
         setNonPersistentSite(site);
     }
-    
+
     /**
      * @return the site that is currently associated to this request thread. The site that is returned is not attached to a
      * Hibernate session and thus cannot lazy-load collection properties. For additional collections that are added to
@@ -242,9 +246,9 @@ public class BroadleafRequestContext {
     public Site getNonPersistentSite() {
         return site;
     }
-    
+
     /**
-     * 
+     *
      */
     public void setNonPersistentSite(Site site) {
         this.site = site;
@@ -275,6 +279,7 @@ public class BroadleafRequestContext {
 
     /**
      * Returns the java.util.Locale constructed from the org.broadleafcommerce.common.locale.domain.Locale.
+     *
      * @return
      */
     public java.util.Locale getJavaLocale() {
@@ -287,7 +292,7 @@ public class BroadleafRequestContext {
     /**
      * Returns the java.util.Currency constructed from the org.broadleafcommerce.common.currency.domain.BroadleafCurrency.
      * If there is no BroadleafCurrency specified this will return the currency based on the JVM locale
-     * 
+     *
      * @return
      */
     public Currency getJavaCurrency() {
@@ -300,12 +305,12 @@ public class BroadleafRequestContext {
                 }
             } catch (IllegalArgumentException e) {
                 LOG.warn("There was an error processing the configured locale into the java currency. This is likely because the default" +
-                		" locale is set to something like 'en' (which is NOT apart of ISO 3166 and does not have a currency" +
-                		" associated with it) instead of 'en_US' (which IS apart of ISO 3166 and has a currency associated" +
-                		" with it). Because of this, the currency is now set to the default locale of the JVM");
+                        " locale is set to something like 'en' (which is NOT apart of ISO 3166 and does not have a currency" +
+                        " associated with it) instead of 'en_US' (which IS apart of ISO 3166 and has a currency associated" +
+                        " with it). Because of this, the currency is now set to the default locale of the JVM");
                 LOG.warn("To fully resolve this, update the default entry in the BLC_LOCALE table to take into account the" +
-                		" country code as well as the language. Alternatively, you could also update the BLC_CURRENCY table" +
-                		" to contain a default currency.");
+                        " country code as well as the language. Alternatively, you could also update the BLC_CURRENCY table" +
+                        " to contain a default currency.");
                 javaCurrency = Currency.getInstance(java.util.Locale.getDefault());
             }
         }
@@ -330,32 +335,32 @@ public class BroadleafRequestContext {
             // Remove JSESSION-ID or other modifiers
             int pos = requestURIWithoutContext.indexOf(";");
             if (pos >= 0) {
-                requestURIWithoutContext = requestURIWithoutContext.substring(0,pos);
+                requestURIWithoutContext = requestURIWithoutContext.substring(0, pos);
             }
         }
-        
+
         return requestURIWithoutContext;
     }
-    
-    protected java.util.Locale convertLocaleToJavaLocale() {      
+
+    protected java.util.Locale convertLocaleToJavaLocale() {
         if (locale == null || locale.getLocaleCode() == null) {
             return java.util.Locale.getDefault();
         } else {
             return BroadleafRequestContext.convertLocaleToJavaLocale(locale);
         }
     }
-    
+
     public static java.util.Locale convertLocaleToJavaLocale(Locale broadleafLocale) {
         if (broadleafLocale != null) {
             return broadleafLocale.getJavaLocale();
         }
         return null;
     }
-    
+
     public boolean isSecure() {
         boolean secure = false;
         if (request != null) {
-             secure = ("HTTPS".equalsIgnoreCase(request.getScheme()) || request.isSecure());
+            secure = ("HTTPS".equalsIgnoreCase(request.getScheme()) || request.isSecure());
         }
         return secure;
     }
@@ -568,35 +573,35 @@ public class BroadleafRequestContext {
     public String createLightWeightCloneJson() {
         StringBuilder sb = new StringBuilder();
         sb.append("{\"ignoreSite\":\"");
-        sb.append(ignoreSite==null?null:ignoreSite);
+        sb.append(ignoreSite == null ? null : ignoreSite);
         sb.append("\",\"sandBox\":\"");
-        sb.append(sandBox==null?null:sandBox.getId());
+        sb.append(sandBox == null ? null : sandBox.getId());
         sb.append("\",\"nonPersistentSite\":\"");
-        sb.append(site==null?null:site.getId());
+        sb.append(site == null ? null : site.getId());
         sb.append("\",\"enforceEnterpriseCollectionBehaviorState\":\"");
-        sb.append(enforceEnterpriseCollectionBehaviorState==null?null:enforceEnterpriseCollectionBehaviorState.toString());
+        sb.append(enforceEnterpriseCollectionBehaviorState == null ? null : enforceEnterpriseCollectionBehaviorState.toString());
         sb.append("\",\"admin\":\"");
-        sb.append(isAdmin==null?null:isAdmin.toString());
+        sb.append(isAdmin == null ? null : isAdmin.toString());
         sb.append("\",\"adminUserId\":\"");
-        sb.append(adminUserId==null?null:adminUserId);
+        sb.append(adminUserId == null ? null : adminUserId);
         sb.append("\",\"broadleafCurrency\":\"");
-        sb.append(broadleafCurrency==null?null:broadleafCurrency.getCurrencyCode());
+        sb.append(broadleafCurrency == null ? null : broadleafCurrency.getCurrencyCode());
         sb.append("\",\"currentCatalog\":\"");
-        sb.append(currentCatalog==null?null:currentCatalog.getId());
+        sb.append(currentCatalog == null ? null : currentCatalog.getId());
         sb.append("\",\"currentProfile\":\"");
-        sb.append(currentProfile==null?null:currentProfile.getId());
+        sb.append(currentProfile == null ? null : currentProfile.getId());
         sb.append("\",\"deployBehavior\":\"");
-        sb.append(deployBehavior==null?null:deployBehavior.toString());
+        sb.append(deployBehavior == null ? null : deployBehavior.toString());
         sb.append("\",\"deployState\":\"");
-        sb.append(deployState==null?null:deployState.toString());
+        sb.append(deployState == null ? null : deployState.toString());
         sb.append("\",\"internalIgnoreFilters\":\"");
-        sb.append(internalIgnoreFilters==null?null:internalIgnoreFilters.toString());
+        sb.append(internalIgnoreFilters == null ? null : internalIgnoreFilters.toString());
         sb.append("\",\"locale\":\"");
-        sb.append(locale==null?null:locale.getLocaleCode());
+        sb.append(locale == null ? null : locale.getLocaleCode());
         sb.append("\",\"validateProductionChangesState\":\"");
-        sb.append(validateProductionChangesState==null?null:validateProductionChangesState.toString());
+        sb.append(validateProductionChangesState == null ? null : validateProductionChangesState.toString());
         sb.append("\",\"timeZone\":\"");
-        sb.append(timeZone==null?null:timeZone.getID());
+        sb.append(timeZone == null ? null : timeZone.getID());
         sb.append("\"}");
         return sb.toString();
     }
@@ -612,8 +617,9 @@ public class BroadleafRequestContext {
         BroadleafRequestContext context = new BroadleafRequestContext();
         JsonFactory factory = new JsonFactory();
         ObjectMapper mapper = new ObjectMapper(factory);
-        TypeReference<HashMap<String,String>> typeRef = new TypeReference<HashMap<String,String>>() {};
-        HashMap<String,String> json;
+        TypeReference<HashMap<String, String>> typeRef = new TypeReference<HashMap<String, String>>() {
+        };
+        HashMap<String, String> json;
         try {
             json = mapper.readValue(Json, typeRef);
         } catch (IOException e) {

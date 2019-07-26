@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -56,45 +56,44 @@ import javax.persistence.Table;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@Table(name="BLC_SANDBOX")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="blSandBoxElements")
-@SQLDelete(sql="UPDATE BLC_SANDBOX SET ARCHIVED = 'Y' WHERE SANDBOX_ID = ?")
+@Table(name = "BLC_SANDBOX")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "blSandBoxElements")
+@SQLDelete(sql = "UPDATE BLC_SANDBOX SET ARCHIVED = 'Y' WHERE SANDBOX_ID = ?")
 public class SandBoxImpl implements SandBox, AdminMainEntity {
 
-    private static final Log LOG = LogFactory.getLog(SandBoxImpl.class);
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(generator = "SandBoxId")
     @GenericGenerator(
-        name="SandBoxId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="SandBoxImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.common.sandbox.domain.SandBoxImpl")
-        }
+            name = "SandBoxId",
+            strategy = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+            parameters = {
+                    @Parameter(name = "segment_value", value = "SandBoxImpl"),
+                    @Parameter(name = "entity_name", value = "org.broadleafcommerce.common.sandbox.domain.SandBoxImpl")
+            }
     )
     @Column(name = "SANDBOX_ID")
     @AdminPresentation(visibility = VisibilityEnum.HIDDEN_ALL)
     protected Long id;
-    
+
     @Column(name = "SANDBOX_NAME")
-    @Index(name="SANDBOX_NAME_INDEX", columnNames={"SANDBOX_NAME"})
-    @AdminPresentation(friendlyName = "SandBoxImpl_Name", group = "SandBoxImpl_Description", prominent = true, 
+    @Index(name = "SANDBOX_NAME_INDEX", columnNames = {"SANDBOX_NAME"})
+    @AdminPresentation(friendlyName = "SandBoxImpl_Name", group = "SandBoxImpl_Description", prominent = true,
             gridOrder = 2000, order = 1000,
-            validationConfigurations = { @ValidationConfiguration(validationImplementation = "blSandBoxNameValidator") })
+            validationConfigurations = {@ValidationConfiguration(validationImplementation = "blSandBoxNameValidator")})
     protected String name;
-    
-    @Column(name="AUTHOR")
-    @AdminPresentation(friendlyName = "SandBoxImpl_Author", group = "SandBoxImpl_Description", prominent = true, 
-        gridOrder = 3000, order = 3000, visibility = VisibilityEnum.FORM_HIDDEN)
+
+    @Column(name = "AUTHOR")
+    @AdminPresentation(friendlyName = "SandBoxImpl_Author", group = "SandBoxImpl_Description", prominent = true,
+            gridOrder = 3000, order = 3000, visibility = VisibilityEnum.FORM_HIDDEN)
     protected Long author;
 
     @Column(name = "SANDBOX_TYPE")
     @AdminPresentation(friendlyName = "SandBoxImpl_SandBox_Type", group = "SandBoxImpl_Description",
-        visibility = VisibilityEnum.HIDDEN_ALL, readOnly = true,
-        fieldType = SupportedFieldType.BROADLEAF_ENUMERATION,
-        broadleafEnumeration="org.broadleafcommerce.common.sandbox.domain.SandBoxType")
+            visibility = VisibilityEnum.HIDDEN_ALL, readOnly = true,
+            fieldType = SupportedFieldType.BROADLEAF_ENUMERATION,
+            broadleafEnumeration = "org.broadleafcommerce.common.sandbox.domain.SandBoxType")
     //need to set a default value so that add sandbox works correctly in the admin
     protected String sandboxType = SandBoxType.APPROVAL.getType();
 
@@ -106,21 +105,21 @@ public class SandBoxImpl implements SandBox, AdminMainEntity {
     protected List<SandBox> childSandBoxes;
 
     @Column(name = "COLOR")
-    @AdminPresentation(friendlyName = "SandBoxImpl_Color", group = "SandBoxImpl_Description", 
-        prominent = true, gridOrder = 1000, fieldType = SupportedFieldType.COLOR, order = 2000)
+    @AdminPresentation(friendlyName = "SandBoxImpl_Color", group = "SandBoxImpl_Description",
+            prominent = true, gridOrder = 1000, fieldType = SupportedFieldType.COLOR, order = 2000)
     protected String color;
 
     @Column(name = "DESCRIPTION")
     @AdminPresentation(friendlyName = "SandBoxImpl_Description", group = "SandBoxImpl_Description",
-        prominent = true, gridOrder = 4000, order = 4000)
+            prominent = true, gridOrder = 4000, order = 4000)
     protected String description;
 
-    /*
+    /**
      * This field should not be used until logic for it is implemented.
-     * 
+     *
      * @AdminPresentation(friendlyName = "SandBoxImpl_Go_Live_Date", group = "SandBoxImpl_Description",
-     *   prominent = true, gridOrder = 5000, order = 3000)
-    */
+     * prominent = true, gridOrder = 5000, order = 3000)
+     */
     @Column(name = "GO_LIVE_DATE")
     protected Date goLiveDate;
 
@@ -207,10 +206,12 @@ public class SandBoxImpl implements SandBox, AdminMainEntity {
         this.goLiveDate = goLiveDate;
     }
 
+    @Override
     public List<SandBox> getChildSandBoxes() {
         return childSandBoxes;
     }
 
+    @Override
     public void setChildSandBoxes(List<SandBox> childSandBoxes) {
         this.childSandBoxes = childSandBoxes;
     }
@@ -240,12 +241,12 @@ public class SandBoxImpl implements SandBox, AdminMainEntity {
     @Override
     public int hashCode() {
         return new HashCodeBuilder(1, 31)
-            .append(author)
-            .append(id)
-            .append(name)
-            .append(color)
-            .append(goLiveDate)
-            .toHashCode();
+                .append(author)
+                .append(id)
+                .append(name)
+                .append(color)
+                .append(goLiveDate)
+                .toHashCode();
     }
 
     @Override
@@ -253,12 +254,12 @@ public class SandBoxImpl implements SandBox, AdminMainEntity {
         if (obj != null && getClass().isAssignableFrom(obj.getClass())) {
             SandBoxImpl other = (SandBoxImpl) obj;
             return new EqualsBuilder()
-                .append(author, other.author)
-                .append(id, other.id)
-                .append(name, other.name)
-                .append(color, other.color)
-                .append(goLiveDate, other.goLiveDate)
-                .build();
+                    .append(author, other.author)
+                    .append(id, other.id)
+                    .append(name, other.name)
+                    .append(color, other.color)
+                    .append(goLiveDate, other.goLiveDate)
+                    .build();
         }
         return false;
     }
@@ -267,7 +268,7 @@ public class SandBoxImpl implements SandBox, AdminMainEntity {
     public String getMainEntityName() {
         return getName();
     }
-    
+
     @Override
     public boolean getIsInDefaultHierarchy() {
         if (SandBoxType.DEFAULT.equals(getSandBoxType())) {
@@ -277,7 +278,7 @@ public class SandBoxImpl implements SandBox, AdminMainEntity {
         if (getParentSandBox() != null) {
             return getParentSandBox().getIsInDefaultHierarchy();
         }
-        
+
         return false;
     }
 
@@ -302,6 +303,6 @@ public class SandBoxImpl implements SandBox, AdminMainEntity {
 
     @Override
     public boolean isActive() {
-        return 'Y'!=getArchived();
+        return 'Y' != getArchived();
     }
 }

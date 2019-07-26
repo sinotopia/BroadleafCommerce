@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -62,13 +62,13 @@ import javax.persistence.Table;
 @DiscriminatorColumn(name = "TYPE")
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_FULFILLMENT_GROUP_ITEM")
-@Cache(usage=CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region="blOrderElements")
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region = "blOrderElements")
 @AdminPresentationMergeOverrides(
-    {
-        @AdminPresentationMergeOverride(name = "", mergeEntries =
-            @AdminPresentationMergeEntry(propertyType = PropertyType.AdminPresentation.READONLY,
-                                            booleanOverrideValue = true))
-    }
+        {
+                @AdminPresentationMergeOverride(name = "", mergeEntries =
+                @AdminPresentationMergeEntry(propertyType = PropertyType.AdminPresentation.READONLY,
+                        booleanOverrideValue = true))
+        }
 )
 public class FulfillmentGroupItemImpl implements FulfillmentGroupItem, Cloneable, CurrencyCodeIdentifiable {
 
@@ -78,44 +78,44 @@ public class FulfillmentGroupItemImpl implements FulfillmentGroupItem, Cloneable
     @Id
     @GeneratedValue(generator = "FulfillmentGroupItemId")
     @GenericGenerator(
-        name="FulfillmentGroupItemId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="FulfillmentGroupItemImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.core.order.domain.FulfillmentGroupItemImpl")
-        }
+            name = "FulfillmentGroupItemId",
+            strategy = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+            parameters = {
+                    @Parameter(name = "segment_value", value = "FulfillmentGroupItemImpl"),
+                    @Parameter(name = "entity_name", value = "org.broadleafcommerce.core.order.domain.FulfillmentGroupItemImpl")
+            }
     )
     @Column(name = "FULFILLMENT_GROUP_ITEM_ID")
     protected Long id;
 
-    @ManyToOne(targetEntity = FulfillmentGroupImpl.class, optional=false)
+    @ManyToOne(targetEntity = FulfillmentGroupImpl.class, optional = false)
     @JoinColumn(name = "FULFILLMENT_GROUP_ID")
-    @Index(name="FGITEM_FG_INDEX", columnNames={"FULFILLMENT_GROUP_ID"})
+    @Index(name = "FGITEM_FG_INDEX", columnNames = {"FULFILLMENT_GROUP_ID"})
     protected FulfillmentGroup fulfillmentGroup;
 
     //this needs to stay OrderItem in order to provide backwards compatibility for those implementations that place a BundleOrderItem
-    @ManyToOne(targetEntity = OrderItemImpl.class, optional=false, cascade = CascadeType.REFRESH)
+    @ManyToOne(targetEntity = OrderItemImpl.class, optional = false, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "ORDER_ITEM_ID")
     @AdminPresentation(friendlyName = "FulfillmentGroupItemImpl_Order_Item", prominent = true, order = 1000, gridOrder = 1000)
     @AdminPresentationToOneLookup()
     protected OrderItem orderItem;
 
-    @Column(name = "QUANTITY", nullable=false)
+    @Column(name = "QUANTITY", nullable = false)
     @AdminPresentation(friendlyName = "FulfillmentGroupItemImpl_Quantity", prominent = true, order = 2000, gridOrder = 2000)
     protected int quantity;
 
     @Column(name = "STATUS")
-    @Index(name="FGITEM_STATUS_INDEX", columnNames={"STATUS"})
+    @Index(name = "FGITEM_STATUS_INDEX", columnNames = {"STATUS"})
     @AdminPresentation(friendlyName = "FulfillmentGroupItemImpl_Status", prominent = true, order = 3000, gridOrder = 3000)
     private String status;
-    
-    @OneToMany(fetch = FetchType.LAZY, targetEntity = TaxDetailImpl.class, cascade = { CascadeType.ALL }, orphanRemoval = true)
+
+    @OneToMany(fetch = FetchType.LAZY, targetEntity = TaxDetailImpl.class, cascade = {CascadeType.ALL}, orphanRemoval = true)
     @JoinTable(name = "BLC_FG_ITEM_TAX_XREF", joinColumns = @JoinColumn(name = "FULFILLMENT_GROUP_ITEM_ID"), inverseJoinColumns = @JoinColumn(name = "TAX_DETAIL_ID"))
-    @Cache(usage=CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region="blOrderElements")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region = "blOrderElements")
     protected List<TaxDetail> taxes = new ArrayList<TaxDetail>();
-    
-    @Column(name = "TOTAL_ITEM_TAX", precision=19, scale=5)
-    @AdminPresentation(friendlyName = "FulfillmentGroupItemImpl_Total_Item_Tax", order=4000, fieldType=SupportedFieldType.MONEY)
+
+    @Column(name = "TOTAL_ITEM_TAX", precision = 19, scale = 5)
+    @AdminPresentation(friendlyName = "FulfillmentGroupItemImpl_Total_Item_Tax", order = 4000, fieldType = SupportedFieldType.MONEY)
     protected BigDecimal totalTax;
 
     @Column(name = "TOTAL_ITEM_AMOUNT", precision = 19, scale = 5)
@@ -229,7 +229,7 @@ public class FulfillmentGroupItemImpl implements FulfillmentGroupItem, Cloneable
     public void setStatus(FulfillmentGroupStatusType status) {
         this.status = status.getType();
     }
-    
+
     @Override
     public void removeAssociations() {
         if (getFulfillmentGroup() != null) {
@@ -248,7 +248,7 @@ public class FulfillmentGroupItemImpl implements FulfillmentGroupItem, Cloneable
     public void setTaxes(List<TaxDetail> taxes) {
         this.taxes = taxes;
     }
-    
+
     @Override
     public Money getTotalTax() {
         return totalTax == null ? null : BroadleafCurrencyUtils.getMoney(totalTax, getFulfillmentGroup().getOrder().getCurrency());

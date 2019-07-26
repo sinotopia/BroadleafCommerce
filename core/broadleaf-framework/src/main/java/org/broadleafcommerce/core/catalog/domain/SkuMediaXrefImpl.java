@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -52,15 +52,17 @@ import javax.persistence.Table;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_SKU_MEDIA_MAP")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="blProducts")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "blProducts")
 @AdminPresentationClass(excludeFromPolymorphism = false, populateToOneFields = PopulateToOneFieldsEnum.TRUE)
 @DirectCopyTransform({
-        @DirectCopyTransformMember(templateTokens = DirectCopyTransformTypes.SANDBOX, skipOverlaps=true),
+        @DirectCopyTransformMember(templateTokens = DirectCopyTransformTypes.SANDBOX, skipOverlaps = true),
         @DirectCopyTransformMember(templateTokens = DirectCopyTransformTypes.MULTITENANT_CATALOG)
 })
 public class SkuMediaXrefImpl implements SkuMediaXref, Media, MultiTenantCloneable<SkuMediaXrefImpl> {
 
-    /** The Constant serialVersionUID. */
+    /**
+     * The Constant serialVersionUID.
+     */
     private static final long serialVersionUID = 1L;
 
     public SkuMediaXrefImpl(Sku sku, Media media, String key) {
@@ -74,20 +76,20 @@ public class SkuMediaXrefImpl implements SkuMediaXref, Media, MultiTenantCloneab
     }
 
     @Id
-    @GeneratedValue(generator= "SkuMediaId")
+    @GeneratedValue(generator = "SkuMediaId")
     @GenericGenerator(
-        name="SkuMediaId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="SkuMediaXrefImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.core.catalog.domain.SkuMediaXrefImpl")
-        }
+            name = "SkuMediaId",
+            strategy = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+            parameters = {
+                    @Parameter(name = "segment_value", value = "SkuMediaXrefImpl"),
+                    @Parameter(name = "entity_name", value = "org.broadleafcommerce.core.catalog.domain.SkuMediaXrefImpl")
+            }
     )
     @Column(name = "SKU_MEDIA_ID")
     protected Long id;
 
     //for the basic collection join entity - don't pre-instantiate the reference (i.e. don't do myField = new MyFieldImpl())
-    @ManyToOne(targetEntity = SkuImpl.class, optional=false, cascade = CascadeType.REFRESH)
+    @ManyToOne(targetEntity = SkuImpl.class, optional = false, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "BLC_SKU_SKU_ID")
     @AdminPresentation(excluded = true)
     protected Sku sku;
@@ -98,7 +100,7 @@ public class SkuMediaXrefImpl implements SkuMediaXref, Media, MultiTenantCloneab
     @ClonePolicy
     protected Media media;
 
-    @Column(name = "MAP_KEY", nullable=false)
+    @Column(name = "MAP_KEY", nullable = false)
     @AdminPresentation(visibility = VisibilityEnum.HIDDEN_ALL)
     protected String key;
 
@@ -229,6 +231,5 @@ public class SkuMediaXrefImpl implements SkuMediaXref, Media, MultiTenantCloneab
         cloned.setTitle(getTitle());
         return createResponse;
     }
-
 
 }

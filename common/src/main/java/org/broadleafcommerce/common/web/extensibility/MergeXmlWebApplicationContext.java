@@ -95,6 +95,7 @@ public class MergeXmlWebApplicationContext extends XmlWebApplicationContext {
      * @see #getResources
      * @see #getResourcePatternResolver
      */
+    @Override
     protected void loadBeanDefinitions(XmlBeanDefinitionReader reader) throws BeansException, IOException {
         String[] broadleafConfigLocations = StandardConfigLocations.retrieveAll(standardLocationTypes);
 
@@ -161,7 +162,7 @@ public class MergeXmlWebApplicationContext extends XmlWebApplicationContext {
         return resolverList;
     }
 
-    /* (non-Javadoc)
+    /** (non-Javadoc)
      * @see org.springframework.context.support.AbstractApplicationContext#doClose()
      */
     @Override

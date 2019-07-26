@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.broadleafcommerce</groupId>
     <artifactId>broadleaf</artifactId>
@@ -171,49 +172,49 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore />
+                                        <ignore/>
                                     </action>
                                 </pluginExecution>
                                 <pluginExecution>
-                                	<pluginExecutionFilter>
-                                		<groupId>org.jacoco</groupId>
-                                		<artifactId>
-                                			jacoco-maven-plugin
-                                		</artifactId>
-                                		<versionRange>
-                                			[0.7.2.201409121644,)
-                                		</versionRange>
-                                		<goals>
-                                			<goal>prepare-agent</goal>
-                                		</goals>
-                                	</pluginExecutionFilter>
-                                	<action>
-                                		<ignore />
-                                	</action>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.jacoco</groupId>
+                                        <artifactId>
+                                            jacoco-maven-plugin
+                                        </artifactId>
+                                        <versionRange>
+                                            [0.7.2.201409121644,)
+                                        </versionRange>
+                                        <goals>
+                                            <goal>prepare-agent</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore/>
+                                    </action>
                                 </pluginExecution>
                                 <pluginExecution>
-                                	<pluginExecutionFilter>
-                                		<groupId>
-                                			org.codehaus.mojo
-                                		</groupId>
-                                		<artifactId>
-                                			license-maven-plugin
-                                		</artifactId>
-                                		<versionRange>
-                                			[1.5,)
-                                		</versionRange>
-                                		<goals>
-                                			<goal>
-                                				update-file-header
-                                			</goal>
-                                			<goal>
-                                				update-project-license
-                                			</goal>
-                                		</goals>
-                                	</pluginExecutionFilter>
-                                	<action>
-                                		<ignore />
-                                	</action>
+                                    <pluginExecutionFilter>
+                                        <groupId>
+                                            org.codehaus.mojo
+                                        </groupId>
+                                        <artifactId>
+                                            license-maven-plugin
+                                        </artifactId>
+                                        <versionRange>
+                                            [1.5,)
+                                        </versionRange>
+                                        <goals>
+                                            <goal>
+                                                update-file-header
+                                            </goal>
+                                            <goal>
+                                                update-project-license
+                                            </goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore/>
+                                    </action>
                                 </pluginExecution>
                             </pluginExecutions>
                         </lifecycleMappingMetadata>
@@ -371,18 +372,18 @@
             <build>
                 <plugins>
                     <plugin>
-                      <groupId>org.owasp</groupId>
-                      <artifactId>dependency-check-maven</artifactId>
-                      <version>1.3.4</version>
-                      <executions>
-                          <execution>
-                              <goals>
-                                  <goal>check</goal>
-                              </goals>
-                          </execution>
-                      </executions>
+                        <groupId>org.owasp</groupId>
+                        <artifactId>dependency-check-maven</artifactId>
+                        <version>1.3.4</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                     </plugin>
-            </plugins>
+                </plugins>
             </build>
         </profile>
         <profile>
@@ -813,7 +814,7 @@
                 <artifactId>woodstox-core-asl</artifactId>
                 <version>4.1.4</version>
             </dependency>
-            
+
             <!-- Added for JAXRS backwards compatibility with the Broadleaf REST APIs in Broadleaf 4.0 -->
             <dependency>
                 <groupId>javax.ws.rs</groupId>
@@ -832,7 +833,7 @@
                 <artifactId>jackson-jaxrs-json-provider</artifactId>
                 <version>2.5.0</version>
             </dependency>
-            
+
 
             <!-- JMS Libraries -->
             <dependency>
@@ -1021,20 +1022,20 @@
                         <artifactId>wstx-asl</artifactId>
                     </exclusion>
                     <!-- The jdk.tools transitive dependency uses system scope -->
-                        <!-- which has to be resolved in a platform agnostic way -->
-                        <!-- in order to have a clean compile in Eclipse. That -->
-                        <!-- turned out to be surprisingly difficult to achieve. -->
-        
-                        <!-- From the dependency tree below we can see that -->
-                        <!-- jdk.tools is pulled in by hadoop-annotations -->
-                        <!-- and since this is a normal JDK system jar we can avoid the -->
-                        <!-- problem by excluding the jdk.tools dependency. -->
-        
-                        <!-- Relevant output from mvn dependency:tree follows -->
-                        <!-- +- org.broadleafcommerce:broadleaf-framework:jar:{version}:compile -->
-                        <!--    +- org.apache.solr:solr-core:jar:4.4.0:compile -->
-                        <!--        +- org.apache.hadoop:hadoop-annotations:jar:2.0.5-alpha:compile -->
-                        <!--            \- jdk.tools:jdk.tools:jar:1.6:system -->
+                    <!-- which has to be resolved in a platform agnostic way -->
+                    <!-- in order to have a clean compile in Eclipse. That -->
+                    <!-- turned out to be surprisingly difficult to achieve. -->
+
+                    <!-- From the dependency tree below we can see that -->
+                    <!-- jdk.tools is pulled in by hadoop-annotations -->
+                    <!-- and since this is a normal JDK system jar we can avoid the -->
+                    <!-- problem by excluding the jdk.tools dependency. -->
+
+                    <!-- Relevant output from mvn dependency:tree follows -->
+                    <!-- +- org.broadleafcommerce:broadleaf-framework:jar:{version}:compile -->
+                    <!--    +- org.apache.solr:solr-core:jar:4.4.0:compile -->
+                    <!--        +- org.apache.hadoop:hadoop-annotations:jar:2.0.5-alpha:compile -->
+                    <!--            \- jdk.tools:jdk.tools:jar:1.6:system -->
                     <exclusion>
                         <groupId>jdk.tools</groupId>
                         <artifactId>jdk.tools</artifactId>
@@ -1479,7 +1480,7 @@
                 <groupId>de.jkeylockmanager</groupId>
                 <artifactId>jkeylockmanager</artifactId>
                 <version>1.1.0</version>
-            </dependency>            
+            </dependency>
             <dependency>
                 <groupId>org.codehaus.jettison</groupId>
                 <artifactId>jettison</artifactId>

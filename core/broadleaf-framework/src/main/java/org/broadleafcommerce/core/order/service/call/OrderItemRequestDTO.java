@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,20 +31,19 @@ import java.util.Map;
 
 /**
  * Only the product and quantity are required to add an item to an order.
- *
+ * <p>
  * The category can be inferred from the product's default category.
- *
+ * <p>
  * The sku can be inferred from either the passed in attributes as they are compared to the product's options or
  * the sku can be determined from the product's default sku.
- * 
+ * <p>
  * When adding a bundle using this DTO, you MUST have the {@link ProductBundle} included in the productId for it to
  * properly instantiate the {@link BundleOrderItem}
- * 
+ * <p>
  * Important Note:  To protect against misuse, the {@link OrderService}'s addItemToCart method will blank out
  * any values passed in on this DTO for the overrideSalePrice or overrideRetailPrice.
- * 
+ * <p>
  * Instead, implementors should call the more explicit addItemWithPriceOverrides.
- *
  */
 public class OrderItemRequestDTO {
 
@@ -55,23 +54,24 @@ public class OrderItemRequestDTO {
     private Integer quantity;
     private Money overrideSalePrice;
     private Money overrideRetailPrice;
-    private Map<String,String> itemAttributes = new HashMap<String,String>();
-    private List<OrderItemRequestDTO> childOrderItems = new ArrayList<OrderItemRequestDTO>();
+    private Map<String, String> itemAttributes = new HashMap<String, String>();
     private Long parentOrderItemId;
-    
-    public OrderItemRequestDTO() {}
-    
+    private List<OrderItemRequestDTO> childOrderItems = new ArrayList<OrderItemRequestDTO>();
+
+    public OrderItemRequestDTO() {
+    }
+
     public OrderItemRequestDTO(Long productId, Integer quantity) {
         setProductId(productId);
         setQuantity(quantity);
     }
-    
+
     public OrderItemRequestDTO(Long productId, Long skuId, Integer quantity) {
         setProductId(productId);
         setSkuId(skuId);
         setQuantity(quantity);
     }
-    
+
     public OrderItemRequestDTO(Long productId, Long skuId, Long categoryId, Integer quantity) {
         setProductId(productId);
         setSkuId(skuId);
@@ -123,7 +123,7 @@ public class OrderItemRequestDTO {
         this.itemAttributes = itemAttributes;
         return this;
     }
-    
+
     public Long getOrderItemId() {
         return orderItemId;
     }
@@ -152,7 +152,7 @@ public class OrderItemRequestDTO {
     public List<OrderItemRequestDTO> getChildOrderItems() {
         return childOrderItems;
     }
-    
+
     public void setChildOrderItems(List<OrderItemRequestDTO> childOrderItems) {
         this.childOrderItems = childOrderItems;
     }
@@ -164,5 +164,5 @@ public class OrderItemRequestDTO {
     public void setParentOrderItemId(Long parentOrderItemId) {
         this.parentOrderItemId = parentOrderItemId;
     }
-    
+
 }

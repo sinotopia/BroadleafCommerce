@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,25 +27,25 @@ import javax.persistence.EntityManager;
 
 /**
  * CRUD methods for generic entities
- * 
+ *
  * @author Andre Azzolini (apazzolini)
  */
 public interface GenericEntityService {
 
     /**
      * Finds a generic entity by a classname and id
-     * 
+     *
      * @param className
      * @param id
      * @return the entity
      */
-    public Object readGenericEntity(String className, Object id);
+    Object readGenericEntity(String className, Object id);
 
     <T> T readGenericEntity(Class<T> clazz, Object id);
 
     /**
      * Saves a generic entity
-     * 
+     *
      * @param object
      * @return the persisted version of the entity
      */
@@ -60,21 +60,21 @@ public interface GenericEntityService {
 
     /**
      * Finds how many of the given entity class are persisted
-     * 
+     *
      * @param clazz
      * @return the count of the generic entity
      */
-    public <T> Long readCountGenericEntity(Class<T> clazz);
+    <T> Long readCountGenericEntity(Class<T> clazz);
 
     /**
      * Finds all generic entities for a given classname, with pagination options.
-     * 
+     *
      * @param clazz
      * @param limit
      * @param offset
      * @return the entities
      */
-    public <T> List<T> readAllGenericEntity(Class<T> clazz, int limit, int offset);
+    <T> List<T> readAllGenericEntity(Class<T> clazz, int limit, int offset);
 
     List<Long> readAllGenericEntityId(Class<?> clazz);
 
@@ -110,6 +110,7 @@ public interface GenericEntityService {
 
     /**
      * Whether or not this object is an {@link javax.persistence.Entity} and whether or not it already has an id assigned
+     *
      * @param object
      * @return
      */

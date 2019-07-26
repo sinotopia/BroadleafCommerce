@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,7 +18,7 @@
  * #L%
  */
 /**
- * 
+ *
  */
 package org.broadleafcommerce.common.workflow;
 
@@ -44,11 +44,11 @@ import javax.annotation.Resource;
 
 /**
  * Ensures that activities are rolled back in the correct order
- * 
+ *
  * @author Phillip Verheyden (phillipuniverse)
  */
 public class RollbackTest extends BaseTest {
-    
+
     @Resource(name = "testRollbackWorkflow")
     protected SequenceProcessor testRollbackWorkflow;
 
@@ -61,18 +61,18 @@ public class RollbackTest extends BaseTest {
         } catch (WorkflowException e) {
             exceptionThrown = true;
         }
-        
+
         List<String> expected = Arrays.asList("Activity1",
-            "Activity2",
-            "ActivityA",
-            "RollbackActivityA",
-            "NestedActivityException",
-            "RollbackActivity2",
-            "RollbackActivity1");
+                "Activity2",
+                "ActivityA",
+                "RollbackActivityA",
+                "NestedActivityException",
+                "RollbackActivity2",
+                "RollbackActivity1");
         Assert.assertTrue(exceptionThrown);
         Assert.assertEquals(results, expected, "Rollback occurred out of order");
     }
-    
+
     public static class SimpleActivity extends BaseActivity<ProcessContext<List<String>>> {
 
         protected String name;
@@ -80,37 +80,36 @@ public class RollbackTest extends BaseTest {
         public SimpleActivity(String name) {
             this.name = name;
         }
-        
+
         public String getName() {
             return name;
         }
-        
+
         @Override
         public ProcessContext<List<String>> execute(ProcessContext<List<String>> context) throws Exception {
             context.getSeedData().add(name);
             return context;
         }
-        
+
         @Override
         public boolean getAutomaticallyRegisterRollbackHandler() {
             return true;
         }
-        
+
     }
-    
+
     public static class SimpleRollbackHandler implements RollbackHandler<List<String>> {
 
         @Override
         public void rollbackState(Activity<? extends ProcessContext<List<String>>> activity, ProcessContext<List<String>> processContext, Map<String, Object> stateConfiguration) throws RollbackFailureException {
             processContext.getSeedData().add("Rollback" + ((SimpleActivity) activity).getName());
         }
-        
     }
-    
+
     public static class NestedActivity extends BaseActivity<ProcessContext<List<String>>> {
 
         protected SequenceProcessor workflow;
-        
+
         public NestedActivity(SequenceProcessor workflow) {
             this.workflow = workflow;
         }
@@ -125,16 +124,16 @@ public class RollbackTest extends BaseTest {
             }
             return context;
         }
-        
+
     }
-    
+
     public static class ExceptionActivity extends BaseActivity<ProcessContext<List<String>>> {
 
         @Override
         public ProcessContext<List<String>> execute(ProcessContext<List<String>> context) throws Exception {
             throw new RuntimeException();
         }
-        
+
     }
 
     public static class DummyProcessContextFactory implements ProcessContextFactory<Object, Object> {
@@ -145,6 +144,6 @@ public class RollbackTest extends BaseTest {
             context.setSeedData(preSeedData);
             return context;
         }
-        
+
     }
 }

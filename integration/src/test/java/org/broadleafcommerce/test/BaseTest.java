@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -39,7 +39,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 @TransactionConfiguration(transactionManager = "blTransactionManager", defaultRollback = true)
-@TestExecutionListeners(inheritListeners = false, value = { MergeDependencyInjectionTestExecutionListener.class, DirtiesContextTestExecutionListener.class, MergeTransactionalTestExecutionListener.class })
+@TestExecutionListeners(inheritListeners = false, value =
+        {MergeDependencyInjectionTestExecutionListener.class,
+                DirtiesContextTestExecutionListener.class,
+                MergeTransactionalTestExecutionListener.class})
 public abstract class BaseTest extends AbstractTestNGSpringContextTests {
 
     @PersistenceContext(unitName = "blPU")
@@ -64,7 +67,7 @@ public abstract class BaseTest extends AbstractTestNGSpringContextTests {
 
                 // After the framework applicationContexts are loaded, we want the module ones
                 allContexts.addAll(moduleContexts);
-                
+
                 // Lastly, we want the test applicationContext
                 allContexts.add("bl-applicationContext-test.xml");
 
@@ -72,10 +75,10 @@ public abstract class BaseTest extends AbstractTestNGSpringContextTests {
                 if (ManagementFactory.getRuntimeMXBean().getInputArguments().contains("-Dlegacy=true")) {
                     allContexts.add("bl-applicationContext-test-legacy.xml");
                 }
-                
+
                 String[] strArray = new String[allContexts.size()];
                 mergeContext = new MergeClassPathXMLApplicationContext(allContexts.toArray(strArray), new String[]{});
-                
+
                 //allow for request-scoped beans that can occur in web application contexts
                 RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(new MockHttpServletRequest()));
                 mergeContext.getBeanFactory().registerScope("request", new RequestScope());

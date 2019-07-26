@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <parent>
         <artifactId>broadleaf</artifactId>
         <groupId>org.broadleafcommerce</groupId>
@@ -83,7 +84,8 @@
                         <configuration>
                             <skipTests>true</skipTests>
                             <argLine>-Xmx1024m -XX:MaxPermSize=512m
-                                -Dlegacy=true ${surefire.argLine}</argLine>
+                                -Dlegacy=true ${surefire.argLine}
+                            </argLine>
                         </configuration>
                     </execution>
                     <execution>
@@ -269,16 +271,6 @@
             <artifactId>greenmail</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <type>jar</type>
-            <classifier>jdk15</classifier>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-        </dependency>
-        <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>3.0.1</version>
@@ -296,6 +288,16 @@
             <artifactId>hsqldb</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <type>jar</type>
+            <classifier>jdk15</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
@@ -307,7 +309,6 @@
             <groupId>org.easymock</groupId>
             <artifactId>easymockclassextension</artifactId>
         </dependency>
-
         <!-- Spock/Groovy Test Dependencies -->
         <dependency>
             <groupId>org.codehaus.groovy</groupId>

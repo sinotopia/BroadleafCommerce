@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -36,7 +36,7 @@ import javax.persistence.Table;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_PERSONAL_MESSAGE")
-@Cache(usage=CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region="blOrderElements")
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region = "blOrderElements")
 public class PersonalMessageImpl implements PersonalMessage {
 
     private static final long serialVersionUID = 1L;
@@ -44,30 +44,30 @@ public class PersonalMessageImpl implements PersonalMessage {
     @Id
     @GeneratedValue(generator = "PersonalMessageId")
     @GenericGenerator(
-        name="PersonalMessageId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="PersonalMessageImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.core.order.domain.PersonalMessageImpl")
-        }
+            name = "PersonalMessageId",
+            strategy = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+            parameters = {
+                    @Parameter(name = "segment_value", value = "PersonalMessageImpl"),
+                    @Parameter(name = "entity_name", value = "org.broadleafcommerce.core.order.domain.PersonalMessageImpl")
+            }
     )
     @Column(name = "PERSONAL_MESSAGE_ID")
     protected Long id;
 
     @Column(name = "MESSAGE_TO")
-    @AdminPresentation(friendlyName = "PersonalMessageImpl_Message_To", order=1, group = "PersonalMessageImpl_Personal_Message")
+    @AdminPresentation(friendlyName = "PersonalMessageImpl_Message_To", order = 1, group = "PersonalMessageImpl_Personal_Message")
     protected String messageTo;
 
     @Column(name = "MESSAGE_FROM")
-    @AdminPresentation(friendlyName = "PersonalMessageImpl_Message_From", order=2, group = "PersonalMessageImpl_Personal_Message")
+    @AdminPresentation(friendlyName = "PersonalMessageImpl_Message_From", order = 2, group = "PersonalMessageImpl_Personal_Message")
     protected String messageFrom;
 
     @Column(name = "MESSAGE")
-    @AdminPresentation(friendlyName = "PersonalMessageImpl_Message", order=3, group = "PersonalMessageImpl_Personal_Message")
+    @AdminPresentation(friendlyName = "PersonalMessageImpl_Message", order = 3, group = "PersonalMessageImpl_Personal_Message")
     protected String message;
 
     @Column(name = "OCCASION")
-    @AdminPresentation(friendlyName = "PersonalMessageImpl_Occasion", order=4, group = "PersonalMessageImpl_Personal_Message")
+    @AdminPresentation(friendlyName = "PersonalMessageImpl_Occasion", order = 4, group = "PersonalMessageImpl_Personal_Message")
     protected String occasion;
 
     @Override

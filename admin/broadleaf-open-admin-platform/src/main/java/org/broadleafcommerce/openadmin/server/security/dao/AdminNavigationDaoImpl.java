@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,9 +33,7 @@ import javax.annotation.Resource;
 import javax.persistence.*;
 
 /**
- *
  * @author elbertbautista
- *
  */
 @Repository("blAdminNavigationDao")
 public class AdminNavigationDaoImpl implements AdminNavigationDao {
@@ -43,9 +41,9 @@ public class AdminNavigationDaoImpl implements AdminNavigationDao {
     @PersistenceContext(unitName = "blPU")
     protected EntityManager em;
 
-    @Resource(name="blEntityConfiguration")
+    @Resource(name = "blEntityConfiguration")
     protected EntityConfiguration entityConfiguration;
-    
+
     @Override
     public AdminSection save(AdminSection adminSection) {
         adminSection = em.merge(adminSection);
@@ -69,12 +67,12 @@ public class AdminNavigationDaoImpl implements AdminNavigationDao {
         List<AdminModule> modules = query.getResultList();
         return modules;
     }
-    
+
     @Override
     public AdminModule readAdminModuleByModuleKey(String moduleKey) {
         TypedQuery<AdminModule> q = new TypedQueryBuilder<AdminModule>(AdminModule.class, "am")
-            .addRestriction("am.moduleKey", "=", moduleKey)
-            .toQuery(em);
+                .addRestriction("am.moduleKey", "=", moduleKey)
+                .toQuery(em);
         return q.getSingleResult();
     }
 
@@ -86,11 +84,11 @@ public class AdminNavigationDaoImpl implements AdminNavigationDao {
         List<AdminSection> sections = query.getResultList();
         return sections;
     }
-    
+
     @Override
     public AdminSection readAdminSectionByClassAndSectionId(Class<?> clazz, String sectionId) {
         String className = clazz.getName();
-        
+
         // Try to find a section for the exact input received
         List<AdminSection> sections = readAdminSectionForClassName(className);
         if (CollectionUtils.isEmpty(sections)) {
@@ -101,7 +99,7 @@ public class AdminNavigationDaoImpl implements AdminNavigationDao {
                 sections = readAdminSectionForClassName(className);
             }
         }
-        
+
         if (!CollectionUtils.isEmpty(sections)) {
             AdminSection returnSection = sections.get(0);
 
@@ -118,13 +116,13 @@ public class AdminNavigationDaoImpl implements AdminNavigationDao {
             }
             return returnSection;
         }
-        
+
         return null;
     }
-    
+
     protected List<AdminSection> readAdminSectionForClassName(String className) {
         TypedQuery<AdminSection> q = em.createQuery(
-            "select s from " + AdminSection.class.getName() + " s where s.ceilingEntity = :className", AdminSection.class);
+                "select s from " + AdminSection.class.getName() + " s where s.ceilingEntity = :className", AdminSection.class);
         q.setParameter("className", className);
         q.setHint(org.hibernate.ejb.QueryHints.HINT_CACHEABLE, true);
         List<AdminSection> result = q.getResultList();
@@ -142,9 +140,9 @@ public class AdminNavigationDaoImpl implements AdminNavigationDao {
         query.setHint(QueryHints.HINT_CACHE_REGION, "blAdminSecurityQuery");
         AdminSection adminSection = null;
         try {
-             adminSection = (AdminSection) query.getSingleResult();
+            adminSection = (AdminSection) query.getSingleResult();
         } catch (NoResultException e) {
-           //do nothing
+            //do nothing
         }
         return adminSection;
     }

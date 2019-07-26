@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -63,7 +63,6 @@ import javax.xml.transform.stream.StreamResult;
  * in a prioritized fashion and exporting the final merged document.
  *
  * @author jfischer
- *
  */
 public class MergeManager {
 
@@ -74,7 +73,6 @@ public class MergeManager {
      * with a value stating the fully qualified path of user-created property file. Please refer
      * to the default properties file located at org/broadleafcommerce/profile/extensibility/context/merge/default.properties
      * for more details.
-     *
      */
     public static final String MERGE_DEFINITION_SYSTEM_PROPERTY = "org.broadleafcommerce.extensibility.context.merge.handlers.merge.properties";
 
@@ -157,14 +155,14 @@ public class MergeManager {
      * Examines the properties file for an entry with an id equal to the component that we want
      * to ignore and then removes all keys that have the same number (e.g. if xpath.28 is the key
      * then handler.28, xpath.28, and priority.28 will all be removed).
-     * 
+     *
      * @param props
      * @param componentName
      */
     private void removeSkipMergeComponents(Properties props, String componentName) {
         String lookupName = "@id='" + componentName.trim() + "'";
         String key = findComponentKey(lookupName, props);
-        while (key  != null) {
+        while (key != null) {
             removeItemsMatchingKey(key, props);
             key = findComponentKey(lookupName, props);
         }
@@ -172,9 +170,9 @@ public class MergeManager {
 
     /**
      * Examines the properties file for an entry that contains the passed in component id string and returns its key
-     * 
-     * to ignore. 
-     * 
+     * <p>
+     * to ignore.
+     *
      * @param componentName
      * @param props
      * @return
@@ -198,7 +196,7 @@ public class MergeManager {
     /**
      * Removes all keys that share the same number.   (e.g. if xpath.28 is the key
      * then handler.28, xpath.28, and priority.28 will all be removed).
-     * 
+     *
      * @param firstKey
      * @param props
      * @return
@@ -207,9 +205,9 @@ public class MergeManager {
         int dotPos = firstKey.indexOf(".");
         if (dotPos > 0) {
             String keyNumberToMatch = firstKey.substring(dotPos);
-            
+
             Iterator<Object> iter = props.keySet().iterator();
-            
+
             while (iter.hasNext()) {
                 Object keyObj = iter.next();
                 if (keyObj instanceof String) {
@@ -363,7 +361,9 @@ public class MergeManager {
             LOG.error("Unable to merge source and patch locations", e);
         } finally {
             if (reader != null) {
-                try{ reader.close(); } catch (Throwable e) {
+                try {
+                    reader.close();
+                } catch (Throwable e) {
                     LOG.error("Unable to merge source and patch locations", e);
                 }
             }

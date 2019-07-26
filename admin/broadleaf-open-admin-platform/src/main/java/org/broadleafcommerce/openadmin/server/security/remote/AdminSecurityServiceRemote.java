@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -54,35 +54,36 @@ import javax.annotation.Resource;
 /**
  * Service for handeling security with Ajax components.  Serves two functions.
  * <ul>
- *     <li>
- *         Converts the ServerSide AdminUser to a client level admin user with
- *         appropriate roles defined.
- *     </li>
- *     <li>
- *         Provides a method to check if the current logged in user matches the
- *         client side user and verifies whether that user has access to the
- *         entity operation they are trying to perform.
- *     </li>
+ * <li>
+ * Converts the ServerSide AdminUser to a client level admin user with
+ * appropriate roles defined.
+ * </li>
+ * <li>
+ * Provides a method to check if the current logged in user matches the
+ * client side user and verifies whether that user has access to the
+ * entity operation they are trying to perform.
+ * </li>
  * </ul>
  * 1.
- * @author jfischer
  *
+ * @author jfischer
  */
 @Service("blAdminSecurityRemoteService")
 public class AdminSecurityServiceRemote implements AdminSecurityService, SecurityVerifier {
-    
+
     private static final String ANONYMOUS_USER_NAME = "anonymousUser";
+
     private static final Log LOG = LogFactory.getLog(AdminSecurityServiceRemote.class);
-    
-    @Resource(name="blAdminSecurityService")
+
+    @Resource(name = "blAdminSecurityService")
     protected org.broadleafcommerce.openadmin.server.security.service.AdminSecurityService securityService;
 
-    @Resource(name="blExploitProtectionService")
+    @Resource(name = "blExploitProtectionService")
     protected ExploitProtectionService exploitProtectionService;
-    
+
     @Resource(name = "blRowLevelSecurityService")
     protected RowLevelSecurityService rowLevelSecurityService;
-    
+
     @Override
     public org.broadleafcommerce.openadmin.server.security.remote.AdminUser getAdminUser() throws ServiceException {
         AdminUser persistentAdminUser = getPersistentAdminUser();
@@ -131,13 +132,13 @@ public class AdminSecurityServiceRemote implements AdminSecurityService, Securit
         if (!ArrayUtils.isEmpty(persistencePackage.getSectionCrumbs())) {
             ceilingNames.addAll(CollectionUtils.transform(Arrays.asList(persistencePackage.getSectionCrumbs()),
                     new Transformer() {
-                @Override
-                public Object transform(Object o) {
-                    return ((SectionCrumb) o).getSectionIdentifier();
-                }
-            }));
+                        @Override
+                        public Object transform(Object o) {
+                            return ((SectionCrumb) o).getSectionIdentifier();
+                        }
+                    }));
         }
-        
+
         Entity entity = persistencePackage.getEntity();
         GlobalValidationResult globalValidationResult = null;
         if (operationType.equals(EntityOperationType.UPDATE)) {
@@ -145,7 +146,7 @@ public class AdminSecurityServiceRemote implements AdminSecurityService, Securit
         } else if (operationType.equals(EntityOperationType.REMOVE)) {
             globalValidationResult = rowLevelSecurityService.validateRemoveRequest(getPersistentAdminUser(), entity, persistencePackage);
         }
-        
+
         if (globalValidationResult != null) {
             if (!globalValidationResult.isValid()) {
                 if (StringUtils.isEmpty(globalValidationResult.getErrorMessage())) {
@@ -153,11 +154,11 @@ public class AdminSecurityServiceRemote implements AdminSecurityService, Securit
                 } else {
                     entity.addGlobalValidationErrors(globalValidationResult.getErrorMessages());
                 }
-                
+
                 throw new ValidationException(entity, "Row level security check failed for " + operationType);
             }
         }
-        
+
         securityCheck(ceilingNames.toArray(new String[ceilingNames.size()]), operationType);
     }
 
@@ -166,14 +167,13 @@ public class AdminSecurityServiceRemote implements AdminSecurityService, Securit
         securityCheck(new String[]{ceilingEntityFullyQualifiedName}, operationType);
     }
 
-
     protected void securityCheck(String[] ceilingNames, EntityOperationType operationType) throws ServiceException {
         if (ArrayUtils.isEmpty(ceilingNames)) {
             throw new SecurityServiceException("Security Check Failed: ceilingNames not specified");
         }
         AdminUser persistentAdminUser = getPersistentAdminUser();
         PermissionType permissionType;
-        switch(operationType){
+        switch (operationType) {
             case ADD:
                 permissionType = PermissionType.CREATE;
                 break;
@@ -197,7 +197,7 @@ public class AdminSecurityServiceRemote implements AdminSecurityService, Securit
         boolean isQualified = false;
         for (String ceilingEntityFullyQualifiedName : ceilingNames) {
             isQualified = securityService.isUserQualifiedForOperationOnCeilingEntity(persistentAdminUser, permissionType, ceilingEntityFullyQualifiedName);
-            if (!isQualified){
+            if (!isQualified) {
                 if (primaryException == null) {
                     primaryException = new SecurityServiceException("Security Check Failed for entity operation: " + operationType.toString() + " (" + ceilingEntityFullyQualifiedName + ")");
                 }
@@ -210,10 +210,10 @@ public class AdminSecurityServiceRemote implements AdminSecurityService, Securit
             if (!securityService.doesOperationExistForCeilingEntity(permissionType, ceilingNames[0])) {
                 if (LOG.isWarnEnabled()) {
                     LOG.warn("Detected security request for an unregistered ceiling entity (" + ceilingNames[0] + "). " +
-                        "As a result, the request failed. Please make sure to configure security for any ceiling entities " +
-                        "referenced via the admin. This is usually accomplished by adding records in the " +
-                        "BLC_ADMIN_PERMISSION_ENTITY table. Note, depending on how the entity in question is used, you " +
-                        "may need to add to BLC_ADMIN_PERMISSION, BLC_ADMIN_ROLE_PERMISSION_XREF and BLC_ADMIN_SEC_PERM_XREF.", primaryException);
+                            "As a result, the request failed. Please make sure to configure security for any ceiling entities " +
+                            "referenced via the admin. This is usually accomplished by adding records in the " +
+                            "BLC_ADMIN_PERMISSION_ENTITY table. Note, depending on how the entity in question is used, you " +
+                            "may need to add to BLC_ADMIN_PERMISSION, BLC_ADMIN_ROLE_PERMISSION_XREF and BLC_ADMIN_SEC_PERM_XREF.", primaryException);
                 }
             }
             throw primaryException;

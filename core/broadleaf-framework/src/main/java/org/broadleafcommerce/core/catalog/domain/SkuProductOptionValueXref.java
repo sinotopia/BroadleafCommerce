@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,21 +25,21 @@ import java.io.Serializable;
 
 /**
  * Join entity between {@link Sku} and {@link ProductOptionValue}.
- * 
+ *
  * @author Andre Azzolini (apazzolini)
  */
 public interface SkuProductOptionValueXref extends Serializable, MultiTenantCloneable<SkuProductOptionValueXref> {
 
-    public Long getId();
+    Long getId();
 
-    public void setId(Long id);
+    void setId(Long id);
 
-    public Sku getSku();
+    Sku getSku();
 
-    public void setSku(Sku sku);
+    void setSku(Sku sku);
 
-    public ProductOptionValue getProductOptionValue();
+    ProductOptionValue getProductOptionValue();
 
-    public void setProductOptionValue(ProductOptionValue productOptionValue);
+    void setProductOptionValue(ProductOptionValue productOptionValue);
 
 }

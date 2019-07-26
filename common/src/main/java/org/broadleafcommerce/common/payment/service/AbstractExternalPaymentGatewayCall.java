@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -36,22 +36,23 @@ import org.broadleafcommerce.common.vendor.service.type.ServiceStatusType;
  * <p>This allows anyone using the framework to configure the ServiceMonitor AOP hooks
  * and detect any outages to provide (email/logging) feedback when necessary.</p>
  *
+ * @author Elbert Bautista (elbertbautista)
  * @see org.broadleafcommerce.common.vendor.service.monitor.ServiceMonitor
  * @see org.broadleafcommerce.common.vendor.service.monitor.StatusHandler
  * @see ServiceStatusDetectable
- *
- * @author Elbert Bautista (elbertbautista)
  */
 public abstract class AbstractExternalPaymentGatewayCall<T, R> implements ServiceStatusDetectable<T>, FailureCountExposable {
 
     protected Integer failureCount = 0;
     protected Boolean isUp = true;
 
+    @Override
     public synchronized void clearStatus() {
         isUp = true;
         failureCount = 0;
     }
 
+    @Override
     public synchronized void incrementFailure() {
         if (failureCount >= getFailureReportingThreshold()) {
             isUp = false;

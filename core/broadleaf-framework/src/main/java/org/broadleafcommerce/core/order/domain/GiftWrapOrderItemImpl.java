@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,7 +33,7 @@ import java.util.List;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_GIFTWRAP_ORDER_ITEM")
-@Cache(usage=CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region="blOrderElements")
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region = "blOrderElements")
 @AdminPresentationClass(friendlyName = "GiftWrapOrderItemImpl_giftWrapOrderItem")
 public class GiftWrapOrderItemImpl extends DiscreteOrderItemImpl implements GiftWrapOrderItem {
 
@@ -41,15 +41,17 @@ public class GiftWrapOrderItemImpl extends DiscreteOrderItemImpl implements Gift
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "giftWrapOrderItem", targetEntity = OrderItemImpl.class,
             cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @Cache(usage=CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region="blOrderElements")
-    @AdminPresentationCollection(friendlyName="OrderItemImpl_Price_Details",
-                tab = OrderItemImpl.Presentation.Tab.Name.Advanced, tabOrder = OrderItemImpl.Presentation.Tab.Order.Advanced)
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region = "blOrderElements")
+    @AdminPresentationCollection(friendlyName = "OrderItemImpl_Price_Details",
+            tab = OrderItemImpl.Presentation.Tab.Name.Advanced, tabOrder = OrderItemImpl.Presentation.Tab.Order.Advanced)
     protected List<OrderItem> wrappedItems = new ArrayList<OrderItem>();
 
+    @Override
     public List<OrderItem> getWrappedItems() {
         return wrappedItems;
     }
 
+    @Override
     public void setWrappedItems(List<OrderItem> wrappedItems) {
         this.wrappedItems = wrappedItems;
     }
@@ -57,24 +59,25 @@ public class GiftWrapOrderItemImpl extends DiscreteOrderItemImpl implements Gift
     @Override
     public OrderItem clone() {
         GiftWrapOrderItem orderItem = (GiftWrapOrderItem) super.clone();
-        if (wrappedItems != null) orderItem.getWrappedItems().addAll(wrappedItems);
-        
+        if (wrappedItems != null)
+            orderItem.getWrappedItems().addAll(wrappedItems);
+
         return orderItem;
     }
 
     @Override
-    public  CreateResponse<DiscreteOrderItemImpl> createOrRetrieveCopyInstance(MultiTenantCopyContext context) throws CloneNotSupportedException {
+    public CreateResponse<DiscreteOrderItemImpl> createOrRetrieveCopyInstance(MultiTenantCopyContext context) throws CloneNotSupportedException {
         CreateResponse<DiscreteOrderItemImpl> createResponse = super.createOrRetrieveCopyInstance(context);
         if (createResponse.isAlreadyPopulated()) {
             return createResponse;
         }
-        GiftWrapOrderItem cloned = (GiftWrapOrderItem)createResponse.getClone();
-        for(OrderItem entry : wrappedItems){
-            OrderItem clonedEntry = ((OrderItemImpl)entry).createOrRetrieveCopyInstance(context).getClone();
+        GiftWrapOrderItem cloned = (GiftWrapOrderItem) createResponse.getClone();
+        for (OrderItem entry : wrappedItems) {
+            OrderItem clonedEntry = ((OrderItemImpl) entry).createOrRetrieveCopyInstance(context).getClone();
             clonedEntry.setGiftWrapOrderItem(cloned);
             cloned.getWrappedItems().add(clonedEntry);
         }
-        return  createResponse;
+        return createResponse;
     }
 
     @Override
@@ -89,7 +92,7 @@ public class GiftWrapOrderItemImpl extends DiscreteOrderItemImpl implements Gift
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-        if (obj == null) 
+        if (obj == null)
             return false;
         if (!super.equals(obj))
             return false;
@@ -100,7 +103,7 @@ public class GiftWrapOrderItemImpl extends DiscreteOrderItemImpl implements Gift
         if (!super.equals(obj)) {
             return false;
         }
-        
+
         if (id != null && other.id != null) {
             return id.equals(other.id);
         }

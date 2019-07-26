@@ -93,9 +93,11 @@ import javax.annotation.Resource;
 @Service("blOrderService")
 @ManagedResource(objectName = "org.broadleafcommerce:name=OrderService", description = "Order Service", currencyTimeLimit = 15)
 public class OrderServiceImpl implements OrderService {
+
     private static final Log LOG = LogFactory.getLog(OrderServiceImpl.class);
 
     /* DAOs */
+
     @Resource(name = "blOrderPaymentDao")
     protected OrderPaymentDao paymentDao;
 
@@ -106,10 +108,12 @@ public class OrderServiceImpl implements OrderService {
     protected OfferDao offerDao;
 
     /* Factories */
+
     @Resource(name = "blNullOrderFactory")
     protected NullOrderFactory nullOrderFactory;
 
     /* Services */
+
     @Resource(name = "blPricingService")
     protected PricingService pricingService;
 
@@ -132,6 +136,7 @@ public class OrderServiceImpl implements OrderService {
     protected OrderServiceExtensionManager extensionManager;
 
     /* Workflows */
+
     @Resource(name = "blAddItemWorkflow")
     protected Processor addItemWorkflow;
 
@@ -155,6 +160,7 @@ public class OrderServiceImpl implements OrderService {
 
     /* Fields */
     protected boolean moveNamedOrderItems = true;
+
     protected boolean deleteEmptyNamedOrders = true;
 
     protected Boolean automaticallyMergeLikeItems;
@@ -684,7 +690,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public boolean getAutomaticallyMergeLikeItems() {
-        
+
         if (automaticallyMergeLikeItems != null) {
             return automaticallyMergeLikeItems;
         }
@@ -792,12 +798,8 @@ public class OrderServiceImpl implements OrderService {
 
     /**
      * Returns true if the two items attributes exactly match.
-<<<<<<< HEAD
      *
-     * @param item1
-=======
      * @param item1Attributes
->>>>>>> upstream/BroadleafCommerce-4.0.x
      * @param item2
      * @return
      */

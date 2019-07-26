@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -55,14 +55,12 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 /**
- * 
  * @author jfischer
- *
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_ADMIN_ROLE")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="blAdminSecurityVolatile")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "blAdminSecurityVolatile")
 @AdminPresentationClass(friendlyName = "AdminRoleImpl_baseAdminRole")
 @DirectCopyTransform({
         @DirectCopyTransformMember(templateTokens = DirectCopyTransformTypes.MULTITENANT_ADMINROLE)
@@ -75,42 +73,44 @@ public class AdminRoleImpl implements AdminRole, AdminMainEntity {
     @Id
     @GeneratedValue(generator = "AdminRoleId")
     @GenericGenerator(
-        name="AdminRoleId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="AdminRoleImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.openadmin.server.security.domain.AdminRoleImpl")
-        }
+            name = "AdminRoleId",
+            strategy = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+            parameters = {
+                    @Parameter(name = "segment_value", value = "AdminRoleImpl"),
+                    @Parameter(name = "entity_name", value = "org.broadleafcommerce.openadmin.server.security.domain.AdminRoleImpl")
+            }
     )
     @Column(name = "ADMIN_ROLE_ID")
     @AdminPresentation(friendlyName = "AdminRoleImpl_Admin_Role_ID", group = "AdminRoleImpl_Primary_Key", visibility = VisibilityEnum.HIDDEN_ALL)
     protected Long id;
 
-    @Column(name = "NAME", nullable=false)
+    @Column(name = "NAME", nullable = false)
     @AdminPresentation(friendlyName = "AdminRoleImpl_Name", order = 1, group = "AdminRoleImpl_Role")
     protected String name;
 
-    @Column(name = "DESCRIPTION", nullable=false)
-    @AdminPresentation(friendlyName = "AdminRoleImpl_Description", order=2, group = "AdminRoleImpl_Role", prominent=true)
+    @Column(name = "DESCRIPTION", nullable = false)
+    @AdminPresentation(friendlyName = "AdminRoleImpl_Description", order = 2, group = "AdminRoleImpl_Role", prominent = true)
     protected String description;
 
-    /** All users that have this role */
+    /**
+     * All users that have this role
+     */
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = AdminUserImpl.class)
     @JoinTable(name = "BLC_ADMIN_USER_ROLE_XREF", joinColumns = @JoinColumn(name = "ADMIN_ROLE_ID", referencedColumnName = "ADMIN_ROLE_ID"), inverseJoinColumns = @JoinColumn(name = "ADMIN_USER_ID", referencedColumnName = "ADMIN_USER_ID"))
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="blAdminSecurityVolatile")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "blAdminSecurityVolatile")
     @BatchSize(size = 50)
     protected Set<AdminUser> allUsers = new HashSet<AdminUser>();
 
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = AdminPermissionImpl.class)
     @JoinTable(name = "BLC_ADMIN_ROLE_PERMISSION_XREF", joinColumns = @JoinColumn(name = "ADMIN_ROLE_ID", referencedColumnName = "ADMIN_ROLE_ID"), inverseJoinColumns = @JoinColumn(name = "ADMIN_PERMISSION_ID", referencedColumnName = "ADMIN_PERMISSION_ID"))
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="blAdminSecurityVolatile")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "blAdminSecurityVolatile")
     @BatchSize(size = 50)
     @AdminPresentationCollection(addType = AddMethodType.LOOKUP,
             friendlyName = "permissionListTitle",
             manyToField = "allRoles",
             customCriteria = "includeFriendlyOnly",
             operationTypes = @AdminPresentationOperationTypes(removeType = OperationType.NONDESTRUCTIVEREMOVE))
-    protected Set<AdminPermission> allPermissions= new HashSet<AdminPermission>();
+    protected Set<AdminPermission> allPermissions = new HashSet<AdminPermission>();
 
 
     @Override

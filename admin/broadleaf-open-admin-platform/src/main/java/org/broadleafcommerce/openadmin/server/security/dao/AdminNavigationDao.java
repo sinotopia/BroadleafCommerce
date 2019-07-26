@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,26 +26,24 @@ import org.broadleafcommerce.openadmin.server.security.domain.AdminSection;
 import java.util.List;
 
 /**
- *
  * @author elbertbautista
- *
  */
 public interface AdminNavigationDao {
 
-    public List<AdminModule> readAllAdminModules();
+    List<AdminModule> readAllAdminModules();
 
-    public List<AdminSection> readAllAdminSections();
-    
-    public AdminSection readAdminSectionByClassAndSectionId(Class<?> clazz, String sectionId);
+    List<AdminSection> readAllAdminSections();
 
-    public AdminSection readAdminSectionByURI(String uri);
+    AdminSection readAdminSectionByClassAndSectionId(Class<?> clazz, String sectionId);
 
-    public AdminSection readAdminSectionBySectionKey(String sectionKey);
+    AdminSection readAdminSectionByURI(String uri);
 
-    public AdminSection save(AdminSection adminSection);
+    AdminSection readAdminSectionBySectionKey(String sectionKey);
 
-    public void remove(AdminSection adminSection);
+    AdminSection save(AdminSection adminSection);
 
-    public AdminModule readAdminModuleByModuleKey(String moduleKey);
+    void remove(AdminSection adminSection);
+
+    AdminModule readAdminModuleByModuleKey(String moduleKey);
 
 }

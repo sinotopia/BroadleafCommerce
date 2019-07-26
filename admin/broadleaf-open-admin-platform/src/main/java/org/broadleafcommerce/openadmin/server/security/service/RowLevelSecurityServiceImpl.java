@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -41,28 +41,26 @@ import javax.persistence.criteria.Root;
 
 
 /**
- * 
- * 
  * @author Phillip Verheyden (phillipuniverse)
  */
 @Service("blRowLevelSecurityService")
 public class RowLevelSecurityServiceImpl implements RowLevelSecurityService, ExceptionAwareRowLevelSecurityProvider {
-    
+
     private static final Log LOG = LogFactory.getLog(RowLevelSecurityServiceImpl.class);
-    
+
     @Resource(name = "blRowLevelSecurityProviders")
     protected List<RowLevelSecurityProvider> providers;
-    
+
     @Override
     public void addFetchRestrictions(AdminUser currentUser, String ceilingEntity, List<Predicate> restrictions, List<Order> sorts,
-            Root entityRoot,
-            CriteriaQuery criteria,
-            CriteriaBuilder criteriaBuilder) {
+                                     Root entityRoot,
+                                     CriteriaQuery criteria,
+                                     CriteriaBuilder criteriaBuilder) {
         for (RowLevelSecurityProvider provider : getProviders()) {
             provider.addFetchRestrictions(currentUser, ceilingEntity, restrictions, sorts, entityRoot, criteria, criteriaBuilder);
         }
     }
-    
+
     @Override
     public Class<Serializable> getFetchRestrictionRoot(AdminUser currentUser, Class<Serializable> ceilingEntity, List<FilterMapping> filterMappings) {
         Class<Serializable> root = null;
@@ -72,7 +70,7 @@ public class RowLevelSecurityServiceImpl implements RowLevelSecurityService, Exc
                 root = providerRoot;
             }
         }
-        
+
         return root;
     }
 
@@ -140,12 +138,12 @@ public class RowLevelSecurityServiceImpl implements RowLevelSecurityService, Exc
         }
         return validationResult;
     }
-    
+
     @Override
     public List<RowLevelSecurityProvider> getProviders() {
         return providers;
     }
-    
+
     public void setProviders(List<RowLevelSecurityProvider> providers) {
         this.providers = providers;
     }

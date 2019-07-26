@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -43,9 +43,7 @@ import javax.annotation.Nonnull;
 import javax.persistence.EntityManager;
 
 /**
- * 
  * @author jfischer
- *
  */
 public interface DynamicEntityDao {
 
@@ -58,39 +56,40 @@ public interface DynamicEntityDao {
     ClassTree getClassTreeFromCeiling(Class<?> ceilingClass);
 
     ClassTree getClassTree(Class<?>[] polymorphicClasses);
-    
+
     Map<String, FieldMetadata> getPropertiesForPrimitiveClass(String propertyName, String friendlyPropertyName, Class<?> targetClass, Class<?> parentClass, MergedPropertyType mergedPropertyType);
-    
+
     Map<String, FieldMetadata> getMergedProperties(String ceilingEntityFullyQualifiedClassname, Class<?>[] entities, ForeignKey foreignField, String[] additionalNonPersistentProperties, ForeignKey[] additionalForeignFields, MergedPropertyType mergedPropertyType, Boolean populateManyToOneFields, String[] includeManyToOneFields, String[] excludeManyToOneFields, String configurationKey, String prefix);
 
     /**
      * Convenience method that obtains all of the {@link MergedPropertyType#PRIMARY} properties for a given class. Delegates to
      * {@link #getMergedProperties(String, Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, String)}
+     *
      * @param cls
      * @return
      */
     Map<String, FieldMetadata> getMergedProperties(@Nonnull Class<?> cls);
-    
+
     <T> T persist(T entity);
-    
+
     <T> T merge(T entity);
 
     Serializable retrieve(Class<?> entityClass, Object primaryKey);
-    
+
     void remove(Serializable entity);
-    
+
     void clear();
-    
+
     void flush();
-    
+
     void detach(Serializable entity);
-    
+
     void refresh(Serializable entity);
 
     Object find(Class<?> entityClass, Object key);
 
     EntityManager getStandardEntityManager();
-    
+
     void setStandardEntityManager(EntityManager entityManager);
 
     /**
@@ -101,7 +100,7 @@ public interface DynamicEntityDao {
      * @return The PersistentClass instance
      */
     PersistentClass getPersistentClass(String targetClassName);
-    
+
     Map<String, FieldMetadata> getSimpleMergedProperties(String entityName, PersistencePerspective persistencePerspective);
 
     FieldManager getFieldManager();
@@ -123,7 +122,7 @@ public interface DynamicEntityDao {
     Metadata getMetadata();
 
     void setMetadata(Metadata metadata);
-    
+
     FieldMetadataProvider getDefaultFieldMetadataProvider();
 
     SessionFactory getSessionFactory();

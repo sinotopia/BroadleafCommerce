@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -65,36 +65,36 @@ import javax.annotation.Resource;
 
 /**
  * Core framework implementation of the {@link PaymentGatewayCheckoutService}.
- * 
- * @see {@link PaymentGatewayAbstractController}
+ *
  * @author Phillip Verheyden (phillipuniverse)
+ * @see {@link PaymentGatewayAbstractController}
  */
 @Service("blPaymentGatewayCheckoutService")
 public class DefaultPaymentGatewayCheckoutService implements PaymentGatewayCheckoutService {
-    
+
     private static final Log LOG = LogFactory.getLog(DefaultPaymentGatewayCheckoutService.class);
 
     @Resource(name = "blOrderService")
     protected OrderService orderService;
-    
+
     @Resource(name = "blOrderPaymentService")
     protected OrderPaymentService orderPaymentService;
 
     @Resource(name = "blCheckoutService")
     protected CheckoutService checkoutService;
-    
+
     @Resource(name = "blAddressService")
     protected AddressService addressService;
-    
+
     @Resource(name = "blStateService")
     protected StateService stateService;
-    
+
     @Resource(name = "blCountryService")
     protected CountryService countryService;
 
     @Resource(name = "blISOService")
     protected ISOService isoService;
-    
+
     @Resource(name = "blPhoneService")
     protected PhoneService phoneService;
 
@@ -103,26 +103,26 @@ public class DefaultPaymentGatewayCheckoutService implements PaymentGatewayCheck
 
     @Value("${default.payment.gateway.checkout.useGatewayBillingAddress}")
     protected boolean useBillingAddressFromGateway = true;
-    
+
     @Override
     public Long applyPaymentToOrder(PaymentResponseDTO responseDTO, PaymentGatewayConfiguration config) {
-        
+
         //Payments can ONLY be parsed into Order Payments if they are 'valid'
         if (!responseDTO.isValid()) {
             throw new IllegalArgumentException("Invalid payment responses cannot be parsed into the order payment domain");
         }
-        
+
         if (config == null) {
             throw new IllegalArgumentException("Config service cannot be null");
         }
-        
+
         Long orderId = Long.parseLong(responseDTO.getOrderId());
         Order order = orderService.findOrderById(orderId);
-        
+
         if (!OrderStatus.IN_PROCESS.equals(order.getStatus()) && !OrderStatus.CSR_OWNED.equals(order.getStatus())) {
             throw new IllegalArgumentException("Cannot apply another payment to an Order that is not IN_PROCESS or CSR_OWNED");
         }
-        
+
         Customer customer = order.getCustomer();
         if (customer.isAnonymous()) {
             GatewayCustomerDTO<PaymentResponseDTO> gatewayCustomer = responseDTO.getCustomer();
@@ -170,7 +170,7 @@ public class DefaultPaymentGatewayCheckoutService implements PaymentGatewayCheck
 
                     paymentsToInvalidate.add(p);
 
-                    if (PaymentGatewayType.TEMPORARY.equals(p.getGatewayType()) ) {
+                    if (PaymentGatewayType.TEMPORARY.equals(p.getGatewayType())) {
                         tempBillingAddress = p.getBillingAddress();
                     }
                 }
@@ -187,7 +187,7 @@ public class DefaultPaymentGatewayCheckoutService implements PaymentGatewayCheck
         // If you do not wish to use the Billing Address coming back from the Gateway, you can override the
         // populateBillingInfo() method or set the useBillingAddressFromGateway property.
         populateBillingInfo(responseDTO, payment, tempBillingAddress);
-        
+
         // Create the transaction for the payment
         PaymentTransaction transaction = orderPaymentService.createTransaction();
         transaction.setAmount(responseDTO.getAmount());
@@ -210,7 +210,7 @@ public class DefaultPaymentGatewayCheckoutService implements PaymentGatewayCheck
             transaction.getAdditionalFields().put(PaymentAdditionalFieldType.LAST_FOUR.getType(),
                     responseDTO.getCreditCard().getCreditCardLastFour());
         }
-        
+
         //TODO: validate that this particular type of transaction can be added to the payment (there might already
         // be an AUTHORIZE transaction, for instance)
         //Persist the order payment as well as its transaction
@@ -227,7 +227,7 @@ public class DefaultPaymentGatewayCheckoutService implements PaymentGatewayCheck
             // billing info and payment information as there may be an error either with the billing address/or credit card
             handleUnsuccessfulTransaction(payment);
         }
-        
+
         return payment.getId();
     }
 
@@ -241,7 +241,7 @@ public class DefaultPaymentGatewayCheckoutService implements PaymentGatewayCheck
 
         payment.setBillingAddress(billingAddress);
     }
-    
+
     protected void populateShippingInfo(PaymentResponseDTO responseDTO, Order order) {
         FulfillmentGroup shippableFulfillmentGroup = fulfillmentGroupService.getFirstShippableFulfillmentGroup(order);
         Address shippingAddress = null;
@@ -249,7 +249,7 @@ public class DefaultPaymentGatewayCheckoutService implements PaymentGatewayCheck
             shippingAddress = addressService.create();
             AddressDTO<PaymentResponseDTO> shipToDTO = responseDTO.getShipTo();
             populateAddressInfo(shippingAddress, shipToDTO);
-            
+
             shippableFulfillmentGroup = fulfillmentGroupService.findFulfillmentGroupById(shippableFulfillmentGroup.getId());
             if (shippableFulfillmentGroup != null) {
                 shippableFulfillmentGroup.setAddress(shippingAddress);
@@ -257,7 +257,7 @@ public class DefaultPaymentGatewayCheckoutService implements PaymentGatewayCheck
             }
         }
     }
-    
+
     protected void populateAddressInfo(Address address, AddressDTO<PaymentResponseDTO> dto) {
         address.setFirstName(dto.getAddressFirstName());
         address.setLastName(dto.getAddressLastName());
@@ -267,7 +267,7 @@ public class DefaultPaymentGatewayCheckoutService implements PaymentGatewayCheck
         address.setCity(dto.getAddressCityLocality());
 
         State state = null;
-        if(dto.getAddressStateRegion() != null) {
+        if (dto.getAddressStateRegion() != null) {
             state = stateService.findStateByAbbreviation(dto.getAddressStateRegion());
         }
         if (state == null) {
@@ -338,12 +338,12 @@ public class DefaultPaymentGatewayCheckoutService implements PaymentGatewayCheck
     }
 
     @Override
-    public String initiateCheckout(Long orderId) throws Exception{
+    public String initiateCheckout(Long orderId) throws Exception {
         Order order = orderService.findOrderById(orderId, true);
         if (order == null || order instanceof NullOrderImpl) {
             throw new IllegalArgumentException("Could not order with id " + orderId);
         }
-        
+
         CheckoutResponse response;
 
         try {
@@ -351,11 +351,9 @@ public class DefaultPaymentGatewayCheckoutService implements PaymentGatewayCheck
         } catch (CheckoutException e) {
             throw new Exception(e);
         }
-
         if (response.getOrder().getOrderNumber() == null) {
             LOG.error("Order Number for Order ID: " + order.getId() + " is null.");
         }
-
         return response.getOrder().getOrderNumber();
     }
 
@@ -364,7 +362,7 @@ public class DefaultPaymentGatewayCheckoutService implements PaymentGatewayCheck
         Order order = orderService.findOrderById(Long.parseLong(responseDTO.getOrderId()), true);
         if (order == null) {
             throw new IllegalArgumentException("An order with ID " + responseDTO.getOrderId() + " cannot be found for the" +
-            		" given payment response.");
+                    " given payment response.");
         }
         return order.getOrderNumber();
     }

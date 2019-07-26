@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -45,9 +45,9 @@ public interface ActivityStateManager {
      * call registerState when appropriate.
      *
      * @param rollbackHandler A RollbackHandler instance that should be executed by the StateManager
-     * @param stateItems Configuration items for the RollbackHandler (can be null)
+     * @param stateItems      Configuration items for the RollbackHandler (can be null)
      */
-    public void registerState(RollbackHandler rollbackHandler, Map<String, Object> stateItems);
+    void registerState(RollbackHandler rollbackHandler, Map<String, Object> stateItems);
 
     /**
      * Register a RollbackHandler instance and some arbitrary state items with the
@@ -60,12 +60,12 @@ public interface ActivityStateManager {
      * annotations in the implementation itself. Then, inject the RollbackHandler into your activity and
      * call registerState when appropriate.
      *
-     * @param activity the current activity associated with the RollbackHandler (can be null)
-     * @param processContext the current ProcessContext associated with the activity (can be null)
+     * @param activity        the current activity associated with the RollbackHandler (can be null)
+     * @param processContext  the current ProcessContext associated with the activity (can be null)
      * @param rollbackHandler A RollbackHandler instance that should be executed by the StateManager
-     * @param stateItems Configuration items for the RollbackHandler (can be null)
+     * @param stateItems      Configuration items for the RollbackHandler (can be null)
      */
-    public void registerState(Activity<? extends ProcessContext> activity, ProcessContext processContext, RollbackHandler rollbackHandler, Map<String, Object> stateItems);
+    void registerState(Activity<? extends ProcessContext> activity, ProcessContext processContext, RollbackHandler rollbackHandler, Map<String, Object> stateItems);
 
     /**
      * Register a RollbackHandler instance and some arbitrary state items with the
@@ -77,37 +77,37 @@ public interface ActivityStateManager {
      * annotations in the implementation itself. Then, inject the RollbackHandler into your activity and
      * call registerState when appropriate.
      *
-     * @param activity the current activity associated with the RollbackHandler (can be null)
-     * @param processContext the current ProcessContext associated with the activity (can be null)
-     * @param region Label this rollback handler with a particular name.
+     * @param activity        the current activity associated with the RollbackHandler (can be null)
+     * @param processContext  the current ProcessContext associated with the activity (can be null)
+     * @param region          Label this rollback handler with a particular name.
      * @param rollbackHandler A RollbackHandler instance that should be executed by the StateManager
-     * @param stateItems Configuration items for the RollbackHandler (can be null)
+     * @param stateItems      Configuration items for the RollbackHandler (can be null)
      */
-    public void registerState(Activity<? extends ProcessContext> activity, ProcessContext processContext, String region, RollbackHandler rollbackHandler, Map<String, Object> stateItems);
+    void registerState(Activity<? extends ProcessContext> activity, ProcessContext processContext, String region, RollbackHandler rollbackHandler, Map<String, Object> stateItems);
 
     /**
      * Cause the StateManager to call all registered RollbackHandlers
      *
      * @throws RollbackFailureException if the rollback fails for some reason
      */
-    public void rollbackAllState() throws RollbackFailureException;
+    void rollbackAllState() throws RollbackFailureException;
 
     /**
      * Cause the StateManager to call all registered RollbackHandlers in the specified region.
      *
      * @throws RollbackFailureException if the rollback fails for some reason
      */
-    public void rollbackRegionState(String region) throws RollbackFailureException;
+    void rollbackRegionState(String region) throws RollbackFailureException;
 
     /**
      * Remove all previously registered RollbackHandlers for the current workflow
      */
-    public void clearAllState();
+    void clearAllState();
 
     /**
      * Remove all previously registered Rollbackhandlers for the current workflow labelled with the specified region
      *
      * @param region The region to which the scope of removal is limited
      */
-    public void clearRegionState(String region);
+    void clearRegionState(String region);
 }

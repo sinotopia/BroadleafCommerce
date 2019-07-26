@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,7 +23,7 @@ import org.broadleafcommerce.common.classloader.release.ThreadLocalManager;
 
 /**
  * Container for ThreadLocal attributes that relate to Translation.
- * 
+ *
  * @author Andre Azzolini (apazzolini)
  */
 public class TranslationConsiderationContext {
@@ -33,25 +33,25 @@ public class TranslationConsiderationContext {
     public static TranslationConsiderationContext getTranslationConsiderationContext() {
         return translationConsiderationContext.get();
     }
-    
+
     public static boolean hasTranslation() {
         return isTranslationConsiderationContextEnabled() != null
                 && isTranslationConsiderationContextEnabled() && getTranslationService() != null;
     }
-    
+
     public static Boolean isTranslationConsiderationContextEnabled() {
         Boolean val = TranslationConsiderationContext.translationConsiderationContext.get().enabled;
         return val == null ? false : val;
     }
-    
+
     public static void setTranslationConsiderationContext(Boolean isEnabled) {
         TranslationConsiderationContext.translationConsiderationContext.get().enabled = isEnabled;
     }
-    
+
     public static TranslationService getTranslationService() {
         return TranslationConsiderationContext.translationConsiderationContext.get().service;
     }
-    
+
     public static void setTranslationService(TranslationService translationService) {
         TranslationConsiderationContext.translationConsiderationContext.get().service = translationService;
     }

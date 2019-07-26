@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,6 +21,10 @@ package org.broadleafcommerce.core.workflow;
 
 import java.io.Serializable;
 
+/**
+ * @param <T>
+ * @author walkman
+ */
 public interface ProcessContext<T> extends Serializable {
 
     /**
@@ -29,28 +33,29 @@ public interface ProcessContext<T> extends Serializable {
      *
      * @return whether or not the stop process call was successful
      */
-    public boolean stopProcess();
+    boolean stopProcess();
 
     /**
      * Is the process stopped
      *
      * @return whether or not the process is stopped
      */
-    public boolean isStopped();
+    boolean isStopped();
 
     /**
      * Provide seed information to this ProcessContext, usually
      * provided at time of workflow kickoff by the containing
      * workflow processor.
-     * 
+     *
      * @param seedObject - initial seed data for the workflow
      */
-    public void setSeedData(T seedObject);
+    void setSeedData(T seedObject);
 
     /**
      * Returns the seed information
+     *
      * @return
      */
-    public T getSeedData();
+    T getSeedData();
 
 }

@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -64,15 +64,16 @@ import javax.annotation.Resource;
 
 @Service("blCustomerService")
 public class CustomerServiceImpl implements CustomerService {
+
     private static final Log LOG = LogFactory.getLog(CustomerServiceImpl.class);
-    
-    @Resource(name="blCustomerDao")
+
+    @Resource(name = "blCustomerDao")
     protected CustomerDao customerDao;
 
-    @Resource(name="blIdGenerationService")
+    @Resource(name = "blIdGenerationService")
     protected IdGenerationService idGenerationService;
-    
-    @Resource(name="blCustomerForgotPasswordSecurityTokenDao")
+
+    @Resource(name = "blCustomerForgotPasswordSecurityTokenDao")
     protected CustomerForgotPasswordSecurityTokenDao customerForgotPasswordSecurityTokenDao;
 
     /**
@@ -92,9 +93,9 @@ public class CustomerServiceImpl implements CustomerService {
      * <p>This is simply a placeholder to be used by {@link #setupPasswordEncoder()} to determine if we're using the
      * new {@link PasswordEncoder} or the deprecated {@link org.springframework.security.authentication.encoding.PasswordEncoder PasswordEncoder}
      */
-    @Resource(name="blPasswordEncoder")
+    @Resource(name = "blPasswordEncoder")
     protected Object passwordEncoderBean;
-    
+
     /**
      * Optional password salt to be used with the passwordEncoder
      *
@@ -103,38 +104,38 @@ public class CustomerServiceImpl implements CustomerService {
      */
     @Deprecated
     protected String salt;
-    
+
     /**
      * Use a Salt Source ONLY if there's one configured
      *
      * @deprecated the new {@link PasswordEncoder} handles salting internally, this will be removed in 4.2
      */
     @Deprecated
-    @Autowired(required=false)
+    @Autowired(required = false)
     @Qualifier("blSaltSource")
     protected SaltSource saltSource;
-    
-    @Resource(name="blRoleDao")
+
+    @Resource(name = "blRoleDao")
     protected RoleDao roleDao;
-    
-    @Resource(name="blEmailService")
+
+    @Resource(name = "blEmailService")
     protected EmailService emailService;
-    
-    @Resource(name="blForgotPasswordEmailInfo")
+
+    @Resource(name = "blForgotPasswordEmailInfo")
     protected EmailInfo forgotPasswordEmailInfo;
 
-    @Resource(name="blForgotUsernameEmailInfo")
-    protected EmailInfo forgotUsernameEmailInfo;    
-    
-    @Resource(name="blRegistrationEmailInfo")
-    protected EmailInfo registrationEmailInfo;    
-    
-    @Resource(name="blChangePasswordEmailInfo")
-    protected EmailInfo changePasswordEmailInfo;       
-    
+    @Resource(name = "blForgotUsernameEmailInfo")
+    protected EmailInfo forgotUsernameEmailInfo;
+
+    @Resource(name = "blRegistrationEmailInfo")
+    protected EmailInfo registrationEmailInfo;
+
+    @Resource(name = "blChangePasswordEmailInfo")
+    protected EmailInfo changePasswordEmailInfo;
+
     protected int tokenExpiredMinutes = 30;
-    protected int passwordTokenLength = 20;   
-             
+    protected int passwordTokenLength = 20;
+
     protected final List<PostRegistrationObserver> postRegisterListeners = new ArrayList<PostRegistrationObserver>();
     protected List<PasswordUpdatedHandler> passwordResetHandlers = new ArrayList<PasswordUpdatedHandler>();
     protected List<PasswordUpdatedHandler> passwordChangedHandlers = new ArrayList<PasswordUpdatedHandler>();
@@ -174,7 +175,7 @@ public class CustomerServiceImpl implements CustomerService {
         if (register && !customer.isRegistered()) {
             customer.setRegistered(true);
         }
-        
+
         if (customer.getUnencodedPassword() != null) {
             customer.setPassword(encodePassword(customer.getUnencodedPassword(), customer));
         }
@@ -187,7 +188,7 @@ public class CustomerServiceImpl implements CustomerService {
         }
         return customerDao.save(customer);
     }
-    
+
     protected String generateSecurePassword() {
         return RandomStringUtils.randomAlphanumeric(16);
     }
@@ -204,11 +205,11 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setUnencodedPassword(password);
         Customer retCustomer = saveCustomer(customer);
         createRegisteredCustomerRoles(retCustomer);
-        
+
         HashMap<String, Object> vars = new HashMap<String, Object>();
         vars.put("customer", retCustomer);
-        
-        emailService.sendTemplateEmail(customer.getEmailAddress(), getRegistrationEmailInfo(), vars);        
+
+        emailService.sendTemplateEmail(customer.getEmailAddress(), getRegistrationEmailInfo(), vars);
         notifyPostRegisterListeners(retCustomer);
         return retCustomer;
     }
@@ -234,14 +235,14 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setUnencodedPassword(passwordChange.getNewPassword());
         customer.setPasswordChangeRequired(passwordChange.getPasswordChangeRequired());
         customer = saveCustomer(customer);
-        
+
         for (PasswordUpdatedHandler handler : passwordChangedHandlers) {
             handler.passwordChanged(passwordChange, customer, passwordChange.getNewPassword());
         }
-        
+
         return customer;
     }
-    
+
     @Override
     @Transactional(TransactionUtils.DEFAULT_TRANSACTION_MANAGER)
     public Customer resetPassword(PasswordReset passwordReset) {
@@ -250,11 +251,11 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setUnencodedPassword(newPassword);
         customer.setPasswordChangeRequired(passwordReset.getPasswordChangeRequired());
         customer = saveCustomer(customer);
-        
+
         for (PasswordUpdatedHandler handler : passwordResetHandlers) {
             handler.passwordChanged(passwordReset, customer, newPassword);
         }
-        
+
         return customer;
     }
 
@@ -271,7 +272,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     protected void notifyPostRegisterListeners(Customer customer) {
-        for (Iterator<PostRegistrationObserver> iter = postRegisterListeners.iterator(); iter.hasNext();) {
+        for (Iterator<PostRegistrationObserver> iter = postRegisterListeners.iterator(); iter.hasNext(); ) {
             PostRegistrationObserver listener = iter.next();
             listener.processRegistrationEvent(customer);
         }
@@ -300,7 +301,7 @@ public class CustomerServiceImpl implements CustomerService {
     public Long findNextCustomerId() {
         return idGenerationService.findNextId("org.broadleafcommerce.profile.core.domain.Customer");
     }
-    
+
     @Override
     public Customer createNewCustomer() {
         return createCustomerFromId(null);
@@ -342,13 +343,13 @@ public class CustomerServiceImpl implements CustomerService {
         this.passwordEncoderBean = passwordEncoder;
         setupPasswordEncoder();
     }
-    
+
     @Deprecated
     @Override
     public Object getSalt(Customer customer) {
         return getSalt(customer, "");
     }
-    
+
     @Deprecated
     @Override
     public Object getSalt(Customer customer, String unencodedPassword) {
@@ -362,11 +363,10 @@ public class CustomerServiceImpl implements CustomerService {
     /**
      * Delegates to either the new {@link PasswordEncoder} or the deprecated {@link org.springframework.security.authentication.encoding.PasswordEncoder PasswordEncoder}.
      *
-     * @deprecated the new {@link org.springframework.security.crypto.password.PasswordEncoder PasswordEncoder} handles salting internally, this will be removed in 4.2
-     *
      * @param rawPassword the unencoded password
-     * @param salt the optional salt
+     * @param salt        the optional salt
      * @return
+     * @deprecated the new {@link org.springframework.security.crypto.password.PasswordEncoder PasswordEncoder} handles salting internally, this will be removed in 4.2
      */
     @Deprecated
     protected String encodePass(String rawPassword, Object salt) {
@@ -391,12 +391,11 @@ public class CustomerServiceImpl implements CustomerService {
     /**
      * Delegates to either the new {@link PasswordEncoder} or the deprecated {@link org.springframework.security.authentication.encoding.PasswordEncoder PasswordEncoder}.
      *
-     * @deprecated the new {@link org.springframework.security.crypto.password.PasswordEncoder PasswordEncoder} handles salting internally, this will be removed in 4.2
-     *
-     * @param rawPassword the unencoded password
+     * @param rawPassword     the unencoded password
      * @param encodedPassword the encoded password to compare rawPassword against
-     * @param salt the optional salt
+     * @param salt            the optional salt
      * @return
+     * @deprecated the new {@link org.springframework.security.crypto.password.PasswordEncoder PasswordEncoder} handles salting internally, this will be removed in 4.2
      */
     @Deprecated
     protected boolean isPassValid(String rawPassword, String encodedPassword, Object salt) {
@@ -423,7 +422,7 @@ public class CustomerServiceImpl implements CustomerService {
     public String getSalt() {
         return salt;
     }
-    
+
     @Override
     @Deprecated
     public void setSalt(String salt) {
@@ -461,7 +460,7 @@ public class CustomerServiceImpl implements CustomerService {
     public void setPasswordChangedHandlers(List<PasswordUpdatedHandler> passwordChangedHandlers) {
         this.passwordChangedHandlers = passwordChangedHandlers;
     }
-    
+
     @Override
     @Transactional(TransactionUtils.DEFAULT_TRANSACTION_MANAGER)
     public GenericResponse sendForgotUsernameNotification(String emailAddress) {
@@ -475,8 +474,8 @@ public class CustomerServiceImpl implements CustomerService {
             response.addErrorCode("notFound");
         } else {
             List<String> activeUsernames = new ArrayList<String>();
-            for (Customer customer: customers) {
-                if (! customer.isDeactivated()) {
+            for (Customer customer : customers) {
+                if (!customer.isDeactivated()) {
                     activeUsernames.add(customer.getUsername());
                 }
             }
@@ -505,7 +504,7 @@ public class CustomerServiceImpl implements CustomerService {
 
         checkCustomer(customer, response);
 
-        if (! response.getHasErrors()) {        
+        if (!response.getHasErrors()) {
             String token = PasswordUtils.generateTemporaryPassword(getPasswordTokenLength());
             token = token.toLowerCase();
 
@@ -530,12 +529,12 @@ public class CustomerServiceImpl implements CustomerService {
             vars.put("token", token);
             if (!StringUtils.isEmpty(resetPasswordUrl)) {
                 if (resetPasswordUrl.contains("?")) {
-                    resetPasswordUrl=resetPasswordUrl+"&token="+token;
+                    resetPasswordUrl = resetPasswordUrl + "&token=" + token;
                 } else {
-                    resetPasswordUrl=resetPasswordUrl+"?token="+token;
+                    resetPasswordUrl = resetPasswordUrl + "?token=" + token;
                 }
             }
-            vars.put("resetPasswordUrl", resetPasswordUrl); 
+            vars.put("resetPasswordUrl", resetPasswordUrl);
             emailService.sendTemplateEmail(customer.getEmailAddress(), getForgotPasswordEmailInfo(), vars);
         }
         return response;
@@ -603,7 +602,7 @@ public class CustomerServiceImpl implements CustomerService {
             } else if (isTokenExpired(fpst)) {
                 response.addErrorCode("tokenExpired");
             }
-        }       
+        }
         return fpst;
     }
 
@@ -619,8 +618,8 @@ public class CustomerServiceImpl implements CustomerService {
         checkPassword(password, confirmPassword, response);
         CustomerForgotPasswordSecurityToken fpst = checkPasswordResetToken(token, customer, response);
 
-        if (! response.getHasErrors()) {
-            if (! customer.getId().equals(fpst.getCustomerId())) {
+        if (!response.getHasErrors()) {
+            if (!customer.getId().equals(fpst.getCustomerId())) {
                 if (LOG.isWarnEnabled()) {
                     LOG.warn("Password reset attempt tried with mismatched customer and token " + customer.getId() + ", " + token);
                 }
@@ -628,7 +627,7 @@ public class CustomerServiceImpl implements CustomerService {
             }
         }
 
-        if (! response.getHasErrors()) {
+        if (!response.getHasErrors()) {
             customer.setUnencodedPassword(password);
             saveCustomer(customer);
             invalidateAllTokensForCustomer(customer);
@@ -658,7 +657,7 @@ public class CustomerServiceImpl implements CustomerService {
     protected void checkPassword(String password, String confirmPassword, GenericResponse response) {
         if (StringUtils.isBlank(password) || StringUtils.isBlank(confirmPassword)) {
             response.addErrorCode("invalidPassword");
-        } else if (! password.equals(confirmPassword)) {
+        } else if (!password.equals(confirmPassword)) {
             response.addErrorCode("passwordMismatch");
         }
     }
@@ -667,7 +666,7 @@ public class CustomerServiceImpl implements CustomerService {
         Date now = SystemTime.asDate();
         long currentTimeInMillis = now.getTime();
         long tokenSaveTimeInMillis = fpst.getCreateDate().getTime();
-        long minutesSinceSave = (currentTimeInMillis - tokenSaveTimeInMillis)/60000;
+        long minutesSinceSave = (currentTimeInMillis - tokenSaveTimeInMillis) / 60000;
         return minutesSinceSave > tokenExpiredMinutes;
     }
 

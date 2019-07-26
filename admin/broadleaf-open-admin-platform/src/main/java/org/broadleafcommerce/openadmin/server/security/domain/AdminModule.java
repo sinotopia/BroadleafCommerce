@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,32 +23,30 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- *
  * @author elbertbautista
- *
  */
 public interface AdminModule extends Serializable {
 
-    public Long getId();
+    Long getId();
 
-    public String getName();
+    String getName();
 
-    public void setName(String name);
+    void setName(String name);
 
-    public String getModuleKey();
+    String getModuleKey();
 
-    public void setModuleKey(String moduleKey);
+    void setModuleKey(String moduleKey);
 
-    public String getIcon();
+    String getIcon();
 
-    public void setIcon(String icon);
+    void setIcon(String icon);
 
-    public List<AdminSection> getSections();
+    List<AdminSection> getSections();
 
-    public void setSections(List<AdminSection> sections);
+    void setSections(List<AdminSection> sections);
 
-    public Integer getDisplayOrder();
+    Integer getDisplayOrder();
 
-    public void setDisplayOrder(Integer displayOrder);
+    void setDisplayOrder(Integer displayOrder);
 
 }

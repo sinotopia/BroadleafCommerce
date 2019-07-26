@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -67,28 +67,27 @@ public abstract class CommonSetupBaseTest extends BaseTest {
 
     @Resource
     protected CountryService countryService;
-    
+
     @Resource
     protected StateService stateService;
-    
+
     @Resource
     protected CustomerService customerService;
-    
+
     @Resource
     protected CustomerAddressService customerAddressService;
-    
+
     @Resource
     protected CatalogService catalogService;
-    
+
     @Resource(name = "blOrderService")
     protected OrderService orderService;
-    
+
     @Resource
     protected ShippingRateService shippingRateService;
 
     @Resource
     private OrderDao orderDao;
-    
 
     public void createCountry() {
         Country country = new CountryImpl();
@@ -101,7 +100,7 @@ public abstract class CommonSetupBaseTest extends BaseTest {
         isoCountry.setName("UNITED STATES");
         isoService.save(isoCountry);
     }
-    
+
     public void createState() {
         State state = new StateImpl();
         state.setAbbreviation("KY");
@@ -109,14 +108,15 @@ public abstract class CommonSetupBaseTest extends BaseTest {
         state.setCountry(countryService.findCountryByAbbreviation("US"));
         stateService.save(state);
     }
-    
+
     public Customer createCustomer() {
         Customer customer = customerService.createCustomerFromId(null);
         return customer;
     }
-    
+
     /**
      * Creates a country, state, and customer with some CustomerAddresses
+     *
      * @return customer created
      */
     public Customer createCustomerWithAddresses() {
@@ -146,9 +146,10 @@ public abstract class CommonSetupBaseTest extends BaseTest {
         assert addResult != null;
         return customer;
     }
-    
+
     /**
      * Creates a country, state, and customer with the supplied customerAddress
+     *
      * @param customerAddress
      * @return customer created
      */
@@ -160,9 +161,10 @@ public abstract class CommonSetupBaseTest extends BaseTest {
         customerAddress.setCustomer(customer);
         return saveCustomerAddress(customerAddress);
     }
-    
+
     /**
      * Saves a customerAddress with state KY and country US.  Requires that createCountry() and createState() have been called
+     *
      * @param customerAddress
      */
     public CustomerAddress saveCustomerAddress(CustomerAddress customerAddress) {
@@ -177,7 +179,7 @@ public abstract class CommonSetupBaseTest extends BaseTest {
 
         return customerAddressService.saveCustomerAddress(customerAddress);
     }
-    
+
     /**
      * Create a state, country, and customer with a basic order and some addresses
      */
@@ -186,41 +188,41 @@ public abstract class CommonSetupBaseTest extends BaseTest {
         Order order = new OrderImpl();
         order.setStatus(OrderStatus.IN_PROCESS);
         order.setTotal(new Money(BigDecimal.valueOf(1000)));
-        
+
         assert order.getId() == null;
         order.setCustomer(customer);
         order = orderDao.save(order);
         assert order.getId() != null;
-        
+
         return customer;
     }
-    
+
     public Product addTestProduct(String productName, String categoryName) {
         return addTestProduct(productName, categoryName, true);
     }
-    
+
     public Product addTestProduct(String productName, String categoryName, boolean active) {
         Calendar activeStartCal = Calendar.getInstance();
         activeStartCal.add(Calendar.DAY_OF_YEAR, -2);
-        
+
         Calendar activeEndCal = Calendar.getInstance();
         activeEndCal.add(Calendar.DAY_OF_YEAR, -1);
-        
+
         Category category = new CategoryImpl();
         category.setName(categoryName);
         category.setActiveStartDate(activeStartCal.getTime());
         category = catalogService.saveCategory(category);
-        
+
         Sku newSku = new SkuImpl();
         newSku.setName(productName);
         newSku.setRetailPrice(new Money(44.99));
-        newSku.setActiveStartDate(activeStartCal.getTime());  
+        newSku.setActiveStartDate(activeStartCal.getTime());
         if (!active) {
             newSku.setActiveEndDate(activeEndCal.getTime());
         }
         newSku.setDiscountable(true);
         newSku = catalogService.saveSku(newSku);
-        
+
         Product newProduct = new ProductImpl();
         newProduct.setDefaultCategory(category);
         newProduct.setDefaultSku(newSku);
@@ -228,11 +230,11 @@ public abstract class CommonSetupBaseTest extends BaseTest {
 
         return newProduct;
     }
-    
+
     public ProductBundle addProductBundle() {
         // Create the product
         Product p = addTestProduct("bundleproduct1", "bundlecat1");
-        
+
         // Create the sku for the ProductBundle object
         Sku bundleSku = catalogService.createSku();
         bundleSku.setName(p.getName());
@@ -240,31 +242,31 @@ public abstract class CommonSetupBaseTest extends BaseTest {
         bundleSku.setActiveStartDate(p.getActiveStartDate());
         bundleSku.setActiveEndDate(p.getActiveEndDate());
         bundleSku.setDiscountable(true);
-        
+
         // Create the ProductBundle and associate the sku
         ProductBundle bundle = (ProductBundle) catalogService.createProduct(ProductType.BUNDLE);
         bundle.setDefaultCategory(p.getDefaultCategory());
         bundle.setDefaultSku(bundleSku);
         bundle = (ProductBundle) catalogService.saveProduct(bundle);
-        
+
         // Reverse-associate the ProductBundle to the sku (Must be done this way because it's a 
         // bidirectional OneToOne relationship
         //bundleSku.setDefaultProduct(bundle);
         //catalogService.saveSku(bundleSku);
-        
+
         // Wrap the product/sku that is part of the bundle in a SkuBundleItem
         SkuBundleItem skuBundleItem = new SkuBundleItemImpl();
         skuBundleItem.setBundle(bundle);
         skuBundleItem.setQuantity(1);
         skuBundleItem.setSku(p.getDefaultSku());
-        
+
         // Add the SkuBundleItem to the ProductBundle
         bundle.getSkuBundleItems().add(skuBundleItem);
         bundle = (ProductBundle) catalogService.saveProduct(bundle);
-        
+
         return bundle;
     }
-    
+
 
     public void createShippingRates() {
         ShippingRate sr = new ShippingRateImpl();
@@ -275,14 +277,14 @@ public abstract class CommonSetupBaseTest extends BaseTest {
         sr.setBandResultQuantity(BigDecimal.valueOf(8.5));
         sr.setBandResultPercent(0);
         ShippingRate sr2 = new ShippingRateImpl();
-        
+
         sr2.setFeeType("SHIPPING");
         sr2.setFeeSubType("ALL");
         sr2.setFeeBand(2);
         sr2.setBandUnitQuantity(BigDecimal.valueOf(999999.99));
         sr2.setBandResultQuantity(BigDecimal.valueOf(8.5));
         sr2.setBandResultPercent(0);
-        
+
         shippingRateService.save(sr);
         shippingRateService.save(sr2);
     }

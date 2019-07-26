@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,23 +23,23 @@ import java.io.Serializable;
 
 public interface PersonalMessage extends Serializable {
 
-    public Long getId();
+    Long getId();
 
-    public void setId(Long id);
+    void setId(Long id);
 
-    public String getMessageTo();
+    String getMessageTo();
 
-    public void setMessageTo(String messageTo);
+    void setMessageTo(String messageTo);
 
-    public String getMessageFrom();
+    String getMessageFrom();
 
-    public void setMessageFrom(String messageFrom);
+    void setMessageFrom(String messageFrom);
 
-    public String getMessage();
+    String getMessage();
 
-    public void setMessage(String message);
+    void setMessage(String message);
 
-    public String getOccasion();
+    String getOccasion();
 
-    public void setOccasion(String occasion);
+    void setOccasion(String occasion);
 }

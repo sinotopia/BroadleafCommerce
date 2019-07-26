@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -40,19 +40,20 @@ import java.util.Map;
 
 /**
  * Called during the pricing workflow to set each item's merchandise total and taxable total
- * 
- * @author Brian Polster 
+ *
+ * @author Brian Polster
  */
 public class FulfillmentItemPricingActivity extends BaseActivity<ProcessContext<Order>> {
-    
+
     private static final Log LOG = LogFactory.getLog(FulfillmentItemPricingActivity.class);
 
     protected BroadleafCurrency getCurrency(FulfillmentGroup fg) {
         return fg.getOrder().getCurrency();
     }
-    
+
     /**
      * Returns the order adjustment value or zero if none exists
+     *
      * @param order
      * @return
      */
@@ -61,7 +62,7 @@ public class FulfillmentItemPricingActivity extends BaseActivity<ProcessContext<
             return new Money(order.getCurrency());
         } else {
             Money adjustmentValue = order.getOrderAdjustmentsValue();
-            
+
             Money orderSubTotal = order.getSubTotal();
             if (orderSubTotal == null || orderSubTotal.lessThan(adjustmentValue)) {
                 if (LOG.isWarnEnabled()) {
@@ -69,25 +70,25 @@ public class FulfillmentItemPricingActivity extends BaseActivity<ProcessContext<
                             "No distribution is taking place.");
                 }
                 return new Money(order.getCurrency());
-            } 
+            }
             return adjustmentValue;
         }
     }
-    
+
     @Override
     public ProcessContext<Order> execute(ProcessContext<Order> context) throws Exception {
         Order order = context.getSeedData();
-        Map<OrderItem,List<FulfillmentGroupItem>> partialOrderItemMap = new HashMap<OrderItem,List<FulfillmentGroupItem>>();
+        Map<OrderItem, List<FulfillmentGroupItem>> partialOrderItemMap = new HashMap<OrderItem, List<FulfillmentGroupItem>>();
 
         // Calculate the fulfillmentGroupItem total
         populateItemTotalAmount(order, partialOrderItemMap);
         fixItemTotalRoundingIssues(order, partialOrderItemMap);
-        
+
         // Calculate the fulfillmentGroupItem prorated orderSavings
         Money totalAllItemsAmount = calculateTotalPriceForAllFulfillmentItems(order);
         Money totalOrderAdjustmentDistributed = distributeOrderSavingsToItems(order, totalAllItemsAmount.getAmount());
         fixOrderSavingsRoundingIssues(order, totalOrderAdjustmentDistributed);
-        
+
         // Step 3: Finalize the taxable amounts
         updateTaxableAmountsOnItems(order);
         context.setSeedData(order);
@@ -96,9 +97,9 @@ public class FulfillmentItemPricingActivity extends BaseActivity<ProcessContext<
     }
 
     /**
-     * Sets the fulfillment amount which includes the relative portion of the total price for 
+     * Sets the fulfillment amount which includes the relative portion of the total price for
      * the corresponding order item.
-     * 
+     *
      * @param order
      * @param partialOrderItemMap
      */
@@ -130,12 +131,12 @@ public class FulfillmentItemPricingActivity extends BaseActivity<ProcessContext<
     /**
      * Because an item may have multiple price details that don't round cleanly, we may have pennies
      * left over that need to be distributed.
-     * 
+     * <p>
      * This method may not be needed because the sum of the item amounts is derived from a double price (OrderItem's total)
      * being multiplied and divided by whole numbers of which guarantees that each item amount is a clean multiple
      * of the price of a single unit of that item. This behavior being enforced in populateItemTotalAmount. So we will
      * never get a fraction of a cent that could cause totalItemAmount and totalFGItemAmount to be different values.
-     * 
+     *
      * @param order
      * @param partialOrderItemMap
      */
@@ -161,6 +162,7 @@ public class FulfillmentItemPricingActivity extends BaseActivity<ProcessContext<
 
     /**
      * Returns the total price for all fulfillment items.
+     *
      * @param order
      * @return
      */
@@ -176,6 +178,7 @@ public class FulfillmentItemPricingActivity extends BaseActivity<ProcessContext<
 
     /**
      * Distributes the order adjustments (if any) to the individual fulfillment group items.
+     *
      * @param order
      * @param totalAllItems
      * @return
@@ -197,8 +200,9 @@ public class FulfillmentItemPricingActivity extends BaseActivity<ProcessContext<
     }
 
     /**
-     * It is possible due to rounding that the order adjustments do not match the 
+     * It is possible due to rounding that the order adjustments do not match the
      * total.   This method fixes by adding or removing the pennies.
+     *
      * @param order
      * @param partialOrderItemMap
      */
@@ -228,6 +232,7 @@ public class FulfillmentItemPricingActivity extends BaseActivity<ProcessContext<
 
     /**
      * Returns the total price for all fulfillment items.
+     *
      * @param order
      * @return
      */
@@ -244,9 +249,9 @@ public class FulfillmentItemPricingActivity extends BaseActivity<ProcessContext<
                     }
                 } else {
                     fgItem.setTotalItemTaxableAmount(zero);
-                }              
+                }
             }
-        }        
+        }
     }
 
     protected Money sumItemAmount(List<FulfillmentGroupItem> items, Order order) {
@@ -272,6 +277,7 @@ public class FulfillmentItemPricingActivity extends BaseActivity<ProcessContext<
 
     /**
      * Returns the unit amount (e.g. .01 for US)
+     *
      * @param currency
      * @return
      */

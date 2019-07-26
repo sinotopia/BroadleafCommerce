@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -49,16 +49,16 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 /**
- * Ensures that the customer's current cart is available to the request.  
- * 
- * Also invokes blMergeCartProcessor" if the user has just logged in.   
- * 
- * Genericized version of the CartStateFilter. This was made to facilitate reuse between Servlet Filters, Portlet Filters 
- * and Spring MVC interceptors. Spring has an easy way of converting HttpRequests and PortletRequests into WebRequests 
+ * Ensures that the customer's current cart is available to the request.
+ * <p>
+ * Also invokes blMergeCartProcessor" if the user has just logged in.
+ * <p>
+ * Genericized version of the CartStateFilter. This was made to facilitate reuse between Servlet Filters, Portlet Filters
+ * and Spring MVC interceptors. Spring has an easy way of converting HttpRequests and PortletRequests into WebRequests
  * via <br />
  * new ServletWebRequest(httpServletRequest); new PortletWebRequest(portletRequest); <br />
  * For the interceptor pattern, you can simply implement a WebRequestInterceptor to invoke from there.
- * 
+ *
  * @author Phillip Verheyden
  * @see {@link CartStateFilter}
  * @see {@link BroadleafWebRequestProcessor}
@@ -68,7 +68,9 @@ import javax.annotation.Resource;
 @Component("blCartStateRequestProcessor")
 public class CartStateRequestProcessor extends AbstractBroadleafWebRequestProcessor {
 
-    /** Logger for this class and subclasses */
+    /**
+     * Logger for this class and subclasses
+     */
     protected final Log LOG = LogFactory.getLog(getClass());
 
     public static final String BLC_RULE_MAP_PARAM = "blRuleMap";
@@ -86,7 +88,7 @@ public class CartStateRequestProcessor extends AbstractBroadleafWebRequestProces
 
     @Resource(name = "blMergeCartService")
     protected MergeCartService mergeCartService;
-    
+
     @Resource(name = "blCustomerStateRequestProcessor")
     protected CustomerStateRequestProcessor customerStateRequestProcessor;
 
@@ -95,11 +97,11 @@ public class CartStateRequestProcessor extends AbstractBroadleafWebRequestProces
     protected CrossAppAuthService crossAppAuthService;
 
     protected static String cartRequestAttributeName = "cart";
-    
+
     protected static String anonymousCartSessionAttributeName = "anonymousCart";
 
     public static final String OVERRIDE_CART_ATTR_NAME = "_blc_overrideCartId";
-        
+
     @Override
     public void process(WebRequest request) {
         Customer customer = CustomerState.getCustomer();
@@ -148,9 +150,8 @@ public class CartStateRequestProcessor extends AbstractBroadleafWebRequestProces
         // variable name.
         ruleMap.put("cart", cart);
         request.setAttribute(BLC_RULE_MAP_PARAM, ruleMap, WebRequest.SCOPE_REQUEST);
-
     }
-    
+
     public Order getOverrideCart(WebRequest request) {
         Long orderId = null;
         if (BLCRequestUtils.isOKtoUseSession(request)) {
@@ -159,9 +160,9 @@ public class CartStateRequestProcessor extends AbstractBroadleafWebRequestProces
         Order cart = null;
         if (orderId != null) {
             cart = orderService.findOrderById(orderId);
-    
-            if (cart == null || 
-                    cart.getStatus().equals(OrderStatus.SUBMITTED) || 
+
+            if (cart == null ||
+                    cart.getStatus().equals(OrderStatus.SUBMITTED) ||
                     cart.getStatus().equals(OrderStatus.CANCELLED)) {
                 return null;
             }
@@ -169,7 +170,7 @@ public class CartStateRequestProcessor extends AbstractBroadleafWebRequestProces
 
         return cart;
     }
-    
+
     /**
      * Returns true if the given <b>customer</b> is different than the previous anonymous customer, implying that this is
      * the logged in customer and we need to merge the carts
@@ -199,7 +200,7 @@ public class CartStateRequestProcessor extends AbstractBroadleafWebRequestProces
         } catch (RemoveFromCartException e) {
             throw new RuntimeException(e);
         }
-        
+
         if (BLCRequestUtils.isOKtoUseSession(request)) {
             // The anonymous customer from session is no longer needed; it can be safely removed
             request.removeAttribute(CustomerStateRequestProcessor.getAnonymousCustomerSessionAttributeName(),

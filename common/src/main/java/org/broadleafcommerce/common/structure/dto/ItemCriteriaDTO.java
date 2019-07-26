@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,9 +25,9 @@ import java.io.Serializable;
  * StructuredContent data is converted into a DTO since it requires
  * pre-processing.   The data is fairly static so the desire is
  * to cache the value after it has been processed.
- *
+ * <p>
  * This DTO represents a compact version of StructuredContentItemCriteria
- *
+ * <p>
  * Created by bpolster.
  */
 public class ItemCriteriaDTO implements Serializable {

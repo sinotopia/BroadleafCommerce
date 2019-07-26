@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,17 +27,23 @@ public class SilentErrorHandler implements ErrorHandler {
     @SuppressWarnings("unused")
     private String name;
 
-    /* (non-Javadoc)
+    /**
+     * (non-Javadoc)
+     *
      * @see org.broadleafcommerce.core.workflow.ErrorHandler#handleError(org.broadleafcommerce.core.workflow.ProcessContext, java.lang.Throwable)
      */
+    @Override
     public void handleError(ProcessContext context, Throwable th) throws WorkflowException {
         context.stopProcess();
         throw new WorkflowException(th);
     }
 
-    /* (non-Javadoc)
+    /**
+     * (non-Javadoc)
+     *
      * @see org.springframework.beans.factory.BeanNameAware#setBeanName(java.lang.String)
      */
+    @Override
     public void setBeanName(String name) {
         this.name = name;
     }

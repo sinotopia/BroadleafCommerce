@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -45,10 +45,9 @@ import java.util.List;
 /**
  * Base class for all Workflow Processors.  Responsible of keeping track of an ordered collection
  * of {@link Activity Activities}
- * 
- * @since March 1, 2005
+ *
  * @see Activity
- * 
+ * @since March 1, 2005
  */
 public abstract class BaseProcessor implements InitializingBean, BeanNameAware, BeanFactoryAware, Processor {
 
@@ -56,31 +55,33 @@ public abstract class BaseProcessor implements InitializingBean, BeanNameAware, 
     protected String beanName;
     protected List<Activity<ProcessContext<? extends Object>>> activities = new ArrayList<Activity<ProcessContext<? extends Object>>>();
     protected List<ModuleActivity> moduleActivities = new ArrayList<ModuleActivity>();
-    
+
     protected ErrorHandler defaultErrorHandler;
 
     @Value("${workflow.auto.rollback.on.error}")
     private boolean autoRollbackOnError = true;
-    
+
     /**
      * If set to true, this will allow an empty set of activities, thus creating a 'do-nothing' workflow
      */
     protected boolean allowEmptyActivities = false;
-    
+
     protected SupportLogger supportLogger = SupportLogManager.getLogger("Workflows", BaseProcessor.class);
 
     /**
      * Sets name of the spring bean in the application context that this
      * processor is configured under
+     *
      * @see org.springframework.beans.factory.BeanNameAware#setBeanName(java.lang.String)
      */
     @Override
     public void setBeanName(String beanName) {
         this.beanName = beanName;
-
     }
 
-    /** Sets the spring bean factroy bean that is responsible for this processor.
+    /**
+     * Sets the spring bean factroy bean that is responsible for this processor.
+     *
      * @see org.springframework.beans.factory.BeanFactoryAware#setBeanFactory(org.springframework.beans.factory.BeanFactory)
      */
     @Override
@@ -109,16 +110,17 @@ public abstract class BaseProcessor implements InitializingBean, BeanNameAware, 
     public void setAutoRollbackOnError(boolean autoRollbackOnError) {
         this.autoRollbackOnError = autoRollbackOnError;
     }
-    
+
     /**
      * Defaults to 'false'. This will prevent an exception from being thrown when no activities have been configured
      * for a processor, and thus will create a 'do-nothing' workflow.
+     *
      * @return the allowEmptyActivities
      */
     public boolean isAllowEmptyActivities() {
         return allowEmptyActivities;
     }
-    
+
     /**
      * @param allowEmptyActivities the allowEmptyActivities to set
      */
@@ -128,7 +130,7 @@ public abstract class BaseProcessor implements InitializingBean, BeanNameAware, 
 
     /**
      * Called after the properties have been set, Ensures the list of activities
-     *  is not empty and each activity is supported by this Workflow Processor
+     * is not empty and each activity is supported by this Workflow Processor
      *
      * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
      */
@@ -136,39 +138,38 @@ public abstract class BaseProcessor implements InitializingBean, BeanNameAware, 
     public void afterPropertiesSet() throws Exception {
 
         if (!(beanFactory instanceof ListableBeanFactory)) {
-            throw new BeanInitializationException("The workflow processor ["+beanName+"] " +
+            throw new BeanInitializationException("The workflow processor [" + beanName + "] " +
                     "is not managed by a ListableBeanFactory, please re-deploy using some derivative of ListableBeanFactory such as" +
-            "ClassPathXmlApplicationContext ");
+                    "ClassPathXmlApplicationContext ");
         }
-
         if (CollectionUtils.isEmpty(activities) && !isAllowEmptyActivities()) {
             throw new UnsatisfiedDependencyException(getBeanDesc(), beanName, "activities",
-            "No activities were wired for this workflow");
+                    "No activities were wired for this workflow");
         }
-        
+
         //sort the activities based on their configured order
         OrderComparator.sort(activities);
 
         HashSet<String> moduleNames = new HashSet<String>();
-        for (Iterator<Activity<ProcessContext<? extends Object>>> iter = activities.iterator(); iter.hasNext();) {
+        for (Iterator<Activity<ProcessContext<? extends Object>>> iter = activities.iterator(); iter.hasNext(); ) {
             Activity<? extends ProcessContext<? extends Object>> activity = iter.next();
-            if ( !supports(activity)) {
-                throw new BeanInitializationException("The workflow processor ["+beanName+"] does " +
-                        "not support the activity of type"+activity.getClass().getName());
+            if (!supports(activity)) {
+                throw new BeanInitializationException("The workflow processor [" + beanName + "] does " +
+                        "not support the activity of type" + activity.getClass().getName());
             }
-            
+
             if (activity instanceof ModuleActivity) {
                 moduleActivities.add((ModuleActivity) activity);
                 moduleNames.add(((ModuleActivity) activity).getModuleName());
             }
         }
-        
+
         if (CollectionUtils.isNotEmpty(moduleActivities)) {
             //log the fact that we've got some modifications to the workflow
             StringBuffer message = new StringBuffer();
             message.append("The following modules have made changes to the " + getBeanName() + " workflow: ");
             message.append(Arrays.toString(moduleNames.toArray()));
-            message.append("\n");            
+            message.append("\n");
             message.append("The final ordering of activities for the " + getBeanName() + " workflow is: \n");
             ArrayList<String> activityNames = new ArrayList<String>();
             CollectionUtils.collect(activities, new Transformer() {
@@ -182,11 +183,11 @@ public abstract class BaseProcessor implements InitializingBean, BeanNameAware, 
 
             supportLogger.lifecycle(LifeCycleEvent.CONFIG, message.toString());
         }
-        
     }
 
     /**
      * Returns the bean description if the current bean factory allows it.
+     *
      * @return spring bean description configure via the spring description tag
      */
     protected String getBeanDesc() {
@@ -197,7 +198,7 @@ public abstract class BaseProcessor implements InitializingBean, BeanNameAware, 
 
     /**
      * Sets the collection of Activities to be executed by the Workflow Process
-     * 
+     *
      * @param activities ordered collection (List) of activities to be executed by the processor
      */
     @Override
@@ -213,13 +214,13 @@ public abstract class BaseProcessor implements InitializingBean, BeanNameAware, 
     public List<Activity<ProcessContext<? extends Object>>> getActivities() {
         return activities;
     }
-    
+
     /**
      * Returns a filtered set of {@link #getActivities()} that have implemented the {@link ModuleActivity} interface. This
      * set of module activities is only set once during {@link #afterPropertiesSet()}, so if you invoke
      * {@link #setActivities(List)} after the bean has been initialized you will need to manually reset the list of module
      * activities as well (which could be achieved by manually invoking {@link #afterPropertiesSet()}).
-     * 
+     *
      * @return
      */
     public List<ModuleActivity> getModuleActivities() {

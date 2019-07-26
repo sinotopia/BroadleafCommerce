@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,15 +31,15 @@ public interface MultiTenantCloneable<T> {
      * </p>
      * <code>
      * public CreateResponse&lt;MyClass&gt; createOrRetrieveCopyInstance(MultiTenantCopyContext context) throws CloneNotSupportedException {
-     *      CreateResponse&lt;MyClass&gt; createResponse = super.createOrRetrieveCopyInstance(context);
-     *      if (createResponse.isAlreadyPopulated()) {
-     *          return createResponse;
-     *      }
-     *      MyClass myClone = createResponse.getClone();
-     *
-     *      //copy extended field values on myClone here
-     *
-     *      return createResponse;
+     * CreateResponse&lt;MyClass&gt; createResponse = super.createOrRetrieveCopyInstance(context);
+     * if (createResponse.isAlreadyPopulated()) {
+     * return createResponse;
+     * }
+     * MyClass myClone = createResponse.getClone();
+     * <p>
+     * //copy extended field values on myClone here
+     * <p>
+     * return createResponse;
      * }
      * </code>
      * </p>
@@ -47,12 +47,12 @@ public interface MultiTenantCloneable<T> {
      * </p>
      * <code>
      * public CreateResponse&lt;G extends MyClass&gt; createOrRetrieveCopyInstance(MultiTenantCopyContext context) throws CloneNotSupportedException {
-     *      CreateResponse<G> createResponse = context.createOrRetrieveCopyInstance(this);
-     *      MyClass myClone = createResponse.getClone();
-     *
-     *      //copy extended field values on myClone here
-     *
-     *      return createResponse;
+     * CreateResponse<G> createResponse = context.createOrRetrieveCopyInstance(this);
+     * MyClass myClone = createResponse.getClone();
+     * <p>
+     * //copy extended field values on myClone here
+     * <p>
+     * return createResponse;
      * }
      * </code>
      *
@@ -60,5 +60,5 @@ public interface MultiTenantCloneable<T> {
      * @return the resulting copy container, possibly already persisted
      * @throws CloneNotSupportedException if there's a problem detected with the cloning configuration
      */
-    public <G extends T> CreateResponse<G> createOrRetrieveCopyInstance(MultiTenantCopyContext context) throws CloneNotSupportedException;
+    <G extends T> CreateResponse<G> createOrRetrieveCopyInstance(MultiTenantCopyContext context) throws CloneNotSupportedException;
 }

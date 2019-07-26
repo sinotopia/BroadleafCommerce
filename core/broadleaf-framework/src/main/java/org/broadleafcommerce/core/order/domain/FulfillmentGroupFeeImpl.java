@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -59,11 +59,11 @@ import javax.persistence.Table;
 @Table(name = "BLC_FULFILLMENT_GROUP_FEE")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region = "blOrderElements")
 @AdminPresentationMergeOverrides(
-    {
-        @AdminPresentationMergeOverride(name = "", mergeEntries =
-            @AdminPresentationMergeEntry(propertyType = PropertyType.AdminPresentation.READONLY,
-                                            booleanOverrideValue = true))
-    }
+        {
+                @AdminPresentationMergeOverride(name = "", mergeEntries =
+                @AdminPresentationMergeEntry(propertyType = PropertyType.AdminPresentation.READONLY,
+                        booleanOverrideValue = true))
+        }
 )
 public class FulfillmentGroupFeeImpl implements FulfillmentGroupFee, CurrencyCodeIdentifiable {
 
@@ -72,12 +72,12 @@ public class FulfillmentGroupFeeImpl implements FulfillmentGroupFee, CurrencyCod
     @Id
     @GeneratedValue(generator = "FulfillmentGroupFeeId")
     @GenericGenerator(
-        name="FulfillmentGroupFeeId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="FulfillmentGroupFeeImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.core.order.domain.FulfillmentGroupFeeImpl")
-        }
+            name = "FulfillmentGroupFeeId",
+            strategy = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+            parameters = {
+                    @Parameter(name = "segment_value", value = "FulfillmentGroupFeeImpl"),
+                    @Parameter(name = "entity_name", value = "org.broadleafcommerce.core.order.domain.FulfillmentGroupFeeImpl")
+            }
     )
     @Column(name = "FULFILLMENT_GROUP_FEE_ID")
     protected Long id;
@@ -86,7 +86,7 @@ public class FulfillmentGroupFeeImpl implements FulfillmentGroupFee, CurrencyCod
     @JoinColumn(name = "FULFILLMENT_GROUP_ID")
     protected FulfillmentGroup fulfillmentGroup;
 
-    @Column(name = "AMOUNT", precision=19, scale=5)
+    @Column(name = "AMOUNT", precision = 19, scale = 5)
     @AdminPresentation(friendlyName = "FulfillmentGroupFeeImpl_Amount", prominent = true, gridOrder = 2000, order = 2000)
     protected BigDecimal amount;
 
@@ -97,19 +97,19 @@ public class FulfillmentGroupFeeImpl implements FulfillmentGroupFee, CurrencyCod
     @Column(name = "REPORTING_CODE")
     @AdminPresentation(friendlyName = "FulfillmentGroupFeeImpl_Reporting_Code", order = 3000)
     protected String reportingCode;
-    
+
     @Column(name = "FEE_TAXABLE_FLAG")
     @AdminPresentation(friendlyName = "FulfillmentGroupFeeImpl_Taxable", order = 5000)
-    protected Boolean feeTaxable = false; 
+    protected Boolean feeTaxable = false;
 
     @OneToMany(fetch = FetchType.LAZY, targetEntity = TaxDetailImpl.class, cascade = {CascadeType.ALL})
     @JoinTable(name = "BLC_FG_FEE_TAX_XREF", joinColumns = @JoinColumn(name = "FULFILLMENT_GROUP_FEE_ID"), inverseJoinColumns = @JoinColumn(name = "TAX_DETAIL_ID"))
-    @Cascade(value={org.hibernate.annotations.CascadeType.ALL, org.hibernate.annotations.CascadeType.DELETE_ORPHAN})
-    @Cache(usage=CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region="blOrderElements")
+    @Cascade(value = {org.hibernate.annotations.CascadeType.ALL, org.hibernate.annotations.CascadeType.DELETE_ORPHAN})
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region = "blOrderElements")
     protected List<TaxDetail> taxes = new ArrayList<TaxDetail>();
-    
-    @Column(name = "TOTAL_FEE_TAX", precision=19, scale=5)
-    @AdminPresentation(friendlyName = "FulfillmentGroupFeeImpl_Total_Fee_Tax", order=4000, fieldType=SupportedFieldType.MONEY)
+
+    @Column(name = "TOTAL_FEE_TAX", precision = 19, scale = 5)
+    @AdminPresentation(friendlyName = "FulfillmentGroupFeeImpl_Total_Fee_Tax", order = 4000, fieldType = SupportedFieldType.MONEY)
     protected BigDecimal totalTax;
 
     @Override
@@ -161,7 +161,7 @@ public class FulfillmentGroupFeeImpl implements FulfillmentGroupFee, CurrencyCod
     public void setReportingCode(String reportingCode) {
         this.reportingCode = reportingCode;
     }
-    
+
     @Override
     public Boolean isTaxable() {
         return feeTaxable == null ? true : feeTaxable;
@@ -171,7 +171,7 @@ public class FulfillmentGroupFeeImpl implements FulfillmentGroupFee, CurrencyCod
     public void setTaxable(Boolean taxable) {
         this.feeTaxable = taxable;
     }
-    
+
     @Override
     public List<TaxDetail> getTaxes() {
         return taxes;
@@ -181,14 +181,14 @@ public class FulfillmentGroupFeeImpl implements FulfillmentGroupFee, CurrencyCod
     public void setTaxes(List<TaxDetail> taxes) {
         this.taxes = taxes;
     }
-    
+
     @Override
     public Money getTotalTax() {
         return totalTax == null ? null : BroadleafCurrencyUtils.getMoney(totalTax, getFulfillmentGroup().getOrder().getCurrency());
     }
 
     @Override
-    public void setTotalTax(Money totalTax) { 
+    public void setTotalTax(Money totalTax) {
         this.totalTax = Money.toAmount(totalTax);
     }
 

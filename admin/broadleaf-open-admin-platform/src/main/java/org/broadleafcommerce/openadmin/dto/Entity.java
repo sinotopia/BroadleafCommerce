@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -36,10 +36,9 @@ import java.util.Map;
 /**
  * Generic DTO for a domain object. Each property of the domain object is represented by the 'properties' instance variable
  * which allows for further display metadata to be stored.
- * 
+ *
  * @author jfischer
  * @see {@link Property}
- *
  */
 public class Entity implements Serializable {
 
@@ -56,7 +55,7 @@ public class Entity implements Serializable {
     protected boolean isValidationFailure = false;
     protected Map<String, List<String>> validationErrors = new HashMap<String, List<String>>();
     protected List<String> globalValidationErrors = new ArrayList<String>();
-    
+
     protected Map<String, Property> pMap = null;
 
     public String[] getType() {
@@ -85,12 +84,12 @@ public class Entity implements Serializable {
     public Property[] getProperties() {
         return properties;
     }
-    
+
     public void setProperties(Property[] properties) {
         this.properties = properties;
         pMap = null;
     }
-    
+
     public void mergeProperties(String prefix, Entity entity) {
         int j = 0;
         Property[] merged = new Property[properties.length + entity.getProperties().length];
@@ -99,16 +98,16 @@ public class Entity implements Serializable {
             j++;
         }
         for (Property property : entity.getProperties()) {
-            property.setName(prefix!=null?prefix+"."+property.getName():""+property.getName());
+            property.setName(prefix != null ? prefix + "." + property.getName() : "" + property.getName());
             merged[j] = property;
             j++;
         }
         properties = merged;
     }
-    
+
     /**
      * Replaces all property values in this entity with the values from the given entity. This also resets the {@link #pMap}
-     * 
+     *
      * @param entity
      */
     public void overridePropertyValues(Entity entity) {
@@ -121,7 +120,7 @@ public class Entity implements Serializable {
         }
         pMap = null;
     }
-    
+
     public Property findProperty(String name) {
         if (properties == null) {
             return null;
@@ -159,13 +158,13 @@ public class Entity implements Serializable {
         }
         return null;
     }
-    
+
     public void addProperty(Property property) {
         boolean exists = findProperty(property.getName()) != null;
         Property[] allProps = getProperties();
-        Property[] newProps = new Property[exists?allProps.length:allProps.length + 1];
+        Property[] newProps = new Property[exists ? allProps.length : allProps.length + 1];
         int count = 0;
-        for (int j=0;j<allProps.length;j++) {
+        for (int j = 0; j < allProps.length; j++) {
             if (!allProps[j].getName().equals(property.getName())) {
                 newProps[count] = allProps[j];
                 count++;
@@ -198,12 +197,12 @@ public class Entity implements Serializable {
     /**
      * Adds a single validation error to this entity. This will also set the entire
      * entity in an error state by invoking {@link #setValidationFailure(boolean)}.
-     * 
-     * @param fieldName - the field that is in error. This works on top-level properties (like a 'manufacturer' field on a
-     * Product entity) but can also work on properties gleaned from a related entity (like
-     * 'defaultSku.weight.weightUnitOfMeasure' on a Product entity)
+     *
+     * @param fieldName       - the field that is in error. This works on top-level properties (like a 'manufacturer' field on a
+     *                        Product entity) but can also work on properties gleaned from a related entity (like
+     *                        'defaultSku.weight.weightUnitOfMeasure' on a Product entity)
      * @param errorOrErrorKey - the error message to present to a user. Could be the actual error message or a key to a
-     * property in messages.properties to support different locales
+     *                        property in messages.properties to support different locales
      */
     public void addValidationError(String fieldName, String errorOrErrorKey) {
         Map<String, List<String>> fieldErrors = getPropertyValidationErrors();
@@ -233,8 +232,7 @@ public class Entity implements Serializable {
     }
 
     /**
-     * 
-     * @return if this entity has failed validation. This will also check the {@link #getPropertyValidationErrors()} map and 
+     * @return if this entity has failed validation. This will also check the {@link #getPropertyValidationErrors()} map and
      * {@link #getGlobalValidationErrors()} if this boolean has not been explicitly set
      */
     public boolean isValidationFailure() {
@@ -249,23 +247,23 @@ public class Entity implements Serializable {
     }
 
     /**
-     * @deprecated use {@link #getPropertyValidationErrors()} instead
      * @return
+     * @deprecated use {@link #getPropertyValidationErrors()} instead
      */
     @Deprecated
     public Map<String, List<String>> getValidationErrors() {
         return getPropertyValidationErrors();
     }
-    
+
     /**
      * Validation error map where the key corresponds to the property that failed validation (which could be dot-separated)
      * and the value corresponds to a list of the error messages, in the case of multiple errors on the same field.
-     * 
+     * <p>
      * For instance, you might have a configuration where the field is both a Required validator and a regex validator.
      * The validation map in this case might contain something like:
-     *      
-     *      defaultSku.name => ['This field is required', 'Cannot have numbers in name']
-     * 
+     * <p>
+     * defaultSku.name => ['This field is required', 'Cannot have numbers in name']
+     *
      * @return a map keyed by property name to the list of error messages for that property
      */
     public Map<String, List<String>> getPropertyValidationErrors() {
@@ -279,12 +277,12 @@ public class Entity implements Serializable {
     public void setValidationErrors(Map<String, List<String>> validationErrors) {
         setPropertyValidationErrors(validationErrors);
     }
-    
+
     /**
      * Completely reset the validation errors for this Entity. In most cases it is more appropriate to use the convenience
      * method for adding a single error via {@link #addValidationError(String, String)}. This will also set the entire
      * entity in an error state by invoking {@link #setValidationFailure(boolean)}.
-     * 
+     *
      * @param validationErrors
      * @see #addValidationError(String, String)
      */
@@ -294,30 +292,32 @@ public class Entity implements Serializable {
         }
         this.validationErrors = validationErrors;
     }
-    
+
     /**
      * Adds a validation error to this entity that is not tied to any specific property. If you need to tie this to a
      * property then you should use {@link #addValidationError(String, String)} instead.
+     *
      * @param errorOrErrorKey
      */
     public void addGlobalValidationError(String errorOrErrorKey) {
         setValidationFailure(true);
         globalValidationErrors.add(errorOrErrorKey);
     }
-    
+
     /**
      * Similar to {@link #addGlobalValidationError(String)} except with a list of errors
+     *
      * @param errorOrErrorKeys
      */
     public void addGlobalValidationErrors(List<String> errorOrErrorKeys) {
         setValidationFailure(true);
         globalValidationErrors.addAll(errorOrErrorKeys);
     }
-    
+
     public List<String> getGlobalValidationErrors() {
         return globalValidationErrors;
     }
-    
+
     public void setGlobalValidationErrors(List<String> globalValidationErrors) {
         this.globalValidationErrors = globalValidationErrors;
     }

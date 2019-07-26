@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,34 +25,48 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * 
  * @author jfischer
- *
  */
 public interface AdminUser extends AdminSecurityContext {
+
     public Long getId();
+
     public void setId(Long id);
+
     public String getName();
+
     public void setName(String name);
+
     public String getLogin();
+
     public void setLogin(String login);
+
     public String getPassword();
+
     public void setPassword(String password);
+
     public String getEmail();
+
     public void setEmail(String email);
+
     public Set<AdminRole> getAllRoles();
+
     public void setAllRoles(Set<AdminRole> allRoles);
+
     public String getUnencodedPassword();
+
     public void setUnencodedPassword(String unencodedPassword);
 
     /**
      * Stores the user's phone number.
+     *
      * @param phone
      */
     public void setPhoneNumber(String phone);
 
     /**
      * Returns the users phone number.
+     *
      * @return
      */
     public String getPhoneNumber();
@@ -77,7 +91,7 @@ public interface AdminUser extends AdminSecurityContext {
      * The current sandbox associated with this user.
      * This is primarily intended to be used by the BLC-CMS workflow
      * processes.
-     *
+     * <p>
      * If null, the user is using their own SandBox.
      *
      * @return
@@ -95,12 +109,13 @@ public interface AdminUser extends AdminSecurityContext {
     public void setOverrideSandBox(SandBox sandbox);
 
     public Set<AdminPermission> getAllPermissions();
+
     public void setAllPermissions(Set<AdminPermission> allPermissions);
     //public AdminUser clone();
 
     /**
      * Returns a map representing just the key-value pairs inside the {@link #getAdditionalFields()} map.
-     * 
+     *
      * @return the collapsed map
      */
     public Map<String, String> getFlatAdditionalFields();
@@ -108,7 +123,7 @@ public interface AdminUser extends AdminSecurityContext {
     public Map<String, AdminUserAttribute> getAdditionalFields();
 
     public void setAdditionalFields(Map<String, AdminUserAttribute> additionalFields);
-    
+
     /**
      * @return the id of the last sandbox this admin user used
      */
@@ -116,7 +131,7 @@ public interface AdminUser extends AdminSecurityContext {
 
     /**
      * Sets the last used sandbox for this admin user
-     * 
+     *
      * @param sandBoxId
      */
     public void setLastUsedSandBoxId(Long sandBoxId);

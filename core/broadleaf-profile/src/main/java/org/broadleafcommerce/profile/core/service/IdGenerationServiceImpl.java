@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -36,7 +36,7 @@ public class IdGenerationServiceImpl implements IdGenerationService {
 
     private static final Log LOG = LogFactory.getLog(IdGenerationServiceImpl.class);
 
-    @Resource(name="blIdGenerationDao")
+    @Resource(name = "blIdGenerationDao")
     protected IdGenerationDao idGenerationDao;
 
     protected Map<String, Id> idTypeIdMap = new HashMap<String, Id>();
@@ -65,7 +65,7 @@ public class IdGenerationServiceImpl implements IdGenerationService {
             }
         }
 
-        synchronized(id) {
+        synchronized (id) {
             if (id.batchSize == 0L) {
                 if (LOG.isDebugEnabled()) {
                     LOG.debug("Updating batch size for idType " + idType);
@@ -80,7 +80,7 @@ public class IdGenerationServiceImpl implements IdGenerationService {
             return retId;
         }
     }
-    
+
     private IdGeneration getCurrentIdRange(String idType, Long batchSize) {
         IdGeneration idGeneration = null;
         int retryCount = 0;

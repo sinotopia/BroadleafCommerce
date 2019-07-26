@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -36,16 +36,16 @@ import javax.annotation.Resource;
 /**
  * <p>Checks the offers being used in the order to make sure that the customer
  * has not exceeded the max uses for the {@link Offer}.</p>
- * 
+ * <p>
  * This will also verify that max uses for any {@link OfferCode}s that were used to retrieve the {@link Offer}s.
- * 
+ *
  * @author Phillip Verheyden (phillipuniverse)
  */
 public class VerifyCustomerMaxOfferUsesActivity extends BaseActivity<ProcessContext<CheckoutSeed>> {
 
-    @Resource(name="blOfferAuditService")
+    @Resource(name = "blOfferAuditService")
     protected OfferAuditService offerAuditService;
-    
+
     @Resource(name = "blOfferService")
     protected OfferService offerService;
 
@@ -53,7 +53,7 @@ public class VerifyCustomerMaxOfferUsesActivity extends BaseActivity<ProcessCont
     public ProcessContext<CheckoutSeed> execute(ProcessContext<CheckoutSeed> context) throws Exception {
         Order order = context.getSeedData().getOrder();
         Set<Offer> appliedOffers = offerService.getUniqueOffersFromOrder(order);
-        
+
         for (Offer offer : appliedOffers) {
             if (offer.isLimitedUsePerCustomer()) {
                 Long currentUses = offerAuditService.countUsesByCustomer(order.getCustomer().getId(), offer.getId());
@@ -62,7 +62,7 @@ public class VerifyCustomerMaxOfferUsesActivity extends BaseActivity<ProcessCont
                 }
             }
         }
-        
+
         //TODO: allow lenient checking on offer code usage
         for (OfferCode code : order.getAddedOfferCodes()) {
             if (code.isLimitedUse()) {
@@ -73,8 +73,8 @@ public class VerifyCustomerMaxOfferUsesActivity extends BaseActivity<ProcessCont
                 }
             }
         }
-        
+
         return context;
     }
-   
+
 }

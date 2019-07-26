@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -42,12 +42,12 @@ import javax.annotation.Resource;
 @Service("blCheckoutService")
 public class CheckoutServiceImpl implements CheckoutService {
 
-    @Resource(name="blCheckoutWorkflow")
+    @Resource(name = "blCheckoutWorkflow")
     protected Processor checkoutWorkflow;
 
-    @Resource(name="blOrderService")
+    @Resource(name = "blOrderService")
     protected OrderService orderService;
-    
+
     /**
      * Map of locks for given order ids. This lock map ensures that only a single request can handle a particular order
      * at a time
@@ -66,7 +66,7 @@ public class CheckoutServiceImpl implements CheckoutService {
         if (hasOrderBeenCompleted(order)) {
             throw new CheckoutException("This order has already been submitted or cancelled, unable to checkout order -- id: " + order.getId(), new CheckoutSeed(order, new HashMap<String, Object>()));
         }
-        
+
         CheckoutSeed seed = null;
         try {
             // Do a final save of the order before going through with the checkout workflow
@@ -92,10 +92,10 @@ public class CheckoutServiceImpl implements CheckoutService {
             removeLock(order.getId());
         }
     }
-    
+
     /**
      * Checks if the <b>order</b> has already been gone through the checkout workflow.
-     * 
+     *
      * @param order
      * @return
      */
@@ -104,23 +104,23 @@ public class CheckoutServiceImpl implements CheckoutService {
     }
 
     /**
-    * Get an object to lock on for the given order id
-    * 
-    * @param orderId
-    * @return null if there was not already a lock object available. If an object was already in the map, this will return
-    * that object, which means that there is already a thread attempting to go through the checkout workflow
-    */
+     * Get an object to lock on for the given order id
+     *
+     * @param orderId
+     * @return null if there was not already a lock object available. If an object was already in the map, this will return
+     * that object, which means that there is already a thread attempting to go through the checkout workflow
+     */
     protected Object putLock(Long orderId) {
         return lockMap.putIfAbsent(orderId, new Object());
     }
-    
+
     /**
      * Done with processing the given orderId, remove the lock from the map
-     * 
+     *
      * @param orderId
      */
     protected void removeLock(Long orderId) {
         lockMap.remove(orderId);
     }
-    
+
 }

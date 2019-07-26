@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -45,19 +45,19 @@ import java.util.Map;
 
 /**
  * Defines an order in Broadleaf.    There are several key items to be aware of with the BLC Order.
- * 
+ * <p>
  * 1.  Carts are also Orders that are in a Pending status
- * 
+ * <p>
  * 2.  Wishlists (and similar) are "NamedOrders"
- * 
+ * <p>
  * 3.  Orders have several price related methods that are useful when displaying totals on the cart.
  * 3a.    getSubTotal() :  The total of all order items and their adjustments exclusive of taxes
  * 3b.    getOrderAdjustmentsValue() :  The total of all order adjustments
  * 3c.    getTotalTax() :  The total taxes being charged for the order
  * 3d.    getTotal() : The order total (equivalent of getSubTotal() - getOrderAdjustmentsValue() + getTotalTax())
- * 
+ * <p>
  * 4.  Order payments are represented with OrderPayment objects.
- * 
+ * <p>
  * 5.  Order shipping (e.g. fulfillment) are represented with Fulfillment objects.
  */
 public interface Order extends Serializable, MultiTenantCloneable<Order> {
@@ -68,7 +68,7 @@ public interface Order extends Serializable, MultiTenantCloneable<Order> {
 
     /**
      * Gets the name of the order, mainly in order to support wishlists.
-     * 
+     *
      * @return the name of the order
      */
     String getName();
@@ -76,14 +76,14 @@ public interface Order extends Serializable, MultiTenantCloneable<Order> {
     /**
      * Sets the name of the order in the context of a wishlist. In this fashion, a {@link Customer} can have multiple
      * wishlists like "Christmas" or "Gaming Computer" etc.
-     * 
+     *
      * @param name
      */
     void setName(String name);
 
     /**
      * Gets the auditable associated with this Order instance which tracks changes made to this Order (creation/update)
-     * 
+     *
      * @return
      */
     Auditable getAuditable();
@@ -114,8 +114,8 @@ public interface Order extends Serializable, MultiTenantCloneable<Order> {
     void assignOrderItemsFinalPrice();
 
     /**
-     * Returns the sum of the item totals. 
-     * 
+     * Returns the sum of the item totals.
+     *
      * @return
      */
     Money calculateSubTotal();
@@ -123,7 +123,7 @@ public interface Order extends Serializable, MultiTenantCloneable<Order> {
     /**
      * The grand total of this {@link Order} which includes all shipping costs and taxes, as well as any adjustments from
      * promotions.
-     * 
+     *
      * @return the grand total price of this {@link Order}
      */
     Money getTotal();
@@ -136,12 +136,12 @@ public interface Order extends Serializable, MultiTenantCloneable<Order> {
      * Since, these types have to be the last payment applied,
      * {@link org.broadleafcommerce.core.pricing.service.workflow.AdjustOrderPaymentsActivity} will adjust the value of the payment
      * based on what has already been applied to the order.
-     *
+     * <p>
      * For example, Gift Cards and Account Credit can be applied BEFORE
      * a final payment (e.g. most Credit Card Gateways) is applied. This {@link OrderPayment} does not
      * necessarily have to be confirmed (i.e. captured), as it will happen on callback of the final payment
      * and will be captured in the checkout workflow.
-     *
+     * <p>
      * This method is used in cases where you need to determine the final amount to send to the gateways
      * of what is left on the order minus what has already been applied.
      *
@@ -152,42 +152,42 @@ public interface Order extends Serializable, MultiTenantCloneable<Order> {
     /**
      * Used in {@link TotalActivity} to set the grand total of this {@link Order}. This includes the prices of all of the
      * {@link OrderItem}s as well as any taxes, fees, shipping and adjustments for all 3.
-     * 
+     *
      * @param orderTotal the total cost of this {@link Order}
      */
     void setTotal(Money orderTotal);
 
     /**
      * Gets the {@link Customer} for this {@link Order}.
-     * 
+     *
      * @return
      */
     Customer getCustomer();
 
     /**
      * Sets the associated {@link Customer} for this Order.
-     * 
+     *
      * @param customer
      */
     void setCustomer(Customer customer);
 
     /**
      * Gets the status of the Order.
-     * 
+     *
      * @return
      */
     OrderStatus getStatus();
 
     /**
      * Sets the status of the Order
-     * 
+     *
      * @param status
      */
     void setStatus(OrderStatus status);
 
     /**
      * Gets all the {@link OrderItem}s included in this {@link Order}
-     * 
+     *
      * @return
      */
     List<OrderItem> getOrderItems();
@@ -196,7 +196,7 @@ public interface Order extends Serializable, MultiTenantCloneable<Order> {
 
     /**
      * Adds an {@link OrderItem} to the list of {@link OrderItem}s already associated with this {@link Order}
-     * 
+     *
      * @param orderItem the {@link OrderItem} to add to this {@link Order}
      */
     void addOrderItem(OrderItem orderItem);
@@ -204,7 +204,7 @@ public interface Order extends Serializable, MultiTenantCloneable<Order> {
     /**
      * Gets the {@link FulfillmentGroup}s associated with this {@link Order}. An {@link Order} can have many
      * {@link FulfillmentGroup}s associated with it in order to support multi-address (and multi-type) shipping.
-     * 
+     *
      * @return the {@link FulfillmentGroup}s associated with this {@link Order}
      */
     List<FulfillmentGroup> getFulfillmentGroups();
@@ -213,14 +213,14 @@ public interface Order extends Serializable, MultiTenantCloneable<Order> {
 
     /**
      * Sets the {@link Offer}s that could potentially apply to this {@link Order}
-     * 
+     *
      * @param candidateOrderOffers
      */
     void setCandidateOrderOffers(List<CandidateOrderOffer> candidateOrderOffers);
 
     /**
      * Gets the {@link Offer}s that could potentially apply to this {@link Order}. Used in the promotion engine.
-     * 
+     *
      * @return
      */
     List<CandidateOrderOffer> getCandidateOrderOffers();
@@ -228,11 +228,11 @@ public interface Order extends Serializable, MultiTenantCloneable<Order> {
     /**
      * Gets the date that this {@link Order} was submitted.  Note that if this date is non-null, then the following should
      * also be true:
-     *  <ul>
-     *      <li>{@link #getStatus()} should return {@link OrderStatus#SUBMITTED}</li>
-     *      <li>{@link #getOrderNumber()} should return a non-null value</li>
-     *  </ul>
-     *  
+     * <ul>
+     * <li>{@link #getStatus()} should return {@link OrderStatus#SUBMITTED}</li>
+     * <li>{@link #getOrderNumber()} should return a non-null value</li>
+     * </ul>
+     *
      * @return
      */
     Date getSubmitDate();
@@ -240,13 +240,13 @@ public interface Order extends Serializable, MultiTenantCloneable<Order> {
     /**
      * Set the date that this {@link Order} was submitted. Used in the blCheckoutWorkflow as the last step after everything
      * else has been completed (payments charged, integration systems notified, etc).
-     * 
+     *
      * @param submitDate the date that this {@link Order} was submitted.
      */
     void setSubmitDate(Date submitDate);
 
     /**
-     * Gets the total tax for this order, which is the sum of the taxes on all fulfillment 
+     * Gets the total tax for this order, which is the sum of the taxes on all fulfillment
      * groups. This total is calculated in the TotalActivity stage of the pricing workflow.
      *
      * @return the total tax for the order
@@ -267,18 +267,17 @@ public interface Order extends Serializable, MultiTenantCloneable<Order> {
     Money getTotalShipping();
 
     /**
-     * @deprecated - Use {@link #setTotalFulfillmentCharges(Money)} instead.
-     * 
      * @param totalShipping
+     * @deprecated - Use {@link #setTotalFulfillmentCharges(Money)} instead.
      */
     @Deprecated
     void setTotalShipping(Money totalShipping);
 
     /**
-     * Gets the total fulfillment costs that should be charged for this {@link Order}. This value should be equivalent to 
-     * the summation of {@link FulfillmentGroup#getTotal()} for each {@link FulfillmentGroup} associated with this 
+     * Gets the total fulfillment costs that should be charged for this {@link Order}. This value should be equivalent to
+     * the summation of {@link FulfillmentGroup#getTotal()} for each {@link FulfillmentGroup} associated with this
      * {@link Order}
-     * 
+     *
      * @return the total fulfillment cost of this {@link Order}
      */
     Money getTotalFulfillmentCharges();
@@ -286,7 +285,7 @@ public interface Order extends Serializable, MultiTenantCloneable<Order> {
     /**
      * Set the total fulfillment cost of this {@link Order}. Used in the {@link FulfillmentGroupPricingActivity} after the cost
      * of each {@link FulfillmentGroup} has been calculated.
-     * 
+     *
      * @param totalShipping
      */
     void setTotalFulfillmentCharges(Money totalFulfillmentCharges);
@@ -295,21 +294,21 @@ public interface Order extends Serializable, MultiTenantCloneable<Order> {
      * Gets all the {@link OrderPayment}s associated with this {@link Order}. An {@link Order} can have many
      * {@link OrderPayment}s associated with it to support things like paying with multiple cards or perhaps paying some of
      * this {@link Order} with a gift card and some with a credit card.
-     * 
+     *
      * @return the {@link OrderPayment}s associated with this {@link Order}.
      */
     List<OrderPayment> getPayments();
 
     /**
      * Sets the various payment types associated with this {@link Order}
-     * 
+     *
      * @param payments
      */
     void setPayments(List<OrderPayment> payments);
 
     /**
      * Determines if this {@link Order} has an item in the given category.
-     * 
+     *
      * @param categoryName the {@link Category#getName} to check
      * @return <b>true</b> if at least one {@link OrderItem} is in the given category, <b>false</b> otherwise.
      * @see {@link OrderItem#isInCategory(String)}
@@ -319,7 +318,7 @@ public interface Order extends Serializable, MultiTenantCloneable<Order> {
     /**
      * Returns a unmodifiable List of OrderAdjustment.  To modify the List of OrderAdjustment, please
      * use the addOrderAdjustments or removeAllOrderAdjustments methods.
-     * 
+     *
      * @return a unmodifiable List of OrderItemAdjustment
      */
     List<OrderAdjustment> getOrderAdjustments();
@@ -328,16 +327,16 @@ public interface Order extends Serializable, MultiTenantCloneable<Order> {
      * Returns all of the {@link OrderItem}s in this {@link Order} that are an instanceof {@link DiscreteOrderItem}. This
      * will also go into each {@link BundleOrderItem} (if there are any) and return all of the
      * {@link BundleOrderItem#getDiscreteOrderItems()} from each of those as well.
-     * 
+     *
      * @return
      */
     List<DiscreteOrderItem> getDiscreteOrderItems();
-    
+
     /**
      * Checks the DiscreteOrderItems in the cart and returns whether or not the given SKU was found.
      * The equality of the SKUs is based on the .equals() method in SkuImpl. This includes checking the
      * {@link DiscreteOrderItem}s from {link {@link BundleOrderItem#getDiscreteOrderItems()}
-     * 
+     *
      * @param sku The sku to check for
      * @return whether or not the given SKU exists in the cart
      */
@@ -350,14 +349,14 @@ public interface Order extends Serializable, MultiTenantCloneable<Order> {
     /**
      * The unique number associated with this {@link Order}. Generally preferred to use instead of just using {@link #getId()}
      * since that exposes unwanted information about your database.
-     * 
+     *
      * @return the unique order number for this {@link Order}
      */
     String getOrderNumber();
 
     /**
      * Set the unique order number for this {@link Order}
-     * 
+     *
      * @param orderNumber
      */
     void setOrderNumber(String orderNumber);
@@ -398,42 +397,44 @@ public interface Order extends Serializable, MultiTenantCloneable<Order> {
 
     /**
      * Updates all of the prices of the {@link OrderItem}s in this {@link Order}
+     *
      * @return <b>true</b> if at least 1 {@link OrderItem} returned true from {@link OrderItem#updatePrices}, <b>false</b>
      * otherwise.
      * @see {@link OrderItem#updatePrices()}
      */
     boolean updatePrices();
-    
+
     /**
      * Updates the averagePriceField for all order items.
+     *
      * @return
      */
     boolean finalizeItemPrices();
 
     Money getFulfillmentGroupAdjustmentsValue();
-    
+
     void addOfferCode(OfferCode addedOfferCode);
-    
+
     @Deprecated
     void addAddedOfferCode(OfferCode offerCode);
 
     /**
      * A list of arbitrary attributes added to this order.
      */
-    Map<String,OrderAttribute> getOrderAttributes();
+    Map<String, OrderAttribute> getOrderAttributes();
 
     /**
      * Sets the map of order attributes.
      *
      * @param orderAttributes
      */
-    void setOrderAttributes(Map<String,OrderAttribute> orderAttributes);
-    
+    void setOrderAttributes(Map<String, OrderAttribute> orderAttributes);
+
     /**
      * This method returns the total number of items in this order. It iterates through all of the
      * discrete order items and sums up the quantity. This method is useful for display to the customer
      * the current number of "physical" items in the cart
-     * 
+     *
      * @return the number of items in the order
      */
     int getItemCount();
@@ -442,14 +443,14 @@ public interface Order extends Serializable, MultiTenantCloneable<Order> {
      * The currency that the {@link Order} is priced in. Note that this is only on {@link Order} since all of the other
      * entities that are related (like {@link FulfillmentGroup} and {@link OrderItem} have a link back to here. This also
      * has the side effect that an {@link Order} can only be priced in a single currency.
-     * 
+     *
      * @return
      */
     BroadleafCurrency getCurrency();
 
     /**
      * Set the currency that the {@link Order} is priced in.
-     * 
+     *
      * @param currency
      */
     void setCurrency(BroadleafCurrency currency);
@@ -460,16 +461,17 @@ public interface Order extends Serializable, MultiTenantCloneable<Order> {
 
     /**
      * Returns true if this item has order adjustments.
+     *
      * @return
      */
     boolean getHasOrderAdjustments();
 
-    /*
+    /**
      * transient field to hold order messages
      */
     List<ActivityMessageDTO> getOrderMessages();
 
-    /*
+    /**
      * transient field to hold order messages
      */
     void setOrderMessages(List<ActivityMessageDTO> orderMessages);
@@ -477,12 +479,13 @@ public interface Order extends Serializable, MultiTenantCloneable<Order> {
     /**
      * @return whether or not to override the tax calculation
      */
-    public Boolean getTaxOverride();
+    Boolean getTaxOverride();
 
     /**
      * Sets whether or not to override the tax calculation
+     *
      * @param taxOverride
      */
-    public void setTaxOverride(Boolean taxOverride);
+    void setTaxOverride(Boolean taxOverride);
 
 }

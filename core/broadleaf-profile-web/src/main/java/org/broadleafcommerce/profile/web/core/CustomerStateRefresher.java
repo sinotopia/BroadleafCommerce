@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -44,10 +44,10 @@ public class CustomerStateRefresher implements ApplicationListener<CustomerPersi
     /**
      * Removes the complete {@link Customer} stored in session and adds a new session variable for just the customer ID. This
      * should occur once the session-based {@link Customer} (all anonymous Customers start out this way) has been persisted.
-     * 
+     *
      * <p>Also updates {@link CustomerState} with the persisted {@link Customer} so that it will always represent the most
      * up-to-date version that is in the database</p>
-     * 
+     *
      * @param request
      * @param databaseCustomer
      */
@@ -69,7 +69,7 @@ public class CustomerStateRefresher implements ApplicationListener<CustomerPersi
                     request.setAttribute(customerIdAttribute, dbCustomer.getId(), WebRequest.SCOPE_GLOBAL_SESSION);
                 }
             }
-            
+
             //Update CustomerState if the persisted Customer ID is the same
             if (CustomerState.getCustomer() != null && CustomerState.getCustomer().getId().equals(dbCustomer.getId())) {
                 //Copy transient fields from the customer that existed in CustomerState, prior to the DB refresh, 
@@ -81,14 +81,14 @@ public class CustomerStateRefresher implements ApplicationListener<CustomerPersi
             }
         }
     }
-    
+
     /**
-     * After a JPA merge occurs, there is a new object created representing the merged changes.  The new object does 
+     * After a JPA merge occurs, there is a new object created representing the merged changes.  The new object does
      * not reflect the state of transient fields that may have been set on the object that was merged.
-     * 
-     * This method, by default, resets the state of transient properties. 
+     * <p>
+     * This method, by default, resets the state of transient properties.
      * and allows the user to override this method to set additional (or different) transient values.
-     * 
+     *
      * @param preMergedCustome
      * @param postMergedCustomer
      */

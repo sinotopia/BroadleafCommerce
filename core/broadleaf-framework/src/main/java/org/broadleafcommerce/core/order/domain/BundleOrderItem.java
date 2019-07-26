@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -34,25 +34,25 @@ public interface BundleOrderItem extends OrderItem, OrderItemContainer, SkuAcces
     void setDiscreteOrderItems(List<DiscreteOrderItem> discreteOrderItems);
 
     Money getTaxablePrice();
-    
-    public List<BundleOrderItemFeePrice> getBundleOrderItemFeePrices();
 
-    public void setBundleOrderItemFeePrices(List<BundleOrderItemFeePrice> bundleOrderItemFeePrices);
+    List<BundleOrderItemFeePrice> getBundleOrderItemFeePrices();
 
-    public boolean hasAdjustedItems();
+    void setBundleOrderItemFeePrices(List<BundleOrderItemFeePrice> bundleOrderItemFeePrices);
 
-    public Money getBaseRetailPrice();
+    boolean hasAdjustedItems();
 
-    public void setBaseRetailPrice(Money baseRetailPrice);
+    Money getBaseRetailPrice();
 
-    public Money getBaseSalePrice();
+    void setBaseRetailPrice(Money baseRetailPrice);
 
-    public void setBaseSalePrice(Money baseSalePrice);
+    Money getBaseSalePrice();
+
+    void setBaseSalePrice(Money baseSalePrice);
 
     /**
      * For BundleOrderItem created from a ProductBundle, this will represent the default sku of
      * the product bundle.
-     *
+     * <p>
      * This can be null for implementations that programatically create product bundles.
      *
      * @return
@@ -63,7 +63,7 @@ public interface BundleOrderItem extends OrderItem, OrderItemContainer, SkuAcces
 
     /**
      * Returns the associated ProductBundle or null if not applicable.
-     *
+     * <p>
      * If null, then this ProductBundle was manually created.
      *
      * @return

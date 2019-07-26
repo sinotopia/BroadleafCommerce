@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -54,15 +54,15 @@ import javax.persistence.Table;
 @Table(name = "BLC_FULFILLMENT_OPTION")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "blOrderElements")
 @AdminPresentationMergeOverrides(
-    {
-        @AdminPresentationMergeOverride(name = "", mergeEntries =
-            @AdminPresentationMergeEntry(propertyType = PropertyType.AdminPresentation.READONLY,
-                                            booleanOverrideValue = true))
-    }
+        {
+                @AdminPresentationMergeOverride(name = "", mergeEntries =
+                @AdminPresentationMergeEntry(propertyType = PropertyType.AdminPresentation.READONLY,
+                        booleanOverrideValue = true))
+        }
 )
 @AdminPresentationClass(friendlyName = "Base Fulfillment Option")
 @DirectCopyTransform({
-        @DirectCopyTransformMember(templateTokens = DirectCopyTransformTypes.SANDBOX, skipOverlaps=true),
+        @DirectCopyTransformMember(templateTokens = DirectCopyTransformTypes.SANDBOX, skipOverlaps = true),
         @DirectCopyTransformMember(templateTokens = DirectCopyTransformTypes.MULTITENANT_SITE)
 })
 public class FulfillmentOptionImpl implements FulfillmentOption {
@@ -70,18 +70,18 @@ public class FulfillmentOptionImpl implements FulfillmentOption {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(generator= "FulfillmentOptionId")
+    @GeneratedValue(generator = "FulfillmentOptionId")
     @GenericGenerator(
-        name="FulfillmentOptionId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="FulfillmentOptionImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.core.order.domain.FulfillmentOptionImpl")
-        }
+            name = "FulfillmentOptionId",
+            strategy = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+            parameters = {
+                    @Parameter(name = "segment_value", value = "FulfillmentOptionImpl"),
+                    @Parameter(name = "entity_name", value = "org.broadleafcommerce.core.order.domain.FulfillmentOptionImpl")
+            }
     )
     @Column(name = "FULFILLMENT_OPTION_ID")
     protected Long id;
-    
+
     @Column(name = "NAME")
     @AdminPresentation(friendlyName = "FulfillmentOptionImpl_name",
             order = Presentation.FieldOrder.NAME, prominent = true, gridOrder = 1000, translatable = true)
@@ -96,7 +96,7 @@ public class FulfillmentOptionImpl implements FulfillmentOption {
 
     @Column(name = "USE_FLAT_RATES")
     @AdminPresentation(friendlyName = "FulfillmentOptionImpl_useFlatRates",
-        order = Presentation.FieldOrder.FLATRATES)
+            order = Presentation.FieldOrder.FLATRATES)
     protected Boolean useFlatRates = true;
 
     @Column(name = "FULFILLMENT_TYPE", nullable = false)

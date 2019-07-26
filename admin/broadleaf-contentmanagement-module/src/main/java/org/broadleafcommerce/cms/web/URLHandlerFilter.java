@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -63,9 +63,9 @@ public class URLHandlerFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
-            HttpServletResponse response, FilterChain filterChain)
+                                    HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        
+
         String contextPath = request.getContextPath();
         String requestURIWithoutContext;
         if (request.getContextPath() != null) {
@@ -76,33 +76,33 @@ public class URLHandlerFilter extends OncePerRequestFilter {
 
         requestURIWithoutContext = URLDecoder.decode(requestURIWithoutContext, charEncoding);
         URLHandler handler = urlHandlerService.findURLHandlerByURI(requestURIWithoutContext);
-        
+
         if (handler != null) {
-            if (URLRedirectType.FORWARD == handler.getUrlRedirectType()) {              
-                request.getRequestDispatcher(handler.getNewURL()).forward(request, response);               
+            if (URLRedirectType.FORWARD == handler.getUrlRedirectType()) {
+                request.getRequestDispatcher(handler.getNewURL()).forward(request, response);
             } else if (URLRedirectType.REDIRECT_PERM == handler.getUrlRedirectType()) {
                 String url = UrlUtil.fixRedirectUrl(contextPath, handler.getNewURL());
                 url = fixQueryString(request, url);
                 response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
-                response.setHeader( "Location", url);
-                response.setHeader( "Connection", "close" );
+                response.setHeader("Location", url);
+                response.setHeader("Connection", "close");
             } else if (URLRedirectType.REDIRECT_TEMP == handler.getUrlRedirectType()) {
                 String url = UrlUtil.fixRedirectUrl(contextPath, handler.getNewURL());
                 url = fixQueryString(request, url);
-                response.sendRedirect(url);             
-            }           
+                response.sendRedirect(url);
+            }
         } else {
             filterChain.doFilter(request, response);
         }
     }
-    
+
     /**
      * If the url does not include "//" then the system will ensure that the application context
      * is added to the start of the URL.
-     * 
+     *
      * @param url
      * @return
-     * @throws Exception 
+     * @throws Exception
      */
     protected String fixQueryString(HttpServletRequest request, String url) {
         if (getPreserveQueryStringOnRedirect()) {
@@ -144,12 +144,12 @@ public class URLHandlerFilter extends OncePerRequestFilter {
             String[] pairs = query.split("&");
             for (String pair : pairs) {
                 int idx = pair.indexOf("=");
-                String param="";
+                String param = "";
                 String value = null;
                 if (idx > 0) {
                     param = pair.substring(0, idx);
                 } else {
-                    param=pair;
+                    param = pair;
                 }
                 query_params.add(param);
             }

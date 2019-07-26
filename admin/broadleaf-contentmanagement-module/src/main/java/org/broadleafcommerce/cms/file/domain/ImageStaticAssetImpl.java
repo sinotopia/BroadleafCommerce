@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -36,19 +36,19 @@ import javax.persistence.Table;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@EntityListeners(value = { AdminAuditableListener.class })
+@EntityListeners(value = {AdminAuditableListener.class})
 @Table(name = "BLC_IMG_STATIC_ASSET")
-@Cache(usage= CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region="blCMSElements")
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region = "blCMSElements")
 public class ImageStaticAssetImpl extends StaticAssetImpl implements ImageStaticAsset {
 
-    @Column(name ="WIDTH")
+    @Column(name = "WIDTH")
     @AdminPresentation(friendlyName = "ImageStaticAssetImpl_Width",
             order = Presentation.FieldOrder.LAST + 1000,
             tab = Presentation.Tab.Name.File_Details, tabOrder = Presentation.Tab.Order.File_Details,
             readOnly = true)
     protected Integer width;
 
-    @Column(name ="HEIGHT")
+    @Column(name = "HEIGHT")
     @AdminPresentation(friendlyName = "ImageStaticAssetImpl_Height",
             order = Presentation.FieldOrder.LAST + 2000,
             tab = Presentation.Tab.Name.File_Details, tabOrder = Presentation.Tab.Order.File_Details,

@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -53,13 +53,13 @@ import javax.persistence.Table;
 @Table(name = "BLC_BUND_ITEM_FEE_PRICE")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region = "blOrderElements")
 @AdminPresentationMergeOverrides(
-    {
-        @AdminPresentationMergeOverride(name = "", mergeEntries =
-            @AdminPresentationMergeEntry(propertyType = PropertyType.AdminPresentation.READONLY,
-                                            booleanOverrideValue = true))
-    }
+        {
+                @AdminPresentationMergeOverride(name = "", mergeEntries =
+                @AdminPresentationMergeEntry(propertyType = PropertyType.AdminPresentation.READONLY,
+                        booleanOverrideValue = true))
+        }
 )
-public class BundleOrderItemFeePriceImpl implements BundleOrderItemFeePrice  {
+public class BundleOrderItemFeePriceImpl implements BundleOrderItemFeePrice {
 
     public static final Log LOG = LogFactory.getLog(BundleOrderItemFeePriceImpl.class);
     private static final long serialVersionUID = 1L;
@@ -67,12 +67,12 @@ public class BundleOrderItemFeePriceImpl implements BundleOrderItemFeePrice  {
     @Id
     @GeneratedValue(generator = "BundleOrderItemFeePriceId")
     @GenericGenerator(
-        name="BundleOrderItemFeePriceId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="BundleOrderItemFeePriceImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.core.order.domain.BundleOrderItemFeePriceImpl")
-        }
+            name = "BundleOrderItemFeePriceId",
+            strategy = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+            parameters = {
+                    @Parameter(name = "segment_value", value = "BundleOrderItemFeePriceImpl"),
+                    @Parameter(name = "entity_name", value = "org.broadleafcommerce.core.order.domain.BundleOrderItemFeePriceImpl")
+            }
     )
     @Column(name = "BUND_ITEM_FEE_PRICE_ID")
     protected Long id;
@@ -81,20 +81,20 @@ public class BundleOrderItemFeePriceImpl implements BundleOrderItemFeePrice  {
     @JoinColumn(name = "BUND_ORDER_ITEM_ID")
     protected BundleOrderItem bundleOrderItem;
 
-    @Column(name = "AMOUNT", precision=19, scale=5)
-    @AdminPresentation(friendlyName = "BundleOrderItemFeePriceImpl_Amount", order=2, prominent=true)
+    @Column(name = "AMOUNT", precision = 19, scale = 5)
+    @AdminPresentation(friendlyName = "BundleOrderItemFeePriceImpl_Amount", order = 2, prominent = true)
     protected BigDecimal amount;
 
     @Column(name = "NAME")
-    @AdminPresentation(friendlyName = "BundleOrderItemFeePriceImpl_Name", order=1, prominent=true)
+    @AdminPresentation(friendlyName = "BundleOrderItemFeePriceImpl_Name", order = 1, prominent = true)
     private String name;
 
     @Column(name = "REPORTING_CODE")
-    @AdminPresentation(friendlyName = "BundleOrderItemFeePriceImpl_Reporting_Code", order=3, prominent=true)
+    @AdminPresentation(friendlyName = "BundleOrderItemFeePriceImpl_Reporting_Code", order = 3, prominent = true)
     private String reportingCode;
 
     @Column(name = "IS_TAXABLE")
-    @AdminPresentation(friendlyName = "BundleOrderItemFeePriceImpl_Taxable", order=4)
+    @AdminPresentation(friendlyName = "BundleOrderItemFeePriceImpl_Taxable", order = 4)
     private Boolean isTaxable = Boolean.FALSE;
 
     @Override

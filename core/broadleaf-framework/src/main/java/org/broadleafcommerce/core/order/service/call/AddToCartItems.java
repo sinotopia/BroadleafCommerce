@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -30,7 +30,7 @@ public class AddToCartItems {
     @SuppressWarnings("unchecked")
 
     //TOOD: this should probably be refactored to be called "rows" like in other model objects
-    private List<AddToCartItem> addToCartItems =   LazyList.decorate(
+    private List<AddToCartItem> addToCartItems = LazyList.decorate(
             new ArrayList<AddToCartItem>(),
             FactoryUtils.instantiateFactory(AddToCartItem.class));
 
@@ -39,14 +39,14 @@ public class AddToCartItems {
 
     public void setProductId(long productId) {
         this.productId = productId;
-        for(AddToCartItem addToCartItem : addToCartItems) {
+        for (AddToCartItem addToCartItem : addToCartItems) {
             addToCartItem.setProductId(productId);
         }
     }
 
     public void setCategoryId(long categoryId) {
         this.categoryId = categoryId;
-        for(AddToCartItem addToCartItem : addToCartItems) {
+        for (AddToCartItem addToCartItem : addToCartItems) {
             addToCartItem.setCategoryId(categoryId);
         }
     }
@@ -62,6 +62,7 @@ public class AddToCartItems {
     public long getProductId() {
         return productId;
     }
+
     public long getCategoryId() {
         return categoryId;
     }

@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -34,9 +34,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 /**
- * 
  * @author jfischer
- *
  */
 @Repository("blAdminUserDao")
 public class AdminUserDaoImpl implements AdminUserDao {
@@ -44,7 +42,7 @@ public class AdminUserDaoImpl implements AdminUserDao {
     @PersistenceContext(unitName = "blPU")
     protected EntityManager em;
 
-    @Resource(name="blEntityConfiguration")
+    @Resource(name = "blEntityConfiguration")
     protected EntityConfiguration entityConfiguration;
 
     public void deleteAdminUser(AdminUser user) {
@@ -57,7 +55,7 @@ public class AdminUserDaoImpl implements AdminUserDao {
     public AdminUser readAdminUserById(Long id) {
         return em.find(entityConfiguration.lookupEntityClass("org.broadleafcommerce.openadmin.server.security.domain.AdminUser", AdminUser.class), id);
     }
-    
+
     @Override
     public List<AdminUser> readAdminUsersByIds(Set<Long> ids) {
         TypedQueryBuilder<AdminUser> tqb = new TypedQueryBuilder<AdminUser>(AdminUser.class, "au");

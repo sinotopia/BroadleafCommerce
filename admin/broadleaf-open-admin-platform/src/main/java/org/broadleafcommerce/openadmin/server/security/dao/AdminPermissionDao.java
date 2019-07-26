@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,20 +26,26 @@ import org.broadleafcommerce.openadmin.server.security.service.type.PermissionTy
 import java.util.List;
 
 /**
- * 
  * @author jfischer
- *
  */
 public interface AdminPermissionDao {
 
     public List<AdminPermission> readAllAdminPermissions();
+
     public AdminPermission readAdminPermissionById(Long id);
+
     public AdminPermission readAdminPermissionByName(String name);
+
     public AdminPermission saveAdminPermission(AdminPermission permission);
+
     public void deleteAdminPermission(AdminPermission permission);
+
     public boolean isUserQualifiedForOperationOnCeilingEntity(AdminUser adminUser, PermissionType permissionType, String ceilingEntityFullyQualifiedName);
+
     public boolean isUserQualifiedForOperationOnCeilingEntityViaDefaultPermissions(String ceilingEntityFullyQualifiedName);
+
     public boolean doesOperationExistForCeilingEntity(PermissionType permissionType, String ceilingEntityFullyQualifiedName);
+
     public AdminPermission readAdminPermissionByNameAndType(String name, String type);
 
 }

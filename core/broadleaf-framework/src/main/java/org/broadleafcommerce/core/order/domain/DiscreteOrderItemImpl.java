@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -69,35 +69,35 @@ import javax.persistence.Transient;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_DISCRETE_ORDER_ITEM")
-@Cache(usage=CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region="blOrderElements")
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region = "blOrderElements")
 @AdminPresentationClass(friendlyName = "DiscreteOrderItemImpl_discreteOrderItem")
 public class DiscreteOrderItemImpl extends OrderItemImpl implements DiscreteOrderItem {
 
     private static final long serialVersionUID = 1L;
-    
-    @Column(name="BASE_RETAIL_PRICE", precision=19, scale=5)
-    @AdminPresentation(excluded = true, friendlyName = "DiscreteOrderItemImpl_Base_Retail_Price", order=2,
-            group = "DiscreteOrderItemImpl_Pricing", fieldType=SupportedFieldType.MONEY)
+
+    @Column(name = "BASE_RETAIL_PRICE", precision = 19, scale = 5)
+    @AdminPresentation(excluded = true, friendlyName = "DiscreteOrderItemImpl_Base_Retail_Price", order = 2,
+            group = "DiscreteOrderItemImpl_Pricing", fieldType = SupportedFieldType.MONEY)
     protected BigDecimal baseRetailPrice;
-    
-    @Column(name="BASE_SALE_PRICE", precision=19, scale=5)
-    @AdminPresentation(excluded = true, friendlyName = "DiscreteOrderItemImpl_Base_Sale_Price", order=2,
-            group = "DiscreteOrderItemImpl_Pricing", fieldType= SupportedFieldType.MONEY)
+
+    @Column(name = "BASE_SALE_PRICE", precision = 19, scale = 5)
+    @AdminPresentation(excluded = true, friendlyName = "DiscreteOrderItemImpl_Base_Sale_Price", order = 2,
+            group = "DiscreteOrderItemImpl_Pricing", fieldType = SupportedFieldType.MONEY)
     protected BigDecimal baseSalePrice;
-    
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = SkuImpl.class, optional=false)
+
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = SkuImpl.class, optional = false)
     @JoinColumn(name = "SKU_ID", nullable = false)
-    @Index(name="DISCRETE_SKU_INDEX", columnNames={"SKU_ID"})
-    @AdminPresentation(friendlyName = "DiscreteOrderItemImpl_Sku", order=Presentation.FieldOrder.SKU,
+    @Index(name = "DISCRETE_SKU_INDEX", columnNames = {"SKU_ID"})
+    @AdminPresentation(friendlyName = "DiscreteOrderItemImpl_Sku", order = Presentation.FieldOrder.SKU,
             group = OrderItemImpl.Presentation.Group.Name.Catalog, groupOrder = OrderItemImpl.Presentation.Group.Order.Catalog)
     @AdminPresentationToOneLookup()
     protected Sku sku;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = ProductImpl.class)
     @JoinColumn(name = "PRODUCT_ID")
-    @Index(name="DISCRETE_PRODUCT_INDEX", columnNames={"PRODUCT_ID"})
+    @Index(name = "DISCRETE_PRODUCT_INDEX", columnNames = {"PRODUCT_ID"})
     @NotFound(action = NotFoundAction.IGNORE)
-    @AdminPresentation(friendlyName = "DiscreteOrderItemImpl_Product", order=Presentation.FieldOrder.PRODUCT,
+    @AdminPresentation(friendlyName = "DiscreteOrderItemImpl_Product", order = Presentation.FieldOrder.PRODUCT,
             group = OrderItemImpl.Presentation.Group.Name.Catalog, groupOrder = OrderItemImpl.Presentation.Group.Order.Catalog)
     @AdminPresentationToOneLookup()
     protected Product product;
@@ -113,14 +113,14 @@ public class DiscreteOrderItemImpl extends OrderItemImpl implements DiscreteOrde
     protected SkuBundleItem skuBundleItem;
 
     @ElementCollection
-    @MapKeyColumn(name="NAME")
-    @Column(name="VALUE")
-    @CollectionTable(name="BLC_ORDER_ITEM_ADD_ATTR", joinColumns=@JoinColumn(name="ORDER_ITEM_ID"))
+    @MapKeyColumn(name = "NAME")
+    @Column(name = "VALUE")
+    @CollectionTable(name = "BLC_ORDER_ITEM_ADD_ATTR", joinColumns = @JoinColumn(name = "ORDER_ITEM_ID"))
     @BatchSize(size = 50)
     @Deprecated
     protected Map<String, String> additionalAttributes = new HashMap<String, String>();
-    
-    @OneToMany(mappedBy = "discreteOrderItem", targetEntity = DiscreteOrderItemFeePriceImpl.class, cascade = { CascadeType.ALL }, orphanRemoval = true)
+
+    @OneToMany(mappedBy = "discreteOrderItem", targetEntity = DiscreteOrderItemFeePriceImpl.class, cascade = {CascadeType.ALL}, orphanRemoval = true)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region = "blOrderElements")
     protected List<DiscreteOrderItemFeePrice> discreteOrderItemFeePrices = new ArrayList<DiscreteOrderItemFeePrice>();
 
@@ -232,7 +232,7 @@ public class DiscreteOrderItemImpl extends OrderItemImpl implements DiscreteOrde
      */
     @Override
     public void setSkuBundleItem(SkuBundleItem SkuBundleItem) {
-        this.skuBundleItem =SkuBundleItem;
+        this.skuBundleItem = SkuBundleItem;
     }
 
     @Override
@@ -243,7 +243,7 @@ public class DiscreteOrderItemImpl extends OrderItemImpl implements DiscreteOrde
         }
         return name;
     }
-    
+
     @Override
     public Order getOrder() {
         if (order == null) {
@@ -283,7 +283,7 @@ public class DiscreteOrderItemImpl extends OrderItemImpl implements DiscreteOrde
             salePrice = skuSalePrice.getAmount();
             updated = true;
         }
-        
+
         // If there is no more sale price (because it got removed) then detect that case as well
         if (skuSalePrice == null && salePrice != null) {
             baseSalePrice = null;
@@ -375,7 +375,7 @@ public class DiscreteOrderItemImpl extends OrderItemImpl implements DiscreteOrde
 
     @Override
     public void setBaseSalePrice(Money baseSalePrice) {
-        this.baseSalePrice = baseSalePrice==null?null:baseSalePrice.getAmount();
+        this.baseSalePrice = baseSalePrice == null ? null : baseSalePrice.getAmount();
     }
 
     @Override
@@ -392,7 +392,7 @@ public class DiscreteOrderItemImpl extends OrderItemImpl implements DiscreteOrde
     protected Money convertToMoney(BigDecimal amount) {
         return amount == null ? null : BroadleafCurrencyUtils.getMoney(amount, getOrder().getCurrency());
     }
-    
+
     @Override
     public OrderItem clone() {
         DiscreteOrderItem orderItem = (DiscreteOrderItem) super.clone();
@@ -415,7 +415,7 @@ public class DiscreteOrderItemImpl extends OrderItemImpl implements DiscreteOrde
         if (orderItem.getOrder() == null) {
             throw new IllegalStateException("Either an Order or a BundleOrderItem must be set on the DiscreteOrderItem");
         }
-        
+
         return orderItem;
     }
 
@@ -431,7 +431,7 @@ public class DiscreteOrderItemImpl extends OrderItemImpl implements DiscreteOrde
             return false;
         }
         DiscreteOrderItemImpl other = (DiscreteOrderItemImpl) obj;
-        
+
         if (!super.equals(obj)) {
             return false;
         }
@@ -506,7 +506,7 @@ public class DiscreteOrderItemImpl extends OrderItemImpl implements DiscreteOrde
         cloned.setName(name);
         // dont clone
         cloned.setOrder(order);
-        return  createResponse;
+        return createResponse;
     }
 
     public static class Presentation {

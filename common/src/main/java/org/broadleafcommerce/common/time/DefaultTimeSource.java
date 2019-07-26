@@ -21,6 +21,7 @@ package org.broadleafcommerce.common.time;
 
 public class DefaultTimeSource implements TimeSource {
 
+    @Override
     public long timeInMillis() {
         return System.currentTimeMillis();
     }

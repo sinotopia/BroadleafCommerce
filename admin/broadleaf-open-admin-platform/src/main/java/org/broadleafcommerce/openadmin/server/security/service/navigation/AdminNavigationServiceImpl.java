@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -48,18 +48,20 @@ import javax.annotation.Resource;
 
 /**
  * This service is used to build the left hand navigation for the admin
+ *
  * @author elbertbautista
  */
 @Service("blAdminNavigationService")
 public class AdminNavigationServiceImpl implements AdminNavigationService {
 
     private static final Log LOG = LogFactory.getLog(AdminNavigationServiceImpl.class);
+
     private static final String PATTERN = "_";
 
     @Resource(name = "blAdminNavigationDao")
     protected AdminNavigationDao adminNavigationDao;
 
-    @Resource(name="blAdditionalSectionAuthorizations")
+    @Resource(name = "blAdditionalSectionAuthorizations")
     protected List<SectionAuthorization> additionalSectionAuthorizations = new ArrayList<SectionAuthorization>();
 
     @Override
@@ -103,12 +105,12 @@ public class AdminNavigationServiceImpl implements AdminNavigationService {
         Long siteId = site == null ? null : site.getId();
         for (AdminSection section : module.getSections()) {
             if (isUserAuthorizedToViewSection(adminUser, section)) {
-                if(section instanceof SiteDiscriminator){
-                    Long sectionSiteId = ((SiteDiscriminator)section).getSiteDiscriminator();
-                    if(sectionSiteId == null || sectionSiteId.equals(siteId)){
+                if (section instanceof SiteDiscriminator) {
+                    Long sectionSiteId = ((SiteDiscriminator) section).getSiteDiscriminator();
+                    if (sectionSiteId == null || sectionSiteId.equals(siteId)) {
                         authorizedSections.add(section);
                     }
-                } else{
+                } else {
                     authorizedSections.add(section);
                 }
             }
@@ -136,7 +138,7 @@ public class AdminNavigationServiceImpl implements AdminNavigationService {
     public AdminSection findAdminSectionByURI(String uri) {
         return adminNavigationDao.readAdminSectionByURI(uri);
     }
-    
+
     @Override
     public AdminSection findAdminSectionByClassAndSectionId(String className, String sectionId) {
         try {
@@ -146,7 +148,7 @@ public class AdminNavigationServiceImpl implements AdminNavigationService {
             return null;
         }
     }
-    
+
     @Override
     public AdminSection findAdminSectionByClassAndSectionId(Class<?> clazz, String sectionId) {
         return adminNavigationDao.readAdminSectionByClassAndSectionId(clazz, sectionId);
@@ -161,10 +163,11 @@ public class AdminNavigationServiceImpl implements AdminNavigationService {
     public boolean isUserAuthorizedToViewSection(AdminUser adminUser, AdminSection section) {
         boolean response = false;
         List<AdminPermission> authorizedPermissions = section.getPermissions();
-        checkAuth: {
+        checkAuth:
+        {
             if (!CollectionUtils.isEmpty(adminUser.getAllRoles())) {
                 for (AdminRole role : adminUser.getAllRoles()) {
-                    for (AdminPermission permission : role.getAllPermissions()){
+                    for (AdminPermission permission : role.getAllPermissions()) {
                         if (checkPermissions(authorizedPermissions, permission)) {
                             response = true;
                             break checkAuth;
@@ -173,7 +176,7 @@ public class AdminNavigationServiceImpl implements AdminNavigationService {
                 }
             }
             if (!CollectionUtils.isEmpty(adminUser.getAllPermissions())) {
-                for (AdminPermission permission : adminUser.getAllPermissions()){
+                for (AdminPermission permission : adminUser.getAllPermissions()) {
                     if (checkPermissions(authorizedPermissions, permission)) {
                         response = true;
                         break checkAuth;
@@ -201,7 +204,7 @@ public class AdminNavigationServiceImpl implements AdminNavigationService {
 
         return response;
     }
-    
+
     @Override
     public List<AdminSection> findAllAdminSections() {
         List<AdminSection> sections = adminNavigationDao.readAllAdminSections();
@@ -211,7 +214,7 @@ public class AdminNavigationServiceImpl implements AdminNavigationService {
 
     protected boolean checkPermissions(List<AdminPermission> authorizedPermissions, AdminPermission permission) {
         if (authorizedPermissions != null) {
-            if (authorizedPermissions.contains(permission)){
+            if (authorizedPermissions.contains(permission)) {
                 return true;
             }
 
@@ -229,7 +232,7 @@ public class AdminNavigationServiceImpl implements AdminNavigationService {
         StringBuilder builder = new StringBuilder(50);
         builder.append(pieces[0]);
         builder.append("_ALL_");
-        for (int j = 2; j<pieces.length; j++) {
+        for (int j = 2; j < pieces.length; j++) {
             builder.append(pieces[j]);
             if (j < pieces.length - 1) {
                 builder.append('_');
@@ -247,8 +250,7 @@ public class AdminNavigationServiceImpl implements AdminNavigationService {
             if (section.getDisplayOrder() != null) {
                 if (section2.getDisplayOrder() != null) {
                     return section.getDisplayOrder().compareTo(section2.getDisplayOrder());
-                }
-                else
+                } else
                     return -1;
             } else if (section2.getDisplayOrder() != null) {
                 return 1;

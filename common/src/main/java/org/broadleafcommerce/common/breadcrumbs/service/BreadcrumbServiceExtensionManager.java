@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,20 +24,21 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 
-@Component("blBreadcrumbServiceExtensionManager")
+
 /**
  * Provides an extension point for building breadcrumbs.   Handlers participate in reverse priority order.
- * @author bpolster
  *
+ * @author bpolster
  */
+@Component("blBreadcrumbServiceExtensionManager")
 public class BreadcrumbServiceExtensionManager extends ExtensionManager<BreadcrumbServiceExtensionHandler> {
 
     /**
-     * As each handler runs, it can work with the ContextMap from the ExtensionResultHolder 
+     * As each handler runs, it can work with the ContextMap from the ExtensionResultHolder
      * to get the URL as other handlers have modified it.
-     * 
+     * <p>
      * Given that handlers run in reverse priority order
-     * 
+     * <p>
      * Handlers may use the fullUrl passed into the method or work with these URLs.
      */
     public static String CONTEXT_PARAM_STRIPPED_URL = "STRIPPED_URL";

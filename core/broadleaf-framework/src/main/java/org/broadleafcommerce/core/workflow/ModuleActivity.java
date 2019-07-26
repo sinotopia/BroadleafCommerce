@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,18 +27,19 @@ package org.broadleafcommerce.core.workflow;
  * This logging is necessary for users that might be unaware of all of the activities that different modules could be
  * injecting into their workflows, since it's possible they they might want to change the ordering of their particular
  * activities as well.</p>
- * 
+ *
  * <p>When writing a module activity, the ordering should be configured in the 100 range (3100, 3200, etc) so that users
  * who use your module can configure custom activities in-between framework <b>and</b> module activities.</p>
- * 
+ *
  * @author Phillip Verheyden (phillipuniverse)
  */
 public interface ModuleActivity {
 
     /**
      * The name of the module that this activity came from (for instance: 'inventory')
+     *
      * @return
      */
-    public String getModuleName();
+    String getModuleName();
 
 }

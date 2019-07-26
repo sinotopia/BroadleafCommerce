@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -41,14 +41,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
- *
  * @author elbertbautista
- *
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_ADMIN_SECTION")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="blAdminSecurity")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "blAdminSecurity")
 @AdminPresentationClass(friendlyName = "AdminSectionImpl_baseAdminSection")
 public class AdminSectionImpl implements AdminSection {
 
@@ -57,58 +55,60 @@ public class AdminSectionImpl implements AdminSection {
     @Id
     @GeneratedValue(generator = "AdminSectionId")
     @GenericGenerator(
-        name="AdminSectionId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="AdminSectionImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.openadmin.server.security.domain.AdminSectionImpl")
-        }
+            name = "AdminSectionId",
+            strategy = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+            parameters = {
+                    @Parameter(name = "segment_value", value = "AdminSectionImpl"),
+                    @Parameter(name = "entity_name", value = "org.broadleafcommerce.openadmin.server.security.domain.AdminSectionImpl")
+            }
     )
     @Column(name = "ADMIN_SECTION_ID")
     @AdminPresentation(friendlyName = "AdminSectionImpl_Admin_Section_ID", group = "AdminSectionImpl_Primary_Key", visibility = VisibilityEnum.HIDDEN_ALL)
     protected Long id;
 
-    @Column(name = "NAME", nullable=false)
-    @Index(name="ADMINSECTION_NAME_INDEX", columnNames={"NAME"})
-    @AdminPresentation(friendlyName = "AdminSectionImpl_Name", order=1, group = "AdminSectionImpl_Section", prominent=true)
+    @Column(name = "NAME", nullable = false)
+    @Index(name = "ADMINSECTION_NAME_INDEX", columnNames = {"NAME"})
+    @AdminPresentation(friendlyName = "AdminSectionImpl_Name", order = 1, group = "AdminSectionImpl_Section", prominent = true)
     protected String name;
 
-    @Column(name = "SECTION_KEY", nullable=false, unique = true)
-    @AdminPresentation(friendlyName = "AdminSectionImpl_Section_Key", order=2, group = "AdminSectionImpl_Section", prominent=true)
+    @Column(name = "SECTION_KEY", nullable = false, unique = true)
+    @AdminPresentation(friendlyName = "AdminSectionImpl_Section_Key", order = 2, group = "AdminSectionImpl_Section", prominent = true)
     protected String sectionKey;
 
-    @Column(name = "URL", nullable=true)
-    @AdminPresentation(friendlyName = "AdminSectionImpl_Url", order=3, group = "AdminSectionImpl_Section", prominent=true)
+    @Column(name = "URL", nullable = true)
+    @AdminPresentation(friendlyName = "AdminSectionImpl_Url", order = 3, group = "AdminSectionImpl_Section", prominent = true)
     protected String url;
 
-    @ManyToOne(optional=false, targetEntity = AdminModuleImpl.class)
+    @ManyToOne(optional = false, targetEntity = AdminModuleImpl.class)
     @Fetch(FetchMode.JOIN)
     @JoinColumn(name = "ADMIN_MODULE_ID")
-    @Index(name="ADMINSECTION_MODULE_INDEX", columnNames={"ADMIN_MODULE_ID"})
+    @Index(name = "ADMINSECTION_MODULE_INDEX", columnNames = {"ADMIN_MODULE_ID"})
     protected AdminModule module;
 
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = AdminPermissionImpl.class)
     @JoinTable(name = "BLC_ADMIN_SEC_PERM_XREF", joinColumns = @JoinColumn(name = "ADMIN_SECTION_ID", referencedColumnName = "ADMIN_SECTION_ID"), inverseJoinColumns = @JoinColumn(name = "ADMIN_PERMISSION_ID", referencedColumnName = "ADMIN_PERMISSION_ID"))
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="blAdminSecurity")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "blAdminSecurity")
     @BatchSize(size = 50)
     protected List<AdminPermission> permissions = new ArrayList<AdminPermission>();
 
     /**
      * No longer needed after GWT removal
+     *
      * @param displayController
      */
     @Deprecated
-    @Column(name = "DISPLAY_CONTROLLER", nullable=true)
-    @AdminPresentation(friendlyName = "AdminSectionImpl_Display_Controller", order=4, group = "AdminSectionImpl_Section")
+    @Column(name = "DISPLAY_CONTROLLER", nullable = true)
+    @AdminPresentation(friendlyName = "AdminSectionImpl_Display_Controller", order = 4, group = "AdminSectionImpl_Section")
     protected String displayController;
 
     /**
      * No longer needed after GWT removal
+     *
      * @param displayController
      */
     @Deprecated
     @Column(name = "USE_DEFAULT_HANDLER", nullable = true)
-    @AdminPresentation(friendlyName = "AdminSectionImpl_Use_Default_Handler", order=5, group = "AdminSectionImpl_Section")
+    @AdminPresentation(friendlyName = "AdminSectionImpl_Use_Default_Handler", order = 5, group = "AdminSectionImpl_Section")
     protected Boolean useDefaultHandler = Boolean.TRUE;
 
     @Column(name = "CEILING_ENTITY", nullable = true)

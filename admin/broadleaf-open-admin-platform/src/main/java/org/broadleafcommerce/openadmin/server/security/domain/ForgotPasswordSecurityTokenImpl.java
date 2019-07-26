@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -37,12 +37,13 @@ import javax.persistence.TemporalType;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_ADMIN_PASSWORD_TOKEN")
 public class ForgotPasswordSecurityTokenImpl implements ForgotPasswordSecurityToken {
+
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @Column(name = "PASSWORD_TOKEN", nullable = false)
     protected String token;
-    
+
     @Column(name = "CREATE_DATE", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     protected Date createDate;
@@ -50,10 +51,10 @@ public class ForgotPasswordSecurityTokenImpl implements ForgotPasswordSecurityTo
     @Column(name = "TOKEN_USED_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     protected Date tokenUsedDate;
-    
+
     @Column(name = "ADMIN_USER_ID", nullable = false)
     protected Long adminUserId;
-    
+
     @Column(name = "TOKEN_USED_FLAG", nullable = false)
     protected boolean tokenUsedFlag;
 
@@ -99,13 +100,17 @@ public class ForgotPasswordSecurityTokenImpl implements ForgotPasswordSecurityTo
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null) return false;
-        if (!getClass().isAssignableFrom(o.getClass())) return false;
+        if (this == o)
+            return true;
+        if (o == null)
+            return false;
+        if (!getClass().isAssignableFrom(o.getClass()))
+            return false;
 
         ForgotPasswordSecurityTokenImpl that = (ForgotPasswordSecurityTokenImpl) o;
 
-        if (token != null ? !token.equals(that.token) : that.token != null) return false;
+        if (token != null ? !token.equals(that.token) : that.token != null)
+            return false;
 
         return true;
     }

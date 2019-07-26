@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,18 +23,19 @@ package org.broadleafcommerce.common.web;
 import org.broadleafcommerce.common.classloader.release.ThreadLocalManager;
 
 public class SandBoxContext {
-    
+
     private static final ThreadLocal<SandBoxContext> SANDBOXCONTEXT = ThreadLocalManager.createThreadLocal(SandBoxContext.class);
-    
+
     public static SandBoxContext getSandBoxContext() {
         return SANDBOXCONTEXT.get();
     }
-    
+
     public static void setSandBoxContext(SandBoxContext sandBoxContext) {
         SANDBOXCONTEXT.set(sandBoxContext);
     }
 
     protected Long sandBoxId;
+
     protected Boolean previewMode = false;
 
     /**
@@ -43,7 +44,7 @@ public class SandBoxContext {
     public Long getSandBoxId() {
         return sandBoxId;
     }
-    
+
     /**
      * @param sandBoxId the sandBoxName to set
      */
@@ -63,7 +64,6 @@ public class SandBoxContext {
         SandBoxContext myContext = new SandBoxContext();
         myContext.setSandBoxId(getSandBoxId());
         myContext.setPreviewMode(getPreviewMode());
-
         return myContext;
     }
 }

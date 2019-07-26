@@ -59,6 +59,7 @@ public class BroadleafRequestProcessor extends AbstractBroadleafWebRequestProces
     protected final Log LOG = LogFactory.getLog(getClass());
 
     private static String REQUEST_DTO_PARAM_NAME = BroadleafRequestFilter.REQUEST_DTO_PARAM_NAME;
+
     public static String REPROCESS_PARAM_NAME = "REPROCESS_BLC_REQUEST";
 
     private static final String SITE_STRICT_VALIDATE_PRODUCTION_CHANGES_KEY = "site.strict.validate.production.changes";
@@ -98,6 +99,7 @@ public class BroadleafRequestProcessor extends AbstractBroadleafWebRequestProces
 
     @Override
     public void process(WebRequest request) {
+
         BroadleafRequestContext brc = new BroadleafRequestContext();
         brc.getAdditionalProperties().putAll(entityExtensionManagers);
 
@@ -153,7 +155,6 @@ public class BroadleafRequestProcessor extends AbstractBroadleafWebRequestProces
             }
         }
 
-
         if (currentSandbox != null) {
             SandBoxContext previewSandBoxContext = new SandBoxContext();
             previewSandBoxContext.setSandBoxId(currentSandbox.getId());
@@ -204,7 +205,6 @@ public class BroadleafRequestProcessor extends AbstractBroadleafWebRequestProces
             request.removeAttribute(BroadleafCurrencyResolverImpl.CURRENCY_VAR, WebRequest.SCOPE_GLOBAL_SESSION);
             request.removeAttribute(BroadleafTimeZoneResolverImpl.TIMEZONE_VAR, WebRequest.SCOPE_GLOBAL_SESSION);
             request.removeAttribute(BroadleafSandBoxResolver.SANDBOX_ID_VAR, WebRequest.SCOPE_GLOBAL_SESSION);
-
             // From CustomerStateRequestProcessorImpl, using explicit String because it's out of module
             request.removeAttribute("_blc_anonymousCustomer", WebRequest.SCOPE_GLOBAL_SESSION);
             request.removeAttribute("_blc_anonymousCustomerId", WebRequest.SCOPE_GLOBAL_SESSION);

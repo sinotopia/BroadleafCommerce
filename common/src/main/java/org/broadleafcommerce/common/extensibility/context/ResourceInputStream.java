@@ -56,6 +56,7 @@ public class ResourceInputStream extends InputStream {
         return names.get(0);
     }
 
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(100);
         int size = names.size();

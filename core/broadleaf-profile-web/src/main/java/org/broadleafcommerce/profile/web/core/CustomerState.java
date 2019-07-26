@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -36,15 +36,15 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Component("blCustomerState")
 public class CustomerState {
-    
+
     public static Customer getCustomer(HttpServletRequest request) {
         return (Customer) BroadleafRequestCustomerResolverImpl.getRequestCustomerResolver().getCustomer(request);
     }
-    
+
     public static Customer getCustomer(WebRequest request) {
         return (Customer) BroadleafRequestCustomerResolverImpl.getRequestCustomerResolver().getCustomer(request);
     }
-    
+
     public static Customer getCustomer() {
         if (BroadleafRequestContext.getBroadleafRequestContext() == null
                 || BroadleafRequestContext.getBroadleafRequestContext().getWebRequest() == null) {
@@ -52,7 +52,7 @@ public class CustomerState {
         }
         return (Customer) BroadleafRequestCustomerResolverImpl.getRequestCustomerResolver().getCustomer();
     }
-    
+
     public static void setCustomer(Customer customer) {
         BroadleafRequestCustomerResolverImpl.getRequestCustomerResolver().setCustomer(customer);
     }

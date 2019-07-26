@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,7 +31,7 @@ import java.util.Map;
  * Page fields must be pre-processed (for example to fix image paths).
  * This DTO allows us to process the PageFields once and then cache
  * the results.
- *
+ * <p>
  * Created by bpolster.
  */
 public class PageDTO implements Serializable {
@@ -52,7 +52,7 @@ public class PageDTO implements Serializable {
     /**
      * Attempts to obtain the given property value from the dynamic property map first, and then an actual bean property
      * via a getter
-     * 
+     *
      * @param propertyName
      * @return
      */
@@ -117,7 +117,7 @@ public class PageDTO implements Serializable {
     public void setPageFields(Map<String, Object> pageFields) {
         this.pageFields = pageFields;
     }
-    
+
     public String getRuleExpression() {
         return ruleExpression;
     }
@@ -141,19 +141,19 @@ public class PageDTO implements Serializable {
     public void setPriority(Integer priority) {
         this.priority = priority;
     }
-    
+
     public Map<String, String> getPageAttributes() {
         return pageAttributes;
     }
-    
+
     public void setPageAttributes(Map<String, String> pageAttributes) {
         this.pageAttributes = pageAttributes;
-    }   
-    
+    }
+
     public Map<String, Object> getForeignPageFields() {
         return foreignPageFields;
     }
-    
+
     public void setForeignPageFields(Map<String, Object> foreignPageFields) {
         this.foreignPageFields = foreignPageFields;
     }
@@ -165,12 +165,12 @@ public class PageDTO implements Serializable {
         templatePath = original.templatePath;
         url = original.url;
         priority = original.priority;
-        
+
         // Extension Handlers Might Modify This
         pageFields = new HashMap<String, Object>(original.pageFields);
         ruleExpression = original.ruleExpression;
         itemCriteriaDTOList = original.itemCriteriaDTOList;
         pageAttributes = original.pageAttributes;
     }
-    
+
 }

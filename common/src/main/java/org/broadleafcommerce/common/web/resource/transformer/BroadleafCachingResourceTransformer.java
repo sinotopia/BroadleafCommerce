@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -39,11 +39,11 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Wraps Spring's {@link CachingResourceResolver} but adds in support to disable with 
+ * Wraps Spring's {@link CachingResourceResolver} but adds in support to disable with
  * environment properties.
- * 
- *  {@code }
- * 
+ * <p>
+ * {@code }
+ *
  * @author Brian Polster
  * @since Broadleaf 4.0
  */
@@ -52,10 +52,10 @@ public class BroadleafCachingResourceTransformer extends CachingResourceTransfor
 
     protected static final Log LOG = LogFactory.getLog(BroadleafCachingResourceTransformer.class);
     private int order = BroadleafResourceTransformerOrder.BLC_CACHE_RESOURCE_TRANSFORMER;
-    
+
     @javax.annotation.Resource(name = "blSpringCacheManager")
     private CacheManager cacheManager;
-    
+
     private static final String DEFAULT_CACHE_NAME = "blResourceTransformerCacheElements";
 
     @Value("${resource.transformer.caching.enabled:true}")

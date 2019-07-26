@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,7 +23,7 @@ import java.util.Arrays;
 
 /**
  * Basic implementation of EmailTarget
- * 
+ *
  * @author bpolster
  */
 public class EmailTargetImpl implements EmailTarget {
@@ -38,7 +38,7 @@ public class EmailTargetImpl implements EmailTarget {
      * (non-Javadoc)
      * @see org.broadleafcommerce.common.email.domain.EmailTarget#getBCCAddresses()
      */
-
+    @Override
     public String[] getBCCAddresses() {
         return bccAddresses;
     }
@@ -47,7 +47,7 @@ public class EmailTargetImpl implements EmailTarget {
      * (non-Javadoc)
      * @see org.broadleafcommerce.common.email.domain.EmailTarget#getCCAddresses()
      */
-
+    @Override
     public String[] getCCAddresses() {
         return ccAddresses;
     }
@@ -56,7 +56,7 @@ public class EmailTargetImpl implements EmailTarget {
      * (non-Javadoc)
      * @see org.broadleafcommerce.common.email.domain.EmailTarget#getEmailAddress()
      */
-
+    @Override
     public String getEmailAddress() {
         return emailAddress;
     }
@@ -67,7 +67,7 @@ public class EmailTargetImpl implements EmailTarget {
      * org.broadleafcommerce.common.email.domain.EmailTarget#setBCCAddresses(java.lang
      * .String[])
      */
-
+    @Override
     public void setBCCAddresses(String[] bccAddresses) {
         this.bccAddresses = bccAddresses;
     }
@@ -78,7 +78,7 @@ public class EmailTargetImpl implements EmailTarget {
      * org.broadleafcommerce.common.email.domain.EmailTarget#setCCAddresses(java.lang
      * .String[])
      */
-
+    @Override
     public void setCCAddresses(String[] ccAddresses) {
         this.ccAddresses = ccAddresses;
     }
@@ -89,11 +89,12 @@ public class EmailTargetImpl implements EmailTarget {
      * org.broadleafcommerce.common.email.domain.EmailTarget#setEmailAddress(java.lang
      * .String)
      */
-
+    @Override
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
     }
 
+    @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
@@ -103,6 +104,7 @@ public class EmailTargetImpl implements EmailTarget {
         return result;
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;

@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,7 +33,6 @@ import org.broadleafcommerce.common.sandbox.domain.SandBox;
 import org.broadleafcommerce.common.sandbox.domain.SandBoxType;
 import org.broadleafcommerce.common.sandbox.service.SandBoxService;
 import org.broadleafcommerce.common.security.service.StaleStateProtectionService;
-import org.broadleafcommerce.common.security.service.StaleStateServiceException;
 import org.broadleafcommerce.common.site.domain.Catalog;
 import org.broadleafcommerce.common.site.domain.Site;
 import org.broadleafcommerce.common.site.service.SiteService;
@@ -66,30 +65,29 @@ import javax.annotation.Resource;
 
 
 /**
- * 
  * @author Phillip Verheyden
  * @see {@link org.broadleafcommerce.common.web.BroadleafRequestFilter}
  */
 @Component("blAdminRequestProcessor")
 public class BroadleafAdminRequestProcessor extends AbstractBroadleafWebRequestProcessor {
 
-    public static final String SANDBOX_REQ_PARAM = "blSandBoxId";
-    public static final String PROFILE_REQ_PARAM = "blProfileId";
-    public static final String CATALOG_REQ_PARAM = "blCatalogId";
+    protected final Log LOG = LogFactory.getLog(getClass());
 
     private static final String ADMIN_STRICT_VALIDATE_PRODUCTION_CHANGES_KEY = "admin.strict.validate.production.changes";
 
-    protected final Log LOG = LogFactory.getLog(getClass());
+    public static final String SANDBOX_REQ_PARAM = "blSandBoxId";
+    public static final String PROFILE_REQ_PARAM = "blProfileId";
+    public static final String CATALOG_REQ_PARAM = "blCatalogId";
 
     @Resource(name = "blSiteResolver")
     protected BroadleafSiteResolver siteResolver;
 
     @Resource(name = "messageSource")
     protected MessageSource messageSource;
-    
+
     @Resource(name = "blLocaleResolver")
     protected BroadleafLocaleResolver localeResolver;
-    
+
     @Resource(name = "blAdminTimeZoneResolver")
     protected BroadleafTimeZoneResolver broadleafTimeZoneResolver;
 
@@ -104,17 +102,17 @@ public class BroadleafAdminRequestProcessor extends AbstractBroadleafWebRequestP
 
     @Resource(name = "blAdminSecurityRemoteService")
     protected SecurityVerifier adminRemoteSecurityService;
-    
+
     @Resource(name = "blAdminSecurityService")
     protected AdminSecurityService adminSecurityService;
 
     @Resource(name = "blDeployBehaviorUtil")
     protected DeployBehaviorUtil deployBehaviorUtil;
-    
+
     @Value("${" + ADMIN_STRICT_VALIDATE_PRODUCTION_CHANGES_KEY + ":true}")
     protected boolean adminStrictValidateProductionChanges = true;
-    
-    @Resource(name="blEntityExtensionManagers")
+
+    @Resource(name = "blEntityExtensionManagers")
     protected Map<String, ExtensionManager<?>> entityExtensionManagers;
 
     @Resource(name = "blAdminRequestProcessorExtensionManager")
@@ -146,12 +144,12 @@ public class BroadleafAdminRequestProcessor extends AbstractBroadleafWebRequestP
         } else {
             brc.setValidateProductionChangesState(ValidateProductionChangesState.UNDEFINED);
         }
-        
+
         Locale locale = localeResolver.resolveLocale(request);
         brc.setLocale(locale);
-        
+
         brc.setMessageSource(messageSource);
-        
+
         TimeZone timeZone = broadleafTimeZoneResolver.resolveTimeZone(request);
         brc.setTimeZone(timeZone);
 
@@ -196,7 +194,7 @@ public class BroadleafAdminRequestProcessor extends AbstractBroadleafWebRequestP
                 Long previouslySetProfileId = null;
                 if (BLCRequestUtils.isOKtoUseSession(request)) {
                     previouslySetProfileId = (Long) request.getAttribute(PROFILE_REQ_PARAM,
-                        WebRequest.SCOPE_GLOBAL_SESSION);
+                            WebRequest.SCOPE_GLOBAL_SESSION);
                 }
                 if (previouslySetProfileId != null) {
                     profile = siteService.retrievePersistentSiteById(previouslySetProfileId);
@@ -254,7 +252,7 @@ public class BroadleafAdminRequestProcessor extends AbstractBroadleafWebRequestP
                 Long previouslySetCatalogId = null;
                 if (BLCRequestUtils.isOKtoUseSession(request)) {
                     previouslySetCatalogId = (Long) request.getAttribute(CATALOG_REQ_PARAM,
-                        WebRequest.SCOPE_GLOBAL_SESSION);
+                            WebRequest.SCOPE_GLOBAL_SESSION);
                 }
                 if (previouslySetCatalogId != null) {
                     catalog = siteService.findCatalogById(previouslySetCatalogId);
@@ -321,7 +319,7 @@ public class BroadleafAdminRequestProcessor extends AbstractBroadleafWebRequestP
                 Long previouslySetSandBoxId = null;
                 if (BLCRequestUtils.isOKtoUseSession(request)) {
                     previouslySetSandBoxId = (Long) request.getAttribute(BroadleafSandBoxResolver.SANDBOX_ID_VAR,
-                        WebRequest.SCOPE_GLOBAL_SESSION);
+                            WebRequest.SCOPE_GLOBAL_SESSION);
                 }
                 if (previouslySetSandBoxId != null) {
                     sandBox = sandBoxService.retrieveSandBoxManagementById(previouslySetSandBoxId);

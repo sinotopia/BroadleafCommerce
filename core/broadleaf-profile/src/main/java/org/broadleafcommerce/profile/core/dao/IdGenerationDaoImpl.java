@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -46,7 +46,7 @@ public class IdGenerationDaoImpl implements IdGenerationDao {
     @PersistenceContext(unitName = "blPU")
     protected EntityManager em;
 
-    @Resource(name="blEntityConfiguration")
+    @Resource(name = "blEntityConfiguration")
     protected EntityConfiguration entityConfiguration;
 
     @Override
@@ -62,8 +62,8 @@ public class IdGenerationDaoImpl implements IdGenerationDao {
         Query query = em.createNamedQuery("BC_FIND_NEXT_ID");
         query.setParameter("idType", idType);
         try {
-            IdGeneration idGeneration =  (IdGeneration) query.getSingleResult();
-            response =  (IdGeneration) entityConfiguration.createEntityInstance("org.broadleafcommerce.profile.core.domain.IdGeneration");
+            IdGeneration idGeneration = (IdGeneration) query.getSingleResult();
+            response = (IdGeneration) entityConfiguration.createEntityInstance("org.broadleafcommerce.profile.core.domain.IdGeneration");
             response.setBatchSize(idGeneration.getBatchSize());
             response.setBatchStart(idGeneration.getBatchStart());
             Long originalBatchStart = idGeneration.getBatchStart();
@@ -94,12 +94,12 @@ public class IdGenerationDaoImpl implements IdGenerationDao {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("No row found in idGenerator table for " + idType + " creating row.");
             }
-            response =  (IdGeneration) entityConfiguration.createEntityInstance("org.broadleafcommerce.profile.core.domain.IdGeneration");
+            response = (IdGeneration) entityConfiguration.createEntityInstance("org.broadleafcommerce.profile.core.domain.IdGeneration");
             response.setType(idType);
             response.setBegin(null);
             response.setEnd(null);
             response.setBatchStart(getDefaultBatchStart());
-            response.setBatchSize(batchSize==null?getDefaultBatchSize():batchSize);
+            response.setBatchSize(batchSize == null ? getDefaultBatchSize() : batchSize);
             try {
                 em.persist(response);
                 em.flush();
@@ -110,7 +110,7 @@ public class IdGenerationDaoImpl implements IdGenerationDao {
             }
             return findNextId(idType);
         }
-        
+
         return response;
     }
 
